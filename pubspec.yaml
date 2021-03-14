@@ -38,6 +38,7 @@ dependencies:
   form_field_validator: ^1.0.1
   fluttertoast: ^7.1.6
   datetime_picker_formfield: ^1.0.0
+  intl: ^0.16.1
 
   
 
