@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';                        //google fonts
+import 'package:google_fonts/google_fonts.dart'; //google fonts
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 import 'package:health_assistant/pages/homepagePatient.dart';
-
-
 
 class InfoForm extends StatefulWidget {
   @override
@@ -16,7 +15,6 @@ class InfoForm extends StatefulWidget {
 }
 
 class _InfoFormState extends State<InfoForm> {
-
   final String uid;
   _InfoFormState(this.uid);
 
@@ -24,32 +22,35 @@ class _InfoFormState extends State<InfoForm> {
   TextEditingController intialdateval = TextEditingController();
   GlobalKey<FormState> pformkey = GlobalKey<FormState>();
 
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xfff2f3f7),
         body: SingleChildScrollView(
-              child: Stack(
+          child: Stack(
             children: [
               Container(
                 height: MediaQuery.of(context).size.height * 0.7,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors:[Color(0xFF33D9B2), Color(0xFF218C74)],
-                    begin:Alignment.topLeft,
-                    end:Alignment.bottomRight,
+                    colors: [Color(0xFF33D9B2), Color(0xFF218C74)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                  borderRadius: BorderRadius.only(bottomLeft: const Radius.circular(70),bottomRight: const Radius.circular(70)),
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: const Radius.circular(70),
+                      bottomRight: const Radius.circular(70)),
                 ),
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height:40),
-                  Center(child: _title(),),
+                  SizedBox(height: 40),
+                  Center(
+                    child: _title(),
+                  ),
                   _patientInfoFormContainer(),
                 ],
               ),
@@ -58,9 +59,9 @@ class _InfoFormState extends State<InfoForm> {
         ),
       ),
     );
-  }//build
+  } //build
 
-  Widget _title(){
+  Widget _title() {
     return RichText(
       //textAlign: TextAlign.center,
       text: TextSpan(
@@ -69,13 +70,12 @@ class _InfoFormState extends State<InfoForm> {
           fontSize: MediaQuery.of(context).size.height / 20,
           fontWeight: FontWeight.w700,
           color: Colors.grey[850],
-          
         ),
       ),
     );
-  }  //_title widget
+  } //_title widget
 
-  Widget _patientInfoFormContainer(){
+  Widget _patientInfoFormContainer() {
     return Container(
       height: MediaQuery.of(context).size.height * 0.7,
       width: MediaQuery.of(context).size.width * 0.8,
@@ -106,24 +106,24 @@ class _InfoFormState extends State<InfoForm> {
     );
   } //_ _patientInfoFormContainer
 
-
   Widget _buildFnameRow() {
     return Padding(
       padding: EdgeInsets.all(10),
       child: TextFormField(
         keyboardType: TextInputType.text,
-        validator:RequiredValidator(errorText: "This field is required"),
+        validator: RequiredValidator(errorText: "This field is required"),
         onChanged: (value) {
           setState(() {
             fname = value;
           });
         },
         decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            focusedBorder: OutlineInputBorder(borderSide:  BorderSide(color: Color(0xFF33D9B2) )),
-            labelText: 'First name',
-            labelStyle: GoogleFonts.lato(color: Colors.grey),
-            ),
+          border: OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFF33D9B2))),
+          labelText: 'First name',
+          labelStyle: GoogleFonts.lato(color: Colors.grey),
+        ),
       ),
     );
   }
@@ -133,18 +133,19 @@ class _InfoFormState extends State<InfoForm> {
       padding: EdgeInsets.all(10),
       child: TextFormField(
         keyboardType: TextInputType.text,
-        validator:RequiredValidator(errorText: "This field is required"),
+        validator: RequiredValidator(errorText: "This field is required"),
         onChanged: (value) {
           setState(() {
             lname = value;
           });
         },
         decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            focusedBorder: OutlineInputBorder(borderSide:  BorderSide(color: Color(0xFF33D9B2) )),
-            labelText: 'Last name',
-            labelStyle: GoogleFonts.lato(color: Colors.grey),
-            ),
+          border: OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFF33D9B2))),
+          labelText: 'Last name',
+          labelStyle: GoogleFonts.lato(color: Colors.grey),
+        ),
       ),
     );
   }
@@ -164,11 +165,12 @@ class _InfoFormState extends State<InfoForm> {
           });
         },
         decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            focusedBorder: OutlineInputBorder(borderSide:  BorderSide(color: Color(0xFF33D9B2) )),
-            labelText: 'Address',
-            labelStyle: GoogleFonts.lato(color: Colors.grey),
-            ),
+          border: OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFF33D9B2))),
+          labelText: 'Address',
+          labelStyle: GoogleFonts.lato(color: Colors.grey),
+        ),
       ),
     );
   }
@@ -189,11 +191,12 @@ class _InfoFormState extends State<InfoForm> {
           });
         },
         decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            focusedBorder: OutlineInputBorder(borderSide:  BorderSide(color: Color(0xFF33D9B2) )),
-            labelText: 'Phone Number',
-            labelStyle: GoogleFonts.lato(color: Colors.grey),
-            ),
+          border: OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFF33D9B2))),
+          labelText: 'Phone Number',
+          labelStyle: GoogleFonts.lato(color: Colors.grey),
+        ),
       ),
     );
   }
@@ -202,30 +205,31 @@ class _InfoFormState extends State<InfoForm> {
     return Padding(
       padding: EdgeInsets.all(10),
       child: TextFormField(
-        readOnly: true,
-        onTap: (){
-          showDatePicker(
-            context: context, 
-            initialDate: DateTime.now(), 
-            firstDate:  DateTime(1900), 
-            lastDate: DateTime(2022)
-            ).then((value) {
-              setState(() {
-                intialdateval.text = value.toString();
-                dob = value.toString().substring(0, 10);
-                print("hey the date is");
-                print(dob);
-              });
-            });
+        controller: intialdateval,
+        onTap: () async {
+          DateTime date = DateTime(1900);
+          final f = new DateFormat('dd-MM-yyyy');
+          FocusScope.of(context).requestFocus(new FocusNode());
+          date = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(1900),
+              lastDate: DateTime(2022));
+          intialdateval.text = f.format(date).toString();
+          setState(() {
+            dob = f.format(date).toString();
+            print("hey the date is");
+            print(dob);
+          });
         },
-
         //validator:RequiredValidator(errorText: "This field is required"),
         decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            focusedBorder: OutlineInputBorder(borderSide:  BorderSide(color: Color(0xFF33D9B2) )),
-            labelText: 'Date of birth',
-            labelStyle: GoogleFonts.lato(color: Colors.grey),
-            ),
+          border: OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFF33D9B2))),
+          labelText: 'Date of birth',
+          labelStyle: GoogleFonts.lato(color: Colors.grey),
+        ),
       ),
     );
   }
@@ -240,22 +244,22 @@ class _InfoFormState extends State<InfoForm> {
         width: 5 * (MediaQuery.of(context).size.width / 10),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-                  colors:[Color(0xFF33D9B2), Color(0xFF218C74)],
-                  begin:Alignment.centerLeft,
-                  end:Alignment.centerRight, 
-                ),
+            colors: [Color(0xFF33D9B2), Color(0xFF218C74)],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
           ),
+        ),
         child: Text(
           "Submit",
           style: GoogleFonts.lato(
             color: Colors.white,
             letterSpacing: 1.0,
             fontSize: MediaQuery.of(context).size.height / 40,
-            ),
           ),
         ),
-      );
-    }
+      ),
+    );
+  }
 
   void submit() {
     //validating
@@ -266,41 +270,35 @@ class _InfoFormState extends State<InfoForm> {
       print(address);
       print(phoneNo);
       print(dob);
-      addPatient().then((value){
-        if (value == true){
+      addPatient().then((value) {
+        if (value == true) {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => PatientScreen(uid: uid),
-              ));         
+              ));
         }
       });
     }
-
-    
   }
 
-  CollectionReference patients = FirebaseFirestore.instance.collection('patients');
-
+  CollectionReference patients =
+      FirebaseFirestore.instance.collection('patients');
 
   Future<bool> addPatient() async {
     try {
-      patients
-      .doc(uid)
-      .set({
+      patients.doc(uid).set({
         'fname': fname,
         'lname': lname,
         'address': address,
         'phoneNo': phoneNo,
-        'dob':dob
+        'dob': dob
       });
       print("Patient Added");
       return true;
-    } 
-    catch (error) {
+    } catch (error) {
       print("Failed to add user: $error");
       return false;
     }
-}
-
+  }
 }
