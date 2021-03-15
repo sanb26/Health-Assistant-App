@@ -18,7 +18,7 @@ class _InfoFormState extends State<InfoForm> {
   final String uid;
   _InfoFormState(this.uid);
 
-  String fname, lname, phoneNo, address, dob;
+  String fname, lname, phoneNo, address, dob, height, weight;
   TextEditingController intialdateval = TextEditingController();
   GlobalKey<FormState> pformkey = GlobalKey<FormState>();
 
@@ -77,12 +77,12 @@ class _InfoFormState extends State<InfoForm> {
 
   Widget _patientInfoFormContainer() {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.7,
-      width: MediaQuery.of(context).size.width * 0.8,
+      height: MediaQuery.of(context).size.height * 0.85,
+      width: MediaQuery.of(context).size.width * 0.85,
       margin: EdgeInsets.only(top: 25.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(30),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -97,7 +97,9 @@ class _InfoFormState extends State<InfoForm> {
                 _buildAddressRow(),
                 _buildPhoneNoRow(),
                 _buildDOBRow(),
-                _buildSubmitButton()
+                _buildHeight(),
+                _buildWeight(),
+                _buildSubmitButton(),
               ],
             ),
           ),
@@ -108,7 +110,7 @@ class _InfoFormState extends State<InfoForm> {
 
   Widget _buildFnameRow() {
     return Padding(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
       child: TextFormField(
         keyboardType: TextInputType.text,
         validator: RequiredValidator(errorText: "This field is required"),
@@ -234,6 +236,56 @@ class _InfoFormState extends State<InfoForm> {
     );
   }
 
+  Widget _buildHeight() {
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: TextFormField(
+        keyboardType: TextInputType.text,
+        validator: MultiValidator([
+          RequiredValidator(errorText: "This field is required"),
+          MaxLengthValidator(25, errorText: "Max length 25"),
+        ]),
+        onChanged: (value) {
+          setState(() {
+            height = value;
+          });
+        },
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFF33D9B2))),
+          labelText: 'Height (cm)',
+          labelStyle: GoogleFonts.lato(color: Colors.grey),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildWeight() {
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: TextFormField(
+        keyboardType: TextInputType.text,
+        validator: MultiValidator([
+          RequiredValidator(errorText: "This field is required"),
+          MaxLengthValidator(25, errorText: "Max length 25"),
+        ]),
+        onChanged: (value) {
+          setState(() {
+            weight = value;
+          });
+        },
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFF33D9B2))),
+          labelText: 'Weight (kg)',
+          labelStyle: GoogleFonts.lato(color: Colors.grey),
+        ),
+      ),
+    );
+  }
+
   Widget _buildSubmitButton() {
     return RaisedButton(
       onPressed: submit,
@@ -292,7 +344,9 @@ class _InfoFormState extends State<InfoForm> {
         'lname': lname,
         'address': address,
         'phoneNo': phoneNo,
-        'dob': dob
+        'dob': dob,
+        'weight': weight,
+        'height': height
       });
       print("Patient Added");
       return true;
