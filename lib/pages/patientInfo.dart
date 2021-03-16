@@ -3,8 +3,11 @@ import 'package:google_fonts/google_fonts.dart'; //google fonts
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:health_assistant/theme/light_color.dart';
+import 'package:health_assistant/theme/text_styles.dart';
+import 'package:health_assistant/theme/theme.dart';
 
-import 'package:health_assistant/pages/homepagePatient.dart';
+import 'package:health_assistant/pages/homePagePatient.dart';
 
 class InfoForm extends StatefulWidget {
   @override
@@ -35,7 +38,7 @@ class _InfoFormState extends State<InfoForm> {
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Color(0xFF33D9B2), Color(0xFF218C74)],
+                    colors: [LightColor.purpleLight, LightColor.purple],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -69,7 +72,7 @@ class _InfoFormState extends State<InfoForm> {
         style: GoogleFonts.portLligatSans(
           fontSize: MediaQuery.of(context).size.height / 20,
           fontWeight: FontWeight.w700,
-          color: Colors.grey[850],
+          color: Colors.white,
         ),
       ),
     );
@@ -77,7 +80,7 @@ class _InfoFormState extends State<InfoForm> {
 
   Widget _patientInfoFormContainer() {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.85,
+      height: MediaQuery.of(context).size.height * 0.90,
       width: MediaQuery.of(context).size.width * 0.85,
       margin: EdgeInsets.only(top: 25.0),
       decoration: BoxDecoration(
@@ -122,7 +125,7 @@ class _InfoFormState extends State<InfoForm> {
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFF33D9B2))),
+              borderSide: BorderSide(color: LightColor.purple)),
           labelText: 'First name',
           labelStyle: GoogleFonts.lato(color: Colors.grey),
         ),
@@ -144,7 +147,7 @@ class _InfoFormState extends State<InfoForm> {
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFF33D9B2))),
+              borderSide: BorderSide(color: LightColor.purple)),
           labelText: 'Last name',
           labelStyle: GoogleFonts.lato(color: Colors.grey),
         ),
@@ -169,7 +172,7 @@ class _InfoFormState extends State<InfoForm> {
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFF33D9B2))),
+              borderSide: BorderSide(color: LightColor.purple)),
           labelText: 'Address',
           labelStyle: GoogleFonts.lato(color: Colors.grey),
         ),
@@ -195,7 +198,7 @@ class _InfoFormState extends State<InfoForm> {
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFF33D9B2))),
+              borderSide: BorderSide(color: LightColor.purple)),
           labelText: 'Phone Number',
           labelStyle: GoogleFonts.lato(color: Colors.grey),
         ),
@@ -228,7 +231,7 @@ class _InfoFormState extends State<InfoForm> {
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFF33D9B2))),
+              borderSide: BorderSide(color: LightColor.purple)),
           labelText: 'Date of birth',
           labelStyle: GoogleFonts.lato(color: Colors.grey),
         ),
@@ -253,7 +256,7 @@ class _InfoFormState extends State<InfoForm> {
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFF33D9B2))),
+              borderSide: BorderSide(color: LightColor.purple)),
           labelText: 'Height (cm)',
           labelStyle: GoogleFonts.lato(color: Colors.grey),
         ),
@@ -278,7 +281,7 @@ class _InfoFormState extends State<InfoForm> {
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFF33D9B2))),
+              borderSide: BorderSide(color: LightColor.purple)),
           labelText: 'Weight (kg)',
           labelStyle: GoogleFonts.lato(color: Colors.grey),
         ),
@@ -296,7 +299,7 @@ class _InfoFormState extends State<InfoForm> {
         width: 5 * (MediaQuery.of(context).size.width / 10),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF33D9B2), Color(0xFF218C74)],
+            colors: [LightColor.purpleLight, LightColor.purple],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
           ),
@@ -327,7 +330,7 @@ class _InfoFormState extends State<InfoForm> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => PatientScreen(uid: uid),
+                builder: (context) => PatientHomeScreen(uid: uid),
               ));
         }
       });

@@ -4,8 +4,12 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';      //google
 import 'package:form_field_validator/form_field_validator.dart';        //form validtaion
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:health_assistant/theme/light_color.dart';
+import 'package:health_assistant/theme/text_styles.dart';
+import 'package:health_assistant/theme/extention.dart';
 
-import 'package:health_assistant/pages/homepagePatient.dart';
+import 'package:health_assistant/pages/homePagePatient.dart';
+import 'package:health_assistant/pages/homePageDoctor.dart';
 import 'package:health_assistant/pages/patientInfo.dart';
 import '../controllers/authentication.dart';
 
@@ -34,7 +38,7 @@ class _SignInState extends State<SignIn> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => PatientScreen(uid: value.uid),
+                builder: (context) => DoctorHomeScreen(uid: value.uid), // TODO: Route to Homepage
               ));
         }
       });
@@ -55,7 +59,7 @@ class _SignInState extends State<SignIn> {
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors:[Color(0xFF33D9B2), Color(0xFF218C74)],
+                  colors:[LightColor.purpleLight, LightColor.purple],
                   begin:Alignment.topLeft,
                   end:Alignment.bottomRight, 
                 ),
@@ -88,7 +92,7 @@ class _SignInState extends State<SignIn> {
         style: GoogleFonts.portLligatSans(
           fontSize: MediaQuery.of(context).size.height / 20,
           fontWeight: FontWeight.w700,
-          color: Colors.grey[850],
+          color: Colors.white,
           
         ),
       ),
@@ -129,7 +133,7 @@ class _SignInState extends State<SignIn> {
               User user =  FirebaseAuth.instance.currentUser;
               bool val = await checkIfDocExists(user.uid);
               if(val){
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PatientScreen(uid: user.uid)));
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PatientHomeScreen(uid: user.uid)));
               }
               else{
                 Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => InfoForm(uid: user.uid)));
@@ -167,10 +171,10 @@ class _SignInState extends State<SignIn> {
         decoration: InputDecoration(
             prefixIcon: Icon(
               Icons.email,
-              color: Color(0xFF33D9B2),
+              color:LightColor.purple,
             ),
             border: OutlineInputBorder(),
-            focusedBorder: OutlineInputBorder(borderSide:  BorderSide(color: Color(0xFF33D9B2) )),
+            focusedBorder: OutlineInputBorder(borderSide:  BorderSide(color: LightColor.purple )),
             labelText: 'E-mail',
             labelStyle: GoogleFonts.lato(color: Colors.grey),
             ),
@@ -194,7 +198,7 @@ class _SignInState extends State<SignIn> {
           prefixIcon: IconButton(
             icon: Icon(
               _securePass? Icons.visibility: Icons.visibility_off,
-              color: Color(0xFF33D9B2),
+              color: LightColor.purple,
             ),
             onPressed:(){
               setState(() {
@@ -202,7 +206,7 @@ class _SignInState extends State<SignIn> {
               });
             }),
           border: OutlineInputBorder(),
-          focusedBorder: OutlineInputBorder(borderSide:  BorderSide(color: Color(0xFF33D9B2) )),
+          focusedBorder: OutlineInputBorder(borderSide:  BorderSide(color: LightColor.purple )),
           labelText: 'Password',
           labelStyle: GoogleFonts.lato(color: Colors.grey),
         ),
@@ -220,7 +224,7 @@ class _SignInState extends State<SignIn> {
         width: 5 * (MediaQuery.of(context).size.width / 10),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-                  colors:[Color(0xFF33D9B2), Color(0xFF218C74)],
+                  colors:[LightColor.purpleLight, LightColor.purple],
                   begin:Alignment.centerLeft,
                   end:Alignment.centerRight, 
                 ),

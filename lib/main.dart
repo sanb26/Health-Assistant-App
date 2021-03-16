@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_assistant/pages/sign_in.dart';
-import 'pages/sign_in.dart';
+import 'pages/splash_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 Future main() async {
@@ -21,7 +21,8 @@ class MyApp extends StatelessWidget {
         //primaryColor: Colors.redAccent,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home:SignIn(),
+      home: SplashPage()
+      // SignIn(),
     );
   }
 }
