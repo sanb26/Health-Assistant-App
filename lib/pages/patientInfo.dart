@@ -330,7 +330,7 @@ class _InfoFormState extends State<InfoForm> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => PatientHomeScreen(uid: uid),
+                builder: (context) => PatientHomeScreen(uid: uid, lname: lname, fname:fname),
               ));
         }
       });
@@ -358,4 +358,13 @@ class _InfoFormState extends State<InfoForm> {
       return false;
     }
   }
+
+
+
+
+
+
+
+
+
 }

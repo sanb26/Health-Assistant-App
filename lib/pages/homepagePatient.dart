@@ -11,30 +11,32 @@ import 'package:health_assistant/theme/theme.dart';
 
 class PatientHomeScreen extends StatefulWidget {
   final String uid;
-  PatientHomeScreen({Key key, @required this.uid}) : super(key: key);
+  final String fname;
+  final String lname;
+  PatientHomeScreen({Key key, @required this.uid, this.lname, this.fname})
+      : super(key: key);
 
   @override
-  _PatientHomeScreenState createState() => _PatientHomeScreenState(uid);
+  _PatientHomeScreenState createState() =>
+      _PatientHomeScreenState(uid, fname, lname);
 }
 
 class _PatientHomeScreenState extends State<PatientHomeScreen> {
-
+  final String fname;
+  final String lname;
   final String uid;
-  _PatientHomeScreenState(this.uid);
+  _PatientHomeScreenState(this.uid, this.fname, this.lname);
   List<DoctorModel> doctorDataList;
-  // DocumentSnapshot userData;
-
-  // void getData() async {
-  //   userData = await getUserInfo(uid);
-  // }
+  DocumentSnapshot userData;
 
   @override
   void initState() {
-    // getData();
-    // print(userData);  
+    print(fname);
+    print(lname);
     doctorDataList = doctorMapList.map((x) => DoctorModel.fromJson(x)).toList();
     super.initState();
   }
+
 /*
   Widget _appBar() {
     return AppBar(
@@ -71,7 +73,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text("Hello,", style: TextStyles.title.subTitleColor),
-        Text("Ojas Kulkarni", style: TextStyles.h1Style),
+        Text("$fname $lname", style: TextStyles.h1Style),
       ],
     ).p16;
   }
@@ -156,6 +158,8 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
     }
     return InkWell(
       onTap: () {
+        // getData();
+        // print(userData.data());
         // if (subtitle == "book_appt") {
         //   // AppointmentPage();
         //   Navigator.push(
@@ -173,7 +177,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
       //   print("tapped");
       // },
       child: AspectRatio(
-        aspectRatio: 16/ 5,
+        aspectRatio: 16 / 5,
         child: Container(
           height: 280,
           width: AppTheme.fullWidth(context) * .3,
@@ -228,7 +232,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
     );
   }
 
- Color randomColor() {
+  Color randomColor() {
     var random = Random();
     final colorList = [
       Theme.of(context).primaryColor,
@@ -250,15 +254,13 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       backgroundColor: Color(0xFFFFFFFF),
       body: CustomScrollView(
-        
         slivers: <Widget>[
           SliverList(
             delegate: SliverChildListDelegate(
-              [ 
-                SizedBox(height:20),
+              [
+                SizedBox(height: 20),
                 _header(),
                 _searchField(),
                 _category(),
@@ -270,29 +272,4 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
       ),
     );
   }
-
-
-  // Function to return User Information
-  // Future<QuerySnapshot> getUserInfo(String uid) async {
-  //   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  //   var qs = await firestore.collection('patients').document(uid).get();
-  //   return qs;
-  // }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  

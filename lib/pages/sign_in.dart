@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';                        //google fonts
-import 'package:flutter_signin_button/flutter_signin_button.dart';      //google sign in button
-import 'package:form_field_validator/form_field_validator.dart';        //form validtaion
+import 'package:google_fonts/google_fonts.dart'; //google fonts
+import 'package:flutter_signin_button/flutter_signin_button.dart'; //google sign in button
+import 'package:form_field_validator/form_field_validator.dart'; //form validtaion
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:health_assistant/theme/light_color.dart';
@@ -20,13 +20,10 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-
   String email, password;
   bool _securePass = true;
   //bool _isLoading = true;
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
-
-
 
   void login() {
     //validating
@@ -38,14 +35,14 @@ class _SignInState extends State<SignIn> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => DoctorHomeScreen(uid: value.uid), // TODO: Route to Homepage
+                builder: (context) =>
+                    DoctorHomeScreen(uid: value.uid), // TODO: Route to Homepage
               ));
         }
       });
     }
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -53,15 +50,15 @@ class _SignInState extends State<SignIn> {
         resizeToAvoidBottomInset: false,
         backgroundColor: Color(0xfff2f3f7),
         body: Stack(
-          children:[
+          children: [
             Container(
               height: MediaQuery.of(context).size.height * 0.7,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors:[LightColor.purpleLight, LightColor.purple],
-                  begin:Alignment.topLeft,
-                  end:Alignment.bottomRight, 
+                  colors: [LightColor.purpleLight, LightColor.purple],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.only(
                   bottomLeft: const Radius.circular(70),
@@ -69,22 +66,22 @@ class _SignInState extends State<SignIn> {
                 ),
               ),
             ),
-            
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,      
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                  Center(child: _title(),),
-                  _loginContainer(),                  
+                Center(
+                  child: _title(),
+                ),
+                _loginContainer(),
               ],
             ),
-         ],
+          ],
         ),
       ),
     );
   } //build
 
-
-  Widget _title(){
+  Widget _title() {
     return RichText(
       //textAlign: TextAlign.center,
       text: TextSpan(
@@ -93,13 +90,12 @@ class _SignInState extends State<SignIn> {
           fontSize: MediaQuery.of(context).size.height / 20,
           fontWeight: FontWeight.w700,
           color: Colors.white,
-          
         ),
       ),
     );
   }
 
-  Widget _loginContainer(){
+  Widget _loginContainer() {
     return Container(
       height: MediaQuery.of(context).size.height * 0.6,
       width: MediaQuery.of(context).size.width * 0.8,
@@ -118,41 +114,36 @@ class _SignInState extends State<SignIn> {
               children: [
                 _buildEmailRow(),
                 _buildPasswordRow(),
-                SizedBox(height:10),
-                 _buildLoginButton(),
+                SizedBox(height: 10),
+                _buildLoginButton(),
               ],
             ),
           ),
-                             
-          SizedBox(height:30),
+          SizedBox(height: 30),
           _buildOrRow(),
-          SizedBox(height:20),
+          SizedBox(height: 20),
           SignInButton(
             Buttons.Google,
-            onPressed:() => googleSignIn().whenComplete(() async{
-              User user =  FirebaseAuth.instance.currentUser;
+            onPressed: () => googleSignIn().whenComplete(() async {
+              User user = FirebaseAuth.instance.currentUser;
               bool val = await checkIfDocExists(user.uid);
-              if(val){
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PatientHomeScreen(uid: user.uid)));
+              DocumentSnapshot userData = await getUserInfo(user.uid);
+              if (val && userData.exists) {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => PatientHomeScreen(
+                        uid: user.uid,
+                        lname: userData.data()['lname'],
+                        fname: userData.data()['fname'])));
+              } else {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => InfoForm(uid: user.uid)));
               }
-              else{
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => InfoForm(uid: user.uid)));
-              }
-              
-
             }),
           )
         ],
-
       ),
     );
   }
-
-
-
-
-
-
 
   Widget _buildEmailRow() {
     return Padding(
@@ -169,15 +160,16 @@ class _SignInState extends State<SignIn> {
           });
         },
         decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.email,
-              color:LightColor.purple,
-            ),
-            border: OutlineInputBorder(),
-            focusedBorder: OutlineInputBorder(borderSide:  BorderSide(color: LightColor.purple )),
-            labelText: 'E-mail',
-            labelStyle: GoogleFonts.lato(color: Colors.grey),
-            ),
+          prefixIcon: Icon(
+            Icons.email,
+            color: LightColor.purple,
+          ),
+          border: OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: LightColor.purple)),
+          labelText: 'E-mail',
+          labelStyle: GoogleFonts.lato(color: Colors.grey),
+        ),
       ),
     );
   }
@@ -196,17 +188,18 @@ class _SignInState extends State<SignIn> {
         },
         decoration: InputDecoration(
           prefixIcon: IconButton(
-            icon: Icon(
-              _securePass? Icons.visibility: Icons.visibility_off,
-              color: LightColor.purple,
-            ),
-            onPressed:(){
-              setState(() {
-                _securePass = !_securePass;
-              });
-            }),
+              icon: Icon(
+                _securePass ? Icons.visibility : Icons.visibility_off,
+                color: LightColor.purple,
+              ),
+              onPressed: () {
+                setState(() {
+                  _securePass = !_securePass;
+                });
+              }),
           border: OutlineInputBorder(),
-          focusedBorder: OutlineInputBorder(borderSide:  BorderSide(color: LightColor.purple )),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: LightColor.purple)),
           labelText: 'Password',
           labelStyle: GoogleFonts.lato(color: Colors.grey),
         ),
@@ -224,31 +217,33 @@ class _SignInState extends State<SignIn> {
         width: 5 * (MediaQuery.of(context).size.width / 10),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-                  colors:[LightColor.purpleLight, LightColor.purple],
-                  begin:Alignment.centerLeft,
-                  end:Alignment.centerRight, 
-                ),
+            colors: [LightColor.purpleLight, LightColor.purple],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
           ),
+        ),
         child: Text(
           "Login",
           style: GoogleFonts.lato(
             color: Colors.white,
             letterSpacing: 1.0,
             fontSize: MediaQuery.of(context).size.height / 40,
-            ),
           ),
         ),
-      );
-    }
+      ),
+    );
+  }
 
-  Widget _buildOrRow(){
+  Widget _buildOrRow() {
     return Row(
       children: [
         Expanded(
             child: Divider(
           thickness: 2,
         )),
-        Text(' or ', style: GoogleFonts.lato(fontSize:MediaQuery.of(context).size.height / 50 )),
+        Text(' or ',
+            style: GoogleFonts.lato(
+                fontSize: MediaQuery.of(context).size.height / 50)),
         Expanded(
             child: Divider(
           thickness: 2,
@@ -256,19 +251,26 @@ class _SignInState extends State<SignIn> {
       ],
     );
   }
-  
 
   static Future<bool> checkIfDocExists(String docId) async {
     try {
       // Get reference to Firestore collection
-      var collectionRef =  FirebaseFirestore.instance.collection('patients');
+      var collectionRef = FirebaseFirestore.instance.collection('patients');
       var doc = await collectionRef.doc(docId).get();
       return doc.exists;
-    } 
-    catch (e) {
+    } catch (e) {
       return false;
     }
-}
+  }
 
-
+  // Function to return User Information
+  Future<DocumentSnapshot> getUserInfo(String uid) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    var qs = await firestore.collection('patients').doc(uid).get();
+    if (qs.exists) {
+      return qs;
+    } else {
+      return null;
+    }
+  }
 }
