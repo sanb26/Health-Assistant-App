@@ -21,7 +21,8 @@ class _InfoFormState extends State<InfoForm> {
   final String uid;
   _InfoFormState(this.uid);
 
-  String fname, lname, phoneNo, address, dob, height, weight;
+  String fname, lname, phoneNo, address, dob, height, weight, age, gender;
+  String dropdownValue = "";
   TextEditingController intialdateval = TextEditingController();
   GlobalKey<FormState> pformkey = GlobalKey<FormState>();
 
@@ -80,8 +81,8 @@ class _InfoFormState extends State<InfoForm> {
 
   Widget _patientInfoFormContainer() {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.90,
-      width: MediaQuery.of(context).size.width * 0.85,
+      height: MediaQuery.of(context).size.height * 1.1,
+      width: MediaQuery.of(context).size.width * 0.9,
       margin: EdgeInsets.only(top: 25.0),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -102,6 +103,8 @@ class _InfoFormState extends State<InfoForm> {
                 _buildDOBRow(),
                 _buildHeight(),
                 _buildWeight(),
+                _buildAge(),
+                _buildGender(),
                 _buildSubmitButton(),
               ],
             ),
@@ -289,6 +292,65 @@ class _InfoFormState extends State<InfoForm> {
     );
   }
 
+  Widget _buildAge() {
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: TextFormField(
+        keyboardType: TextInputType.number,
+        validator: MultiValidator([
+          RequiredValidator(errorText: "This field is required"),
+          MaxLengthValidator(25, errorText: "Max length 25"),
+        ]),
+        onChanged: (value) {
+          setState(() {
+            age = value;
+          });
+        },
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: LightColor.purple)),
+          labelText: 'Age',
+          labelStyle: GoogleFonts.lato(color: Colors.grey),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGender() {
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: InputDecorator(
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: LightColor.purple)),
+          labelText: 'Gender',
+          labelStyle: GoogleFonts.lato(color: Colors.grey),
+        ),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            isDense: true,
+            // itemHeight: 75,
+            value: gender,
+            onChanged: (String newValue) {
+              setState(() {
+                gender = newValue;
+              });
+            },
+            items: <String>['Male', 'Female', 'Prefer not to say']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildSubmitButton() {
     return RaisedButton(
       onPressed: submit,
@@ -330,7 +392,8 @@ class _InfoFormState extends State<InfoForm> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => PatientHomeScreen(uid: uid, lname: lname, fname:fname),
+                builder: (context) =>
+                    PatientHomeScreen(uid: uid, lname: lname, fname: fname),
               ));
         }
       });
@@ -349,7 +412,9 @@ class _InfoFormState extends State<InfoForm> {
         'phoneNo': phoneNo,
         'dob': dob,
         'weight': weight,
-        'height': height
+        'height': height,
+        'age': age,
+        'gender': gender
       });
       print("Patient Added");
       return true;
@@ -358,13 +423,4 @@ class _InfoFormState extends State<InfoForm> {
       return false;
     }
   }
-
-
-
-
-
-
-
-
-
 }
