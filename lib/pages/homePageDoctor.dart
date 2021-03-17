@@ -10,21 +10,26 @@ import 'package:health_assistant/theme/theme.dart';
 
 class DoctorHomeScreen extends StatefulWidget {
   final String uid;
-  DoctorHomeScreen({Key key, @required this.uid}) : super(key: key);
+  final String name;
+  DoctorHomeScreen({Key key, @required this.uid, @required this.name})
+      : super(key: key);
 
   @override
-  _DoctorHomeScreenState createState() => _DoctorHomeScreenState(uid);
+  _DoctorHomeScreenState createState() => _DoctorHomeScreenState(uid, name);
 }
 
 class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
   final String uid;
-  _DoctorHomeScreenState(this.uid);
+  final String name;
+  _DoctorHomeScreenState(this.uid, this.name);
   List<DoctorModel> doctorDataList;
   @override
   void initState() {
-    doctorDataList = doctorMapList.map((x)=> DoctorModel.fromJson(x)).toList();
+    print(uid);
+    doctorDataList = doctorMapList.map((x) => DoctorModel.fromJson(x)).toList();
     super.initState();
   }
+
   /*Widget _appBar() {
     return AppBar(
       elevation: 0,
@@ -60,7 +65,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text("Hello,", style: TextStyles.title.subTitleColor),
-        Text("Dr. Ojas Kulkarni", style: TextStyles.h1Style),
+        Text(name, style: TextStyles.h1Style),
       ],
     ).p16;
   }
@@ -102,29 +107,31 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top: 8, right: 16, left: 16, bottom: 4),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text("Categories", style: TextStyles.title.bold),
-              /*Text(
-                "See All",
-                style: TextStyles.titleNormal
-                    .copyWith(color: Theme.of(context).primaryColor),
-              ).p(8).ripple(() {}) */
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 200,
-          width: AppTheme.fullWidth(context),
-          child: ListView(
-            scrollDirection: Axis.vertical,
-            children: <Widget>[
-              _categoryCard("View Your Appointments", "chatbot",
-                  color: LightColor.green, lightColor: LightColor.lightGreen),
-              //_categoryCard("Logout", "view_appt",
-                  //color: LightColor.skyBlue, lightColor: LightColor.lightBlue),
-            ],
+          child:
+              //   Column(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: <Widget>[
+              //       // Text("Categories", style: TextStyles.title.bold),
+              //       /*Text(
+              //         "See All",
+              //         style: TextStyles.titleNormal
+              //             .copyWith(color: Theme.of(context).primaryColor),
+              //       ).p(8).ripple(() {}) */
+              //     ],
+              //   ),
+              // ),
+              SizedBox(
+            height: 200,
+            width: AppTheme.fullWidth(context),
+            child: ListView(
+              scrollDirection: Axis.vertical,
+              children: <Widget>[
+                _categoryCard("View Your Appointments", "chatbot",
+                    color: LightColor.green, lightColor: LightColor.lightGreen),
+                //_categoryCard("Logout", "view_appt",
+                //color: LightColor.skyBlue, lightColor: LightColor.lightBlue),
+              ],
+            ),
           ),
         ),
       ],
@@ -140,7 +147,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
       //  subtitleStyle = TextStyles.bodySm.bold.white;
     }
     return AspectRatio(
-      aspectRatio: 16/ 5,
+      aspectRatio: 16 / 5,
       child: Container(
         height: 250,
         width: AppTheme.fullWidth(context) * .3,
@@ -193,12 +200,6 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
       ),
     );
   }
-
-
-
-
-
-
 
   Widget _doctorsList() {
     return SliverList(
@@ -271,7 +272,6 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
             ),
           ),
           title: Text(model.name, style: TextStyles.title.bold),
-
           subtitle: Text(
             '7:30 pm',
             style: TextStyles.bodySm.subTitleColor.bold,
@@ -317,9 +317,9 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                SizedBox(height:20),
+                SizedBox(height: 20),
                 _header(),
-                _searchField(),
+                // _searchField(),
                 _category(),
               ],
             ),
@@ -330,4 +330,3 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
     );
   }
 }
-

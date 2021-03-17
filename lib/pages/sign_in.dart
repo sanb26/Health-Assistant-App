@@ -25,18 +25,19 @@ class _SignInState extends State<SignIn> {
   //bool _isLoading = true;
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
-  void login() {
+  void login() async {
     //validating
     if (formkey.currentState.validate()) {
       formkey.currentState.save();
       //calling signin with email and password function which returns user if sign in successful else null
-      signin(email, password, context).then((value) {
+      signin(email, password, context).then((value) async {
+         DocumentSnapshot doctorData = await getDoctorInfo(value.uid);
         if (value != null) {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) =>
-                    DoctorHomeScreen(uid: value.uid), // TODO: Route to Homepage
+                    DoctorHomeScreen(uid: value.uid, name:doctorData.data()['name']), // TODO: Route to Homepage
               ));
         }
       });
@@ -267,6 +268,16 @@ class _SignInState extends State<SignIn> {
   Future<DocumentSnapshot> getUserInfo(String uid) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     var qs = await firestore.collection('patients').doc(uid).get();
+    if (qs.exists) {
+      return qs;
+    } else {
+      return null;
+    }
+  }
+
+  Future<DocumentSnapshot> getDoctorInfo(String uid) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    var qs = await firestore.collection('doctors').doc(uid).get();
     if (qs.exists) {
       return qs;
     } else {
