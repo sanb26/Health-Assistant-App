@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:health_assistant/chatbot/home.dart';
 import 'package:health_assistant/model/dactor_model.dart';
 import 'package:health_assistant/model/data.dart';
 //import 'package:health_assistant/pages/AppointmentPage.dart';
@@ -160,16 +161,13 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
       onTap: () {
         // getData();
         // print(userData.data());
-        // if (subtitle == "book_appt") {
-        //   // AppointmentPage();
-        //   Navigator.push(
-        //     context,
-        //     MaterialPageRoute(builder: (context) => AppointmentPage()),
-        //   );
-        // }
-        // print(subtitle);
-        // print("pressed");
-        // print("Tapped");
+        if (subtitle == "chatbot") {
+          // AppointmentPage();
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ChatHome()),
+          );
+        }
       },
       // behavior: HitTestBehavior.translucent,
       // onTap: () {
