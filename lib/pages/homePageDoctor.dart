@@ -7,6 +7,8 @@ import 'package:health_assistant/theme/extention.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'package:health_assistant/theme/text_styles.dart';
 import 'package:health_assistant/theme/theme.dart';
+import '../controllers/authentication.dart';
+import './sign_in.dart';
 
 class DoctorHomeScreen extends StatefulWidget {
   final String uid;
@@ -60,12 +62,40 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
     );
   }
 */
+
   Widget _header() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text("Hello,", style: TextStyles.title.subTitleColor),
-        Text(name, style: TextStyles.h1Style),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Hello,", style: TextStyles.title.subTitleColor),
+                Text(name, style: TextStyles.h1Style),
+              ],
+            ),
+            SizedBox(
+              height: 30,
+              width: 30,
+              child: FloatingActionButton(
+                backgroundColor: Colors.redAccent,
+                child: Icon(
+                  Icons.logout,
+                  size: 20,
+                ),
+                onPressed: () async {
+                  if (await signOutUser()) {
+                    Navigator.pushReplacement(
+                        context, MaterialPageRoute(builder: (_) => SignIn()));
+                  }
+                },
+              ),
+            )
+          ],
+        ),
       ],
     ).p16;
   }
