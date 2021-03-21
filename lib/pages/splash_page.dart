@@ -5,6 +5,7 @@ import 'package:health_assistant/pages/sign_in.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'package:health_assistant/theme/text_styles.dart';
 import 'package:health_assistant/theme/extention.dart';
+import 'package:google_fonts/google_fonts.dart'; //google fonts
 
 class SplashPage extends StatefulWidget {
   SplashPage({Key key}) : super(key: key);
@@ -50,38 +51,55 @@ class _SplashPageState extends State<SplashPage> {
               ),
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Expanded(
-                flex: 2,
-                child: SizedBox(),
-              ),
-              Image.asset(
-                "assets/heartbeat.png",
-                color: Colors.white,
-                height: 100,
-              ),
-              Text(
-                "Virtual Health Assistant",
-                style: TextStyles.h1Style.white,
-              ),
-              SizedBox(height: 20),
-              Text(
-                "Springfield Hospital",
-                style: TextStyles.h1Style.white,
-              ),
-              Text(
-                "Ghatkopar, Mumbai",
-                style: TextStyles.h1Style.white,
-              ),
-              Expanded(
-                flex: 7,
-                child: SizedBox(),
-              ),
-            ],
-          ).alignTopCenter,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: SizedBox(),
+                ),
+                Image.asset(
+                  "assets/heartbeat.png",
+                  color: Colors.white,
+                  height: 100,
+                ),
+                Center(
+                  child: Text(
+                    "Virtual Health Assistant",
+                    style: GoogleFonts.portLligatSans(
+                      fontSize: MediaQuery.of(context).size.height / 25,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                       
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  "Springfield Hospital",
+                  style: GoogleFonts.portLligatSans(
+                    fontSize: MediaQuery.of(context).size.height / 20,
+                    fontWeight: FontWeight.w700,
+                     color: Colors.white,
+                  ),
+                ),
+                Text(
+                  "Ghatkopar, Mumbai",
+                  style: GoogleFonts.portLligatSans(
+                    fontSize: MediaQuery.of(context).size.height / 20,
+                    fontWeight: FontWeight.w700,
+                     color: Colors.white,
+                  ),
+                ),
+                Expanded(
+                  flex: 7,
+                  child: SizedBox(),
+                ),
+              ],
+            ).alignTopCenter,
+          ),
         ],
       ),
     );
