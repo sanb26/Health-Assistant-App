@@ -102,6 +102,7 @@ Future<bool> signOutUser() async {
 
   //if the user is signed in using google
   if (user.providerData[1].providerId == 'google.com') {
+    print("Signing out google user........");
     await gooleSignIn.disconnect();
   }
   await auth.signOut();

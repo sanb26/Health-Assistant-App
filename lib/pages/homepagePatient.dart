@@ -3,11 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:health_assistant/model/dactor_model.dart';
 import 'package:health_assistant/model/data.dart';
+import 'package:health_assistant/pages/sign_in.dart';
 //import 'package:health_assistant/pages/AppointmentPage.dart';
 import 'package:health_assistant/theme/extention.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'package:health_assistant/theme/text_styles.dart';
 import 'package:health_assistant/theme/theme.dart';
+import '../controllers/authentication.dart';
 
 class PatientHomeScreen extends StatefulWidget {
   final String uid;
@@ -73,7 +75,23 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text("Hello,", style: TextStyles.title.subTitleColor),
-        Text("$fname $lname", style: TextStyles.h1Style),
+        Row(
+          children:[
+            Expanded(child: Text("$fname $lname", style: TextStyles.h1Style)),
+            IconButton(
+              icon: Icon(Icons.exit_to_app), 
+              splashColor: Colors.black,
+              highlightColor: LightColor.purple,
+              onPressed:() =>signOutUser().whenComplete(() =>
+              () => Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context)=> SignIn()),
+                (Route<dynamic> route)=>false),
+               ),
+            ),
+          ],
+        ),
+        
+
       ],
     ).p16;
   }
@@ -98,7 +116,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           border: InputBorder.none,
-          hintText: "Search",
+          hintText: "Search by department",
           hintStyle: TextStyles.body.subTitleColor,
           suffixIcon: SizedBox(
               width: 50,

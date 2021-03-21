@@ -7,6 +7,8 @@ import 'package:health_assistant/theme/extention.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'package:health_assistant/theme/text_styles.dart';
 import 'package:health_assistant/theme/theme.dart';
+import 'package:health_assistant/pages/sign_in.dart';
+import '../controllers/authentication.dart';
 
 class DoctorHomeScreen extends StatefulWidget {
   final String uid;
@@ -65,7 +67,22 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text("Hello,", style: TextStyles.title.subTitleColor),
-        Text(name, style: TextStyles.h1Style),
+        Row(
+          children:[
+            Expanded(child: Text(name, style: TextStyles.h1Style),),
+            IconButton(
+              icon: Icon(Icons.exit_to_app), 
+              splashColor: Colors.black,
+              highlightColor: LightColor.purple,
+              onPressed:() =>signOutUser().whenComplete(() =>
+              () => Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context)=> SignIn()),
+                (Route<dynamic> route)=>false),
+               ),
+            ),
+          ],
+        ),
+        
       ],
     ).p16;
   }
