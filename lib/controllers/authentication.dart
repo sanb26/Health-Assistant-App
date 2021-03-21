@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:health_assistant/pages/sign_in.dart';
+
 // a simple dialog to be visible everytime some error occurs
 showErrDialog(BuildContext context, String err) {
   // to hide the keyboard, if it is still p
@@ -23,48 +25,42 @@ showErrDialog(BuildContext context, String err) {
   );
 }
 
-
 FirebaseAuth auth = FirebaseAuth.instance;
 final gooleSignIn = GoogleSignIn();
 
-Future<bool> googleSignIn() async{
-
+Future<bool> googleSignIn() async {
   GoogleSignInAccount googleSignInAccount = await gooleSignIn.signIn();
 
-  if(googleSignInAccount != null){
-    GoogleSignInAuthentication googleAuth = await googleSignInAccount.authentication;
+  if (googleSignInAccount != null) {
+    GoogleSignInAuthentication googleAuth =
+        await googleSignInAccount.authentication;
 
-    AuthCredential credential = GoogleAuthProvider.credential(idToken: googleAuth.idToken,accessToken: googleAuth.accessToken);
-    
-    
+    AuthCredential credential = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+
     await auth.signInWithCredential(credential);
 
-    User user =  auth.currentUser;
+    User user = auth.currentUser;
     //print("Hey Google user");
     //print(user.uid);
 
     return Future.value(true);
-
-  }
-  else{
+  } else {
     return Future.value(null);
   }
-  
 }
-
 
 // instead of returning true or false
 // returning user to directly access UserID
-Future<User> signin(
-    String email, String password, BuildContext context) async {
+Future<User> signin(String email, String password, BuildContext context) async {
   try {
-    final result = await auth.signInWithEmailAndPassword(email: email, password: password);
+    final result =
+        await auth.signInWithEmailAndPassword(email: email, password: password);
     User user = result.user;
     // return Future.value(true);
     //print("User signed in with email and password");
     return Future.value(user);
-  } 
-  catch (e) {
+  } catch (e) {
     // simply passing error code as a message
     print(e.code);
     switch (e.code) {
@@ -95,15 +91,16 @@ Future<User> signin(
   }
 }
 
-
 Future<bool> signOutUser() async {
-  User user =  auth.currentUser;
+  User user = auth.currentUser;
+  print(user.providerData[0].providerId);
   //print(user.providerData[1].providerId);
 
   //if the user is signed in using google
-  if (user.providerData[1].providerId == 'google.com') {
+  if (user.providerData[0].providerId == 'google.com') {
     await gooleSignIn.disconnect();
   }
   await auth.signOut();
+  SignIn();
   return Future.value(true);
 }

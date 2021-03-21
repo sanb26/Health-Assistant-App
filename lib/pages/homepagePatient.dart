@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:health_assistant/chatbot/home.dart';
+import 'package:health_assistant/controllers/authentication.dart';
 import 'package:health_assistant/model/dactor_model.dart';
 import 'package:health_assistant/model/data.dart';
 //import 'package:health_assistant/pages/AppointmentPage.dart';
@@ -8,6 +10,7 @@ import 'package:health_assistant/theme/extention.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'package:health_assistant/theme/text_styles.dart';
 import 'package:health_assistant/theme/theme.dart';
+import 'sign_in.dart';
 
 class PatientHomeScreen extends StatefulWidget {
   final String uid;
@@ -72,8 +75,35 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text("Hello,", style: TextStyles.title.subTitleColor),
-        Text("$fname $lname", style: TextStyles.h1Style),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Hello,", style: TextStyles.title.subTitleColor),
+                Text("$fname $lname", style: TextStyles.h1Style),
+              ],
+            ),
+            SizedBox(
+              height: 30,
+              width: 30,
+              child: FloatingActionButton(
+                backgroundColor: Colors.redAccent,
+                child: Icon(
+                  Icons.logout,
+                  size: 20,
+                ),
+                onPressed: () async {
+                  if (await signOutUser()) {
+                    Navigator.pushReplacement(
+                        context, MaterialPageRoute(builder: (_) => SignIn()));
+                  }
+                },
+              ),
+            )
+          ],
+        ),
       ],
     ).p16;
   }
@@ -158,24 +188,12 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
     }
     return InkWell(
       onTap: () {
-        // getData();
-        // print(userData.data());
-        // if (subtitle == "book_appt") {
-        //   // AppointmentPage();
-        //   Navigator.push(
-        //     context,
-        //     MaterialPageRoute(builder: (context) => AppointmentPage()),
-        //   );
-        // }
-        // print(subtitle);
-        // print("pressed");
-        // print("Tapped");
+        print("tapped");
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ChatHome(uid)),
+        );
       },
-      // behavior: HitTestBehavior.translucent,
-      // onTap: () {
-      //   print(subtitle);
-      //   print("tapped");
-      // },
       child: AspectRatio(
         aspectRatio: 16 / 5,
         child: Container(
