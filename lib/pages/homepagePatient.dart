@@ -5,6 +5,7 @@ import 'package:health_assistant/chatbot/home.dart';
 import 'package:health_assistant/controllers/authentication.dart';
 import 'package:health_assistant/model/dactor_model.dart';
 import 'package:health_assistant/model/data.dart';
+import 'package:health_assistant/pages/appointment_page.dart';
 //import 'package:health_assistant/pages/AppointmentPage.dart';
 import 'package:health_assistant/theme/extention.dart';
 import 'package:health_assistant/theme/light_color.dart';
@@ -189,10 +190,17 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
     return InkWell(
       onTap: () {
         print("tapped");
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ChatHome(uid)),
-        );
+        if (subtitle == 'chatbot') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ChatHome(uid)),
+          );
+        } else if (subtitle == 'book_appt') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AppointmentPage()),
+          );
+        }
       },
       child: AspectRatio(
         aspectRatio: 16 / 5,
