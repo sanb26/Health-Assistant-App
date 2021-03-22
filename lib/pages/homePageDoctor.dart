@@ -83,7 +83,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
               child: FloatingActionButton(
                 backgroundColor: Colors.redAccent,
                 child: Icon(
-                  Icons.logout,
+                  Icons.exit_to_app,
                   size: 20,
                 ),
                 onPressed: () async {

@@ -145,7 +145,7 @@ class _ChatHomeState extends State<ChatHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.indigoAccent,
+        backgroundColor: LightColor.purple,
         title: Text("Self Diagnosis"),
       ),
       body: Column(
