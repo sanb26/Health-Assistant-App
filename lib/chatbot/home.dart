@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_assistant/pages/departmentPage.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_assistant/theme/light_color.dart';
@@ -139,7 +140,8 @@ class _ChatHomeState extends State<ChatHome> {
   final String uid;
   _ChatHomeState(this.uid);
   String symptom1, symptom2, symptom3, symptom4, symptom5;
-  String output;
+  String output = "";
+  bool pressed = false;
   // List<String> symptomList = symptomList.sort();
   @override
   Widget build(BuildContext context) {
@@ -262,7 +264,7 @@ class _ChatHomeState extends State<ChatHome> {
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: LightColor.purple)),
-                labelText: 'Symptom 3',
+                labelText: 'Symptom 4',
                 labelStyle: GoogleFonts.lato(color: Colors.grey),
               ),
               child: DropdownButtonHideUnderline(
@@ -315,8 +317,15 @@ class _ChatHomeState extends State<ChatHome> {
               ),
             ),
           ),
+          SizedBox(
+            height: 10,
+          ),
           RaisedButton(
+            color: LightColor.purple,
             onPressed: () async {
+              setState(() {
+                pressed = true;
+              });
               String s1 = symptom1.replaceAll(" ", "_").toLowerCase();
               String s2 = symptom2.replaceAll(" ", "_").toLowerCase();
               String s3 = symptom3.replaceAll(" ", "_").toLowerCase();
@@ -332,9 +341,25 @@ class _ChatHomeState extends State<ChatHome> {
               });
               selfDiagnosisData();
               print("Added data to database");
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => departmentDoctors(
+                            departmentName: output.toLowerCase(),
+                            pID: uid,
+                          )));
             },
-            child: Text("Predict"),
-          )
+            child: Text(
+              "Predict",
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ),
+          output == "" && pressed
+              ? CircularProgressIndicator(
+                  // backgroundColor: Colors.red,
+                  )
+              : Container(),
         ],
       ),
     );

@@ -29,7 +29,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
   final String fname;
   final String lname;
   final String uid;
- 
+
   _PatientHomeScreenState(this.uid, this.fname, this.lname);
   List<DoctorModel> doctorDataList;
   DocumentSnapshot userData;
@@ -42,35 +42,58 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
     super.initState();
   }
 
-
-  Widget _appBar(){
+  Widget _appBar() {
     return AppBar(
-      backgroundColor: Colors.white ,
+      backgroundColor: Colors.white,
       //shadowColor:LightColor.purple,
       title: RichText(
         text: TextSpan(
-          text: '\n\nHello,',style: GoogleFonts.lato(fontSize: MediaQuery.of(context).size.height/50,color:LightColor.subTitleTextColor),
+          text: '\n\nHello,',
+          style: GoogleFonts.lato(
+              fontSize: MediaQuery.of(context).size.height / 50,
+              color: LightColor.subTitleTextColor),
           children: [
-
-            TextSpan(text:"\n$fname $lname\n\n", 
-            style: GoogleFonts.lato(fontSize: MediaQuery.of(context).size.height/25,color: Colors.black, fontWeight: FontWeight.w700))],
+            TextSpan(
+                text: "\n$fname $lname\n\n",
+                style: GoogleFonts.lato(
+                    fontSize: MediaQuery.of(context).size.height / 30,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700))
+          ],
         ),
       ),
       actions: [
-        IconButton(icon: Icon(Icons.search, color: LightColor.purple, size:MediaQuery.of(context).size.height/22,), 
-        onPressed: () => showSearch(context: context, delegate: DataSearch()).then((searchResult) async{
-          if (searchResult != null){
-            Navigator.push(context,MaterialPageRoute(builder: (context) => departmentDoctors(departmentName: searchResult),));
-          }
-        }),
+        IconButton(
+          icon: Icon(
+            Icons.search,
+            color: LightColor.purple,
+            size: MediaQuery.of(context).size.height / 22,
+          ),
+          onPressed: () => showSearch(context: context, delegate: DataSearch())
+              .then((searchResult) async {
+            if (searchResult != null) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        departmentDoctors(departmentName: searchResult, pID:uid),
+                  ));
+            }
+          }),
         ),
         IconButton(
-          icon: Icon(Icons.exit_to_app, color: Colors.redAccent, size:MediaQuery.of(context).size.height/22,), 
+          icon: Icon(
+            Icons.exit_to_app,
+            color: Colors.redAccent,
+            size: MediaQuery.of(context).size.height / 22,
+          ),
           onPressed: () async {
             if (await signOutUser()) {
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SignIn()));
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (_) => SignIn()));
             }
-          },),
+          },
+        ),
       ],
     );
   }
@@ -124,10 +147,12 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
     return InkWell(
       onTap: () {
         print("tapped");
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ChatHome(uid)),
-        );
+        if (subtitle == "chatbot") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ChatHome(uid)),
+          );
+        }
       },
       child: AspectRatio(
         aspectRatio: 16 / 5,
@@ -185,14 +210,14 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(MediaQuery.of(context).size.height/10),
-        child: _appBar()
-      ),
+      appBar:
+          // PreferredSize(
+          // preferredSize:
+          //     Size.fromHeight(MediaQuery.of(context).size.height / 10),
+          _appBar(),
       backgroundColor: Color(0xFFFFFFFF),
       body: CustomScrollView(
         slivers: <Widget>[
@@ -211,108 +236,136 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
   }
 }
 
-class DataSearch extends SearchDelegate<String>{
-  List departments = ["pulmonary", "physician", "dermatologist",
-  "neurologist", "orthopedic", "surgeon"];
- 
+class DataSearch extends SearchDelegate<String> {
+  List departments = [
+    "pulmonary",
+    "physician",
+    "dermatologist",
+    "neurologist",
+    "orthopedics",
+    "general surgery"
+  ];
+
   final recentDepartmentSearch = ["pulmonary", "physician"];
 
-  final searchFieldLabel="Search by department";
+  final searchFieldLabel = "Search by department";
 
   String result;
 
   @override
   List<Widget> buildActions(BuildContext context) {
-      //actions for search bar
-      return[
-        IconButton(icon: Icon(Icons.clear), onPressed: (){
-          query = "";
-        }),
-      ];
-    }
-  
-    @override
-    Widget buildLeading(BuildContext context) {
-      //leading icon on the left of the search bar
-      return IconButton(
-        icon: AnimatedIcon(
-          icon: AnimatedIcons.menu_arrow, 
-          progress: transitionAnimation,
-          ), 
-        onPressed: (){
-          close(context, null);
-        });
-    }
-  
-    @override
-    Widget buildResults(BuildContext context) {
-      //show some result based on suggestion
-      final searchedList = departments.where((x) => x.startsWith(query.toLowerCase())).toList();
-      return searchedList.isEmpty ? 
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text("No Results Found...", style: GoogleFonts.lato(fontSize: MediaQuery.of(context).size.height/45, color: Colors.black),),
-      ) : 
-      ListView.builder(
-        itemBuilder: (context, index)=>ListTile(
-          onTap: (){        
-            result = searchedList[index];
-            close(context, result);
-          },
-          leading: Transform.rotate(
-            angle: 120*math.pi/180,
-            child: Icon(Icons.arrow_back)),
-          title: RichText(
-            text: TextSpan(
-              text: searchedList[index].substring(0, query.length),
-              style: GoogleFonts.lato(fontSize: MediaQuery.of(context).size.height/45, color: Colors.black, fontWeight: FontWeight.bold),
-              children: [
-                TextSpan(
-                  text: searchedList[index].substring(query.length),
-                  style: GoogleFonts.lato(fontSize: MediaQuery.of(context).size.height/45, color: Colors.grey),
-                ),],
-            ),
-          ),
-        ),
-        itemCount: searchedList.length,
-      );
-    }
-  
-    @override
-    Widget buildSuggestions(BuildContext context) {
-    //show when someone searches for something
-    final userInputList = query.isEmpty ? 
-                          recentDepartmentSearch : 
-                          departments.where((x) => x.startsWith(query.toLowerCase())).toList();
-    
-    return userInputList.isEmpty ? 
-    Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text("No Results Found...", style: GoogleFonts.lato(fontSize: MediaQuery.of(context).size.height/45, color: Colors.black),),
-    ) : 
-    ListView.builder(
-      itemBuilder: (context, index)=>ListTile(
-        onTap: (){        
-          query = userInputList[index];
-          showResults(context);
-        },
-        leading: Transform.rotate(
-          angle: 120*math.pi/180,
-          child: Icon(Icons.arrow_back)),
-        title: RichText(
-          text: TextSpan(
-            text: userInputList[index].substring(0, query.length),
-            style: GoogleFonts.lato(fontSize: MediaQuery.of(context).size.height/45, color: Colors.black, fontWeight: FontWeight.bold),
-            children: [
-              TextSpan(
-                text: userInputList[index].substring(query.length),
-                style: GoogleFonts.lato(fontSize: MediaQuery.of(context).size.height/45, color: Colors.grey),
-              ),],
-          ),
-        ),
-      ),
-      itemCount: userInputList.length,
-    );
+    //actions for search bar
+    return [
+      IconButton(
+          icon: Icon(Icons.clear),
+          onPressed: () {
+            query = "";
+          }),
+    ];
   }
 
+  @override
+  Widget buildLeading(BuildContext context) {
+    //leading icon on the left of the search bar
+    return IconButton(
+        icon: AnimatedIcon(
+          icon: AnimatedIcons.menu_arrow,
+          progress: transitionAnimation,
+        ),
+        onPressed: () {
+          close(context, null);
+        });
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    //show some result based on suggestion
+    final searchedList =
+        departments.where((x) => x.startsWith(query.toLowerCase())).toList();
+    return searchedList.isEmpty
+        ? Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "No Results Found...",
+              style: GoogleFonts.lato(
+                  fontSize: MediaQuery.of(context).size.height / 45,
+                  color: Colors.black),
+            ),
+          )
+        : ListView.builder(
+            itemBuilder: (context, index) => ListTile(
+              onTap: () {
+                result = searchedList[index];
+                close(context, result);
+              },
+              leading: Transform.rotate(
+                  angle: 120 * math.pi / 180, child: Icon(Icons.arrow_back)),
+              title: RichText(
+                text: TextSpan(
+                  text: searchedList[index].substring(0, query.length),
+                  style: GoogleFonts.lato(
+                      fontSize: MediaQuery.of(context).size.height / 45,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                  children: [
+                    TextSpan(
+                      text: searchedList[index].substring(query.length),
+                      style: GoogleFonts.lato(
+                          fontSize: MediaQuery.of(context).size.height / 45,
+                          color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            itemCount: searchedList.length,
+          );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    //show when someone searches for something
+    final userInputList = query.isEmpty
+        ? recentDepartmentSearch
+        : departments.where((x) => x.startsWith(query.toLowerCase())).toList();
+
+    return userInputList.isEmpty
+        ? Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "No Results Found...",
+              style: GoogleFonts.lato(
+                  fontSize: MediaQuery.of(context).size.height / 45,
+                  color: Colors.black),
+            ),
+          )
+        : ListView.builder(
+            itemBuilder: (context, index) => ListTile(
+              onTap: () {
+                query = userInputList[index];
+                showResults(context);
+              },
+              leading: Transform.rotate(
+                  angle: 120 * math.pi / 180, child: Icon(Icons.arrow_back)),
+              title: RichText(
+                text: TextSpan(
+                  text: userInputList[index].substring(0, query.length),
+                  style: GoogleFonts.lato(
+                      fontSize: MediaQuery.of(context).size.height / 45,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                  children: [
+                    TextSpan(
+                      text: userInputList[index].substring(query.length),
+                      style: GoogleFonts.lato(
+                          fontSize: MediaQuery.of(context).size.height / 45,
+                          color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            itemCount: userInputList.length,
+          );
+  }
 }
