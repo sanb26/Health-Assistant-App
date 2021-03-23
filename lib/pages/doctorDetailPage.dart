@@ -28,122 +28,128 @@ class _doctorDetailState extends State<doctorDetail> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    fetchDocDetails();
+    // fetchDocDetails();
   }
 
   fetchDocDetails() async {
-    Map<String, dynamic> resultant =
-        await DatabaseManager().getDoctorDetails(doctorId);
+    var resultant = await DatabaseManager().getDoctorDetails(doctorId);
 
     if (resultant == null) {
       print('Unable to retrieve the doctors list');
     } else {
-      setState(() {
-        docDetails = resultant;
-      });
+      // setState(() {
+      //   docDetails = resultant;
+      // });
+      return resultant;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return docDetails.isEmpty
-        ? CircularProgressIndicator()
-        : Scaffold(
-            appBar: AppBar(
-              backgroundColor: LightColor.purple,
-              title: Text(docDetails['type'][0].toUpperCase() +
-                  docDetails['type'].substring(1)),
+    return FutureBuilder<dynamic>(
+      future: fetchDocDetails(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
             ),
-            body: SafeArea(
-                child: Stack(
-              children: [
-                Image.network(docDetails['profile_image'],
-                    width: MediaQuery.of(context).size.width,
-                    fit: BoxFit.contain),
-                DraggableScrollableSheet(
-                    maxChildSize: .8,
-                    initialChildSize: .5,
-                    minChildSize: .5,
-                    builder: (context, scrollController) {
-                      return Container(
-                        height: MediaQuery.of(context).size.height * .5,
-                        padding: EdgeInsets.only(left: 19, right: 19, top: 16),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30)),
-                          color: Colors.white,
-                        ),
-                        child: SingleChildScrollView(
-                          physics: BouncingScrollPhysics(),
-                          controller: scrollController,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(docDetails['name'],
-                                  style: GoogleFonts.lato(
-                                      fontSize:
-                                          MediaQuery.of(context).size.height /
-                                              30,
-                                      fontWeight: FontWeight.bold)),
-                              Text(docDetails['degree'],
-                                  style: GoogleFonts.lato(
-                                      fontSize:
-                                          MediaQuery.of(context).size.height /
-                                              42,
-                                      color: LightColor.subTitleTextColor)),
-                              Text(
-                                  docDetails['experience'].toString() +
-                                      " years of experience\n",
-                                  style: GoogleFonts.lato(
-                                      fontSize:
-                                          MediaQuery.of(context).size.height /
-                                              42,
-                                      color: LightColor.subTitleTextColor)),
-                              Text("About",
-                                  style: GoogleFonts.lato(
-                                      fontSize:
-                                          MediaQuery.of(context).size.height /
-                                              30,
-                                      fontWeight: FontWeight.bold)),
-                              Text(docDetails['description'],
-                                  style: GoogleFonts.lato(
-                                      fontSize:
-                                          MediaQuery.of(context).size.height /
-                                              42,
-                                      color: LightColor.lightblack)),
-                              SizedBox(height: 20),
-                              Center(
-                                child: RaisedButton(
-                                    color: LightColor.purple,
-                                    child: Text("Book Appointment",
-                                        style: GoogleFonts.lato(
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .height /
-                                                35,
-                                            color: Colors.white)),
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AppointmentPage(
-                                                      doctorId, pID)));
-                                      // Navigator.push(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //         builder: (context) =>
-                                      //             DoctorSchedule(doctorId)));
-                                    }),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
-              ],
-            )),
           );
+        }
+        var docDetails = snapshot.data;
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: LightColor.purple,
+            title: Text(docDetails['type'][0].toUpperCase() +
+                docDetails['type'].substring(1)),
+          ),
+          body: SafeArea(
+              child: Stack(
+            children: [
+              Image.network(docDetails['profile_image'],
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.contain),
+              DraggableScrollableSheet(
+                  maxChildSize: .8,
+                  initialChildSize: .5,
+                  minChildSize: .5,
+                  builder: (context, scrollController) {
+                    return Container(
+                      height: MediaQuery.of(context).size.height * .5,
+                      padding: EdgeInsets.only(left: 19, right: 19, top: 16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30)),
+                        color: Colors.white,
+                      ),
+                      child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        controller: scrollController,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(docDetails['name'],
+                                style: GoogleFonts.lato(
+                                    fontSize:
+                                        MediaQuery.of(context).size.height / 30,
+                                    fontWeight: FontWeight.bold)),
+                            Text(docDetails['degree'],
+                                style: GoogleFonts.lato(
+                                    fontSize:
+                                        MediaQuery.of(context).size.height / 42,
+                                    color: LightColor.subTitleTextColor)),
+                            Text(
+                                docDetails['experience'].toString() +
+                                    " years of experience\n",
+                                style: GoogleFonts.lato(
+                                    fontSize:
+                                        MediaQuery.of(context).size.height / 42,
+                                    color: LightColor.subTitleTextColor)),
+                            Text("About",
+                                style: GoogleFonts.lato(
+                                    fontSize:
+                                        MediaQuery.of(context).size.height / 30,
+                                    fontWeight: FontWeight.bold)),
+                            Text(docDetails['description'],
+                                style: GoogleFonts.lato(
+                                    fontSize:
+                                        MediaQuery.of(context).size.height / 42,
+                                    color: LightColor.lightblack)),
+                            SizedBox(height: 20),
+                            Center(
+                              child: RaisedButton(
+                                  color: LightColor.purple,
+                                  child: Text("Book Appointment",
+                                      style: GoogleFonts.lato(
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              35,
+                                          color: Colors.white)),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AppointmentPage(
+                                                    doctorId, pID)));
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             DoctorSchedule(doctorId)));
+                                  }),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+            ],
+          )),
+        );
+      },
+    );
   }
 }
