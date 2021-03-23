@@ -238,15 +238,22 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
 
 class DataSearch extends SearchDelegate<String> {
   List departments = [
-    "pulmonary",
+    "pulmonologist",
     "physician",
     "dermatologist",
     "neurologist",
-    "orthopedics",
+    "orthopedist",
     "general surgery"
   ];
 
-  final recentDepartmentSearch = ["pulmonary", "physician"];
+  final recentDepartmentSearch = [
+    "pulmonologist",
+    "physician",
+    "dermatologist",
+    "neurologist",
+    "orthopedist",
+    "general surgery"
+  ];
 
   final searchFieldLabel = "Search by department";
 
