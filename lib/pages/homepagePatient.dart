@@ -195,12 +195,13 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
             context,
             MaterialPageRoute(builder: (context) => ChatHome(uid)),
           );
-        } else if (subtitle == 'book_appt') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AppointmentPage()),
-          );
-        }
+        // } else if (subtitle == 'book_appt') {
+        //   Navigator.push(
+        //     context,
+        //     MaterialPageRoute(builder: (context) => AppointmentPage()),
+        //   );
+        // }
+      },
       },
       child: AspectRatio(
         aspectRatio: 16 / 5,
