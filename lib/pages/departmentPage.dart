@@ -48,6 +48,7 @@ class _departmentDoctorsState extends State<departmentDoctors> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: LightColor.purple,
         title: Text("Department: " +
             departmentName[0].toUpperCase() +
@@ -126,7 +127,7 @@ class _departmentDoctorsState extends State<departmentDoctors> {
                             padding: const EdgeInsets.fromLTRB(5, 15, 0, 0),
                             child: IconButton(
                               icon: Icon(Icons.arrow_forward_ios),
-                              onPressed: () => Navigator.push(
+                              onPressed: () => Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => doctorDetail(

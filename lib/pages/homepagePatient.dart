@@ -6,6 +6,7 @@ import 'package:health_assistant/controllers/authentication.dart';
 import 'package:health_assistant/model/dactor_model.dart';
 import 'package:health_assistant/model/data.dart';
 import 'package:health_assistant/pages/departmentPage.dart';
+import 'package:health_assistant/pages/department_list.dart';
 import 'package:health_assistant/theme/extention.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'package:health_assistant/theme/text_styles.dart';
@@ -44,24 +45,28 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
 
   Widget _appBar() {
     return AppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
       //shadowColor:LightColor.purple,
       title: RichText(
         text: TextSpan(
           text: '\n\nHello,',
           style: GoogleFonts.lato(
-              fontSize: MediaQuery.of(context).size.height / 50,
-              color: LightColor.subTitleTextColor),
+              fontSize: 22, color: LightColor.subTitleTextColor),
           children: [
             TextSpan(
                 text: "\n$fname $lname\n\n",
                 style: GoogleFonts.lato(
-                    fontSize: MediaQuery.of(context).size.height / 30,
+                    fontSize: 28,
                     color: Colors.black,
                     fontWeight: FontWeight.w700))
           ],
         ),
       ),
+      // title: Text(
+      //   "Hello, " + fname + " " + lname,
+      //   style: TextStyle(color: Colors.black),
+      // ),
       actions: [
         IconButton(
           icon: Icon(
@@ -75,8 +80,8 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        departmentDoctors(departmentName: searchResult, pID:uid),
+                    builder: (context) => departmentDoctors(
+                        departmentName: searchResult, pID: uid),
                   ));
             }
           }),
@@ -152,6 +157,11 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
             context,
             MaterialPageRoute(builder: (context) => ChatHome(uid)),
           );
+        } else if (subtitle == "book_appt") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DepartmentList(uid)),
+          );
         }
       },
       child: AspectRatio(
@@ -215,8 +225,8 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
     return Scaffold(
       appBar:
           // PreferredSize(
-          // preferredSize:
-          //     Size.fromHeight(MediaQuery.of(context).size.height / 10),
+          //     preferredSize:
+          //         Size.fromHeight(MediaQuery.of(context).size.height / 15),
           _appBar(),
       backgroundColor: Color(0xFFFFFFFF),
       body: CustomScrollView(

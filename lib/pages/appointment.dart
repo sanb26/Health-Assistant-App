@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_assistant/pages/confirmation.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -89,7 +90,9 @@ class _AppointmentPageState extends State<AppointmentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text('Book Your Appointment'),
+          backgroundColor: LightColor.purple,
         ),
         body: FutureBuilder<List<QueryDocumentSnapshot>>(
             future: getDoctorDetails(docId),
@@ -253,6 +256,19 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                               selectedMonth,
                                               selectedYear,
                                               pID);
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ConfirmationPage(
+                                                          pID,
+                                                          docId,
+                                                          selectedDay,
+                                                          selectedDate,
+                                                          selectedMonth,
+                                                          selectedYear,
+                                                          startTime,
+                                                          endTime)));
                                         },
                                         child: Text("Book Appointment"),
                                         color: LightColor.purple,

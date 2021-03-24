@@ -147,6 +147,7 @@ class _ChatHomeState extends State<ChatHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: LightColor.purple,
         title: Text("Self Diagnosis"),
       ),
@@ -341,7 +342,7 @@ class _ChatHomeState extends State<ChatHome> {
               });
               selfDiagnosisData();
               print("Added data to database");
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => departmentDoctors(

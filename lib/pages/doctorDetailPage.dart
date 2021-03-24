@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; //google fonts
 import 'package:health_assistant/DatabaseManager/DatabaseManager.dart';
 import 'package:health_assistant/pages/appointment.dart';
-import 'package:health_assistant/pages/displaySchedule.dart';
 import 'package:health_assistant/theme/light_color.dart';
 
 // ignore: camel_case_types
@@ -59,6 +58,7 @@ class _doctorDetailState extends State<doctorDetail> {
         var docDetails = snapshot.data;
         return Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: LightColor.purple,
             title: Text(docDetails['type'][0].toUpperCase() +
                 docDetails['type'].substring(1)),
@@ -128,7 +128,7 @@ class _doctorDetailState extends State<doctorDetail> {
                                               35,
                                           color: Colors.white)),
                                   onPressed: () {
-                                    Navigator.push(
+                                    Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
