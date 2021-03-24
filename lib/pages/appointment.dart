@@ -270,7 +270,9 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                                           startTime,
                                                           endTime)));
                                         },
-                                        child: Text("Book Appointment"),
+                                        child: Text("Book Appointment",
+                                            style:
+                                                TextStyle(color: Colors.white)),
                                         color: LightColor.purple,
                                       ),
                                     )

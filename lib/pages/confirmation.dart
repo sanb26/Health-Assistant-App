@@ -158,7 +158,7 @@ class UserInfo extends StatelessWidget {
                                   ),
                                 ),
                                 ListTile(
-                                  leading: Icon(Icons.lock_clock),
+                                  leading: Icon(Icons.lock),
                                   title: Text("Time"),
                                   subtitle: Text(startTime + " to " + endTime,
                                       style: TextStyle(

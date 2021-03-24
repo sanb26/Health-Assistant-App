@@ -111,7 +111,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text("Categories", style: TextStyles.title.bold),
+              // Text("Categories", style: TextStyles.title.bold),
               /*Text(
                 "See All",
                 style: TextStyles.titleNormal
