@@ -201,7 +201,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
         //     MaterialPageRoute(builder: (context) => AppointmentPage()),
         //   );
         // }
-      },
+      }
       },
       child: AspectRatio(
         aspectRatio: 16 / 5,
