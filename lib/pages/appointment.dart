@@ -30,9 +30,11 @@ class _AppointmentPageState extends State<AppointmentPage> {
         .update({'booked': true}).then((value) => print("Status updated"));
   }
 
-  void bookAppointment(
-      startTime, endTime, docId, day, date, month, year, patientID) {
+  void bookAppointment(startTime, endTime, docId, day, date, month, year,
+      patientID, pName, dName) {
     FirebaseFirestore.instance.collection('bookings').add({
+      'patient_name': pName,
+      'doc_name': dName,
       'pID': patientID,
       'docID': docId,
       'date': date,
@@ -66,6 +68,31 @@ class _AppointmentPageState extends State<AppointmentPage> {
     return data.docs;
   }
 
+  String getPatientName(pID) {
+    String res;
+    FirebaseFirestore.instance
+        .collection('patients')
+        .doc(pID)
+        .get()
+        .then((snapshot) {
+      res = snapshot.data()['fname'].toString() +
+          snapshot.data()['lname'].toString();
+    });
+    return res;
+  }
+
+  String getDocName(docID) {
+    String res;
+    FirebaseFirestore.instance
+        .collection('patients')
+        .doc(pID)
+        .get()
+        .then((snapshot) {
+      res = snapshot.data()['name'].toString();
+    });
+    return res;
+  }
+
   CalendarController _controller;
   var formatter = new DateFormat('EEEE');
   var dateGetter = new DateFormat('dd');
@@ -85,6 +112,8 @@ class _AppointmentPageState extends State<AppointmentPage> {
   String startTime;
   String endTime;
   String documentID;
+  String pName;
+  String dName;
 
   @override
   Widget build(BuildContext context) {
@@ -211,24 +240,6 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                                                 'end_time']),
                                                   ),
                                                   value: i + 1),
-                                            // DropdownMenuItem(
-                                            //   child: Center(
-                                            //       child: Text("7:30-8 pm")),
-                                            //   value: 1,
-                                            // ),
-                                            // DropdownMenuItem(
-                                            //   child: Center(
-                                            //       child: Text("8-8:30 pm")),
-                                            //   value: 2,
-                                            // ),
-                                            // DropdownMenuItem(
-                                            //     child: Center(
-                                            //         child: Text("8:30-9 pm")),
-                                            //     value: 3),
-                                            // DropdownMenuItem(
-                                            //     child: Center(
-                                            //         child: Text("9-9:30 pm")),
-                                            //     value: 4)
                                           ],
                                           onChanged: (value) {
                                             setState(() {
@@ -255,7 +266,9 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                               selectedDate,
                                               selectedMonth,
                                               selectedYear,
-                                              pID);
+                                              pID,
+                                              pName,
+                                              dName);
                                           Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(

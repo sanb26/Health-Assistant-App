@@ -7,6 +7,7 @@ import 'package:health_assistant/model/dactor_model.dart';
 import 'package:health_assistant/model/data.dart';
 import 'package:health_assistant/pages/departmentPage.dart';
 import 'package:health_assistant/pages/department_list.dart';
+import 'package:health_assistant/pages/view_appointments.dart';
 import 'package:health_assistant/theme/extention.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'package:health_assistant/theme/text_styles.dart';
@@ -161,6 +162,11 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => DepartmentList(uid)),
+          );
+        } else if (subtitle == "view_appt") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ViewAppointments(uid)),
           );
         }
       },
