@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:health_assistant/theme/light_color.dart';
+import 'package:intl/intl.dart';
 
 class ViewAppointments extends StatefulWidget {
   final String uid;
@@ -10,6 +11,7 @@ class ViewAppointments extends StatefulWidget {
 }
 
 class _ViewAppointmentsState extends State<ViewAppointments> {
+  final df = DateFormat('dd MM yyyy');
   final String uid;
   _ViewAppointmentsState(this.uid);
 
@@ -39,11 +41,68 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
           }
           var apptDetails = snapshot.data;
           return ListView.builder(
+            padding: EdgeInsets.fromLTRB(5, 20, 5, 20),
             itemCount: apptDetails.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(apptDetails[index]['start_time']),
-                subtitle: Text(apptDetails[index]['end_time']),
+              return Container(
+                margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                decoration: BoxDecoration(
+                    color: DateTime.now().isBefore(DateTime.parse(
+                            apptDetails[index]['year'] +
+                                apptDetails[index]['month'] +
+                                apptDetails[index]['date']))
+                        ? Colors.greenAccent[200]
+                        : Colors.grey,
+                    borderRadius: BorderRadius.circular(10)),
+                child: ListTile(
+                  // tileColor: DateTime.now().isBefore(DateTime.parse(
+                  //         apptDetails[index]['year'] +
+                  //             apptDetails[index]['month'] +
+                  //             apptDetails[index]['date']))
+                  //     ? Colors.greenAccent[200]
+                  //     : Colors.grey,
+                  title: Text(
+                    apptDetails[index]['doctor_name'],
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                          "Time: " +
+                              apptDetails[index]['start_time'] +
+                              " to " +
+                              apptDetails[index]['end_time'],
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                          "Date: " +
+                              apptDetails[index]['date'] +
+                              "/" +
+                              apptDetails[index]['month'] +
+                              "/" +
+                              apptDetails[index]['year'] +
+                              ", " +
+                              apptDetails[index]['day'],
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ),
               );
             },
           );
