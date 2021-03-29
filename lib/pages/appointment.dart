@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:health_assistant/pages/confirmation.dart';
 import 'package:health_assistant/theme/light_color.dart';
+import 'package:http/http.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,6 +20,13 @@ class _AppointmentPageState extends State<AppointmentPage> {
   List<String> availableDays = [];
   _AppointmentPageState(this.docId, this.pID);
 
+  void getDocName(docId) async {
+    var qs =
+        await FirebaseFirestore.instance.collection('doctors').doc(docId).get();
+    print("Doctor name" + qs.data()['name']);
+    dName = qs.data()['name'];
+  }
+
   void setBookedstatus(startTime, endTime, documentId) async {
     FirebaseFirestore.instance
         .collection('doctors')
@@ -31,8 +39,9 @@ class _AppointmentPageState extends State<AppointmentPage> {
   }
 
   void bookAppointment(
-      startTime, endTime, docId, day, date, month, year, patientID) {
+      startTime, endTime, docId, day, date, month, year, patientID, dName) {
     FirebaseFirestore.instance.collection('bookings').add({
+      'doctor_name': dName,
       'pID': patientID,
       'docID': docId,
       'date': date,
@@ -66,6 +75,19 @@ class _AppointmentPageState extends State<AppointmentPage> {
     return data.docs;
   }
 
+  String getPatientName(pID) {
+    String res;
+    FirebaseFirestore.instance
+        .collection('patients')
+        .doc(pID)
+        .get()
+        .then((snapshot) {
+      res = snapshot.data()['fname'].toString() +
+          snapshot.data()['lname'].toString();
+    });
+    return res;
+  }
+
   CalendarController _controller;
   var formatter = new DateFormat('EEEE');
   var dateGetter = new DateFormat('dd');
@@ -75,6 +97,8 @@ class _AppointmentPageState extends State<AppointmentPage> {
   void initState() {
     super.initState();
     _controller = CalendarController();
+    getDocName(docId);
+    // print("Doctor name is " + dName);
   }
 
   String selectedDay;
@@ -85,6 +109,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
   String startTime;
   String endTime;
   String documentID;
+  String dName;
 
   @override
   Widget build(BuildContext context) {
@@ -100,19 +125,19 @@ class _AppointmentPageState extends State<AppointmentPage> {
               if (!snapshot.hasData) {
                 return Center(child: CircularProgressIndicator());
               }
+              getDocName(docId);
               var scheduleData = snapshot.data;
               for (var i in scheduleData) {
                 availableDays.add(i.data()['day']);
               }
-              // print(availableDays);
               return FutureBuilder<List<QueryDocumentSnapshot>>(
                   future: getScheduleSlots(docId),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Center(child: CircularProgressIndicator());
                     }
+                    // print(dName);
                     var slotData = snapshot.data;
-                    print(slotData);
                     return SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -211,24 +236,6 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                                                 'end_time']),
                                                   ),
                                                   value: i + 1),
-                                            // DropdownMenuItem(
-                                            //   child: Center(
-                                            //       child: Text("7:30-8 pm")),
-                                            //   value: 1,
-                                            // ),
-                                            // DropdownMenuItem(
-                                            //   child: Center(
-                                            //       child: Text("8-8:30 pm")),
-                                            //   value: 2,
-                                            // ),
-                                            // DropdownMenuItem(
-                                            //     child: Center(
-                                            //         child: Text("8:30-9 pm")),
-                                            //     value: 3),
-                                            // DropdownMenuItem(
-                                            //     child: Center(
-                                            //         child: Text("9-9:30 pm")),
-                                            //     value: 4)
                                           ],
                                           onChanged: (value) {
                                             setState(() {
@@ -248,14 +255,16 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                           setBookedstatus(
                                               startTime, endTime, documentID);
                                           bookAppointment(
-                                              startTime,
-                                              endTime,
-                                              docId,
-                                              selectedDay,
-                                              selectedDate,
-                                              selectedMonth,
-                                              selectedYear,
-                                              pID);
+                                            startTime,
+                                            endTime,
+                                            docId,
+                                            selectedDay,
+                                            selectedDate,
+                                            selectedMonth,
+                                            selectedYear,
+                                            pID,
+                                            dName,
+                                          );
                                           Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
@@ -270,7 +279,9 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                                           startTime,
                                                           endTime)));
                                         },
-                                        child: Text("Book Appointment"),
+                                        child: Text("Book Appointment",
+                                            style:
+                                                TextStyle(color: Colors.white)),
                                         color: LightColor.purple,
                                       ),
                                     )
