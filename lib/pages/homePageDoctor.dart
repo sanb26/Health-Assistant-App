@@ -29,8 +29,8 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
       print('Unable to retrieve todays appointments');
     } else {
       //todaysAppoint = resultant;
-      print("doctor home page todays appointments");
-      print(resultant);
+      //print("doctor home page todays appointments");
+      //print(resultant);
       return resultant;
     }
   }
@@ -148,8 +148,9 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
                     Icon(Icons.sort),
                   ],
                 ),
+                SizedBox(height: 20),
                 todaysAppoint.isEmpty?
-                Text("no appointments today"):
+                Center(child: Text("No appointments today.",  style: GoogleFonts.lato(fontSize: MediaQuery.of(context).size.height/40))):
                 Expanded(
                   child: ListView.builder(
                     itemCount: todaysAppoint.length,
