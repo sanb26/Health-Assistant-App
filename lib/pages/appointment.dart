@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_assistant/pages/confirmation.dart';
 import 'package:health_assistant/theme/light_color.dart';
-import 'package:http/http.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,6 +26,14 @@ class _AppointmentPageState extends State<AppointmentPage> {
     dName = qs.data()['name'];
   }
 
+  void getPatientName(pId) async {
+    var qs =
+        await FirebaseFirestore.instance.collection('patients').doc(pId).get();
+    print("hey patient name found");
+    print("Patient name foundddd "+ qs.data()['fname']);
+    pName = qs.data()['fname']+" "+qs.data()['lname'];
+  }
+
   void setBookedstatus(startTime, endTime, documentId) async {
     FirebaseFirestore.instance
         .collection('doctors')
@@ -39,9 +46,10 @@ class _AppointmentPageState extends State<AppointmentPage> {
   }
 
   void bookAppointment(
-      startTime, endTime, docId, day, date, month, year, patientID, dName) {
+      startTime, endTime, docId, day, date, month, year, patientID, dName, pName) {
     FirebaseFirestore.instance.collection('bookings').add({
       'doctor_name': dName,
+      'patient_name': pName,
       'pID': patientID,
       'docID': docId,
       'date': date,
@@ -75,18 +83,6 @@ class _AppointmentPageState extends State<AppointmentPage> {
     return data.docs;
   }
 
-  String getPatientName(pID) {
-    String res;
-    FirebaseFirestore.instance
-        .collection('patients')
-        .doc(pID)
-        .get()
-        .then((snapshot) {
-      res = snapshot.data()['fname'].toString() +
-          snapshot.data()['lname'].toString();
-    });
-    return res;
-  }
 
   CalendarController _controller;
   var formatter = new DateFormat('EEEE');
@@ -98,6 +94,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
     super.initState();
     _controller = CalendarController();
     getDocName(docId);
+    getPatientName(pID);
     // print("Doctor name is " + dName);
   }
 
@@ -110,6 +107,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
   String endTime;
   String documentID;
   String dName;
+  String pName;
 
   @override
   Widget build(BuildContext context) {
@@ -264,6 +262,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                             selectedYear,
                                             pID,
                                             dName,
+                                            pName,
                                           );
                                           Navigator.pushReplacement(
                                               context,

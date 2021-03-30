@@ -3,15 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:health_assistant/chatbot/home.dart';
 import 'package:health_assistant/controllers/authentication.dart';
-import 'package:health_assistant/model/dactor_model.dart';
-import 'package:health_assistant/model/data.dart';
 import 'package:health_assistant/pages/departmentPage.dart';
 import 'package:health_assistant/pages/department_list.dart';
 import 'package:health_assistant/pages/view_appointments.dart';
-import 'package:health_assistant/theme/extention.dart';
 import 'package:health_assistant/theme/light_color.dart';
-import 'package:health_assistant/theme/text_styles.dart';
-import 'package:health_assistant/theme/theme.dart';
 import 'sign_in.dart';
 import 'package:google_fonts/google_fonts.dart'; //google fonts
 
@@ -33,14 +28,12 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
   final String uid;
 
   _PatientHomeScreenState(this.uid, this.fname, this.lname);
-  List<DoctorModel> doctorDataList;
   DocumentSnapshot userData;
 
   @override
   void initState() {
     print(fname);
     print(lname);
-    doctorDataList = doctorMapList.map((x) => DoctorModel.fromJson(x)).toList();
     super.initState();
   }
 
@@ -104,52 +97,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
     );
   }
 
-  Widget _category() {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: 8, right: 16, left: 16, bottom: 4),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              // Text("Categories", style: TextStyles.title.bold),
-              /*Text(
-                "See All",
-                style: TextStyles.titleNormal
-                    .copyWith(color: Theme.of(context).primaryColor),
-              ).p(8).ripple(() {}) */
-            ],
-          ),
-        ),
-        SizedBox(
-          height: AppTheme.fullHeight(context),
-          width: AppTheme.fullWidth(context),
-          child: ListView(
-            scrollDirection: Axis.vertical,
-            children: <Widget>[
-              _categoryCard("Get Help From Our Chatbot", "chatbot",
-                  color: LightColor.green, lightColor: LightColor.lightGreen),
-              _categoryCard("View Appointments", "view_appt",
-                  color: LightColor.skyBlue, lightColor: LightColor.lightBlue),
-              _categoryCard("Schedule a New Appointment", "book_appt",
-                  color: LightColor.orange, lightColor: LightColor.lightOrange),
-              _categoryCard("Profile & Settings", "profile",
-                  color: LightColor.green, lightColor: LightColor.lightGreen),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _categoryCard(String title, String subtitle,
-      {Color color, Color lightColor}) {
-    TextStyle titleStyle = TextStyles.title.bold.white;
-    //  TextStyle subtitleStyle = TextStyles.body.bold.white;
-    if (AppTheme.fullWidth(context) < 392) {
-      titleStyle = TextStyles.body.bold.white;
-      //  subtitleStyle = TextStyles.bodySm.bold.white;
-    }
+  Widget _servicesButton(String title, String subtitle,{Color color, Color lightColor}){
     return InkWell(
       onTap: () {
         print("tapped");
@@ -170,57 +118,40 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
           );
         }
       },
-      child: AspectRatio(
-        aspectRatio: 16 / 5,
-        child: Container(
-          height: 280,
-          width: AppTheme.fullWidth(context) * .3,
-          margin: EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 10),
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                offset: Offset(4, 4),
-                blurRadius: 10,
-                color: lightColor.withOpacity(.8),
-              )
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            child: Container(
-              child: Stack(
-                children: <Widget>[
-                  Positioned(
-                    top: -20,
-                    left: -20,
-                    child: CircleAvatar(
-                      backgroundColor: lightColor,
-                      radius: 60,
-                    ),
+      child: Container(
+        width:MediaQuery.of(context).size.width*0.89,
+        height: (MediaQuery.of(context).size.width*0.89)/4.5,
+        margin: EdgeInsets.fromLTRB(20, 10, 20, 25),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              offset: Offset(4, 4),
+              blurRadius: 10,
+              color: lightColor.withOpacity(.8),
+            )
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          child: Container(
+            child: Stack(
+              children: [
+                Positioned(
+                  top: -20,
+                  left: -20,
+                  child: CircleAvatar(backgroundColor: lightColor,radius: 60,),
+                ),
+                Center(
+                  child: Text(
+                    title,
+                    style: GoogleFonts.lato(fontSize:MediaQuery.of(context).size.height / 40, color: Colors.white)
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Flexible(
-                        child: Text(title, style: titleStyle).hP8,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      // Flexible(
-                      //   child: Text(
-                      //     subtitle,
-                      //     style: subtitleStyle,
-                      //   ).hP8,
-                      // ),
-                    ],
-                  ).p16
-                ],
-              ),
+                ),
+              ],
             ),
-          ).ripple(() {}, borderRadius: BorderRadius.all(Radius.circular(20))),
+          ),
         ),
       ),
     );
@@ -241,11 +172,17 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
             delegate: SliverChildListDelegate(
               [
                 SizedBox(height: 30),
-                _category(),
+                _servicesButton("Get Help From Our Chatbot", "chatbot",
+                                color: LightColor.green, lightColor: LightColor.lightGreen),
+                _servicesButton("View Appointments", "view_appt",
+                                color: LightColor.skyBlue, lightColor: LightColor.lightBlue),
+                _servicesButton("Schedule a New Appointment", "book_appt",
+                                color: LightColor.orange, lightColor: LightColor.lightOrange),
+                _servicesButton("Profile & Settings", "profile",
+                                color: LightColor.green, lightColor: LightColor.lightGreen),
               ],
             ),
           ),
-          //_doctorsList()
         ],
       ),
     );
