@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:health_assistant/chatbot/home.dart';
 import 'package:health_assistant/controllers/authentication.dart';
+import 'package:health_assistant/pages/PatientProfile.dart';
 import 'package:health_assistant/pages/departmentPage.dart';
 import 'package:health_assistant/pages/department_list.dart';
 import 'package:health_assistant/pages/view_appointments.dart';
@@ -115,6 +116,12 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => ViewAppointments(uid)),
+          );
+        }
+        else if (subtitle == "profile") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PatientProfile(uid)),
           );
         }
       },
