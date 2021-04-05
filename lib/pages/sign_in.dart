@@ -4,6 +4,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart'; //google sign
 import 'package:form_field_validator/form_field_validator.dart'; //form validtaion
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:health_assistant/DatabaseManager/DatabaseManager.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'package:health_assistant/theme/text_styles.dart';
 import 'package:health_assistant/theme/extention.dart';
@@ -31,13 +32,13 @@ class _SignInState extends State<SignIn> {
       formkey.currentState.save();
       //calling signin with email and password function which returns user if sign in successful else null
       signin(email, password, context).then((value) async {
-         DocumentSnapshot doctorData = await getDoctorInfo(value.uid);
+         var doctorData = await DatabaseManager().getDoctorDetails(value.uid);  //passing doc id
         if (value != null) {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) =>
-                    DoctorHomeScreen(uid: value.uid, name:doctorData.data()['name']), // TODO: Route to Homepage
+                    DoctorHomeScreen(docId: value.uid, name:doctorData['name']), // TODO: Route to Homepage
               ));
         }
       });
@@ -275,13 +276,4 @@ class _SignInState extends State<SignIn> {
     }
   }
 
-  Future<DocumentSnapshot> getDoctorInfo(String uid) async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    var qs = await firestore.collection('doctors').doc(uid).get();
-    if (qs.exists) {
-      return qs;
-    } else {
-      return null;
-    }
-  }
 }
