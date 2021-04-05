@@ -7,6 +7,11 @@ import 'package:health_assistant/pages/PatientProfile.dart';
 import 'package:health_assistant/pages/departmentPage.dart';
 import 'package:health_assistant/pages/department_list.dart';
 import 'package:health_assistant/pages/view_appointments.dart';
+import 'package:health_assistant/model/dactor_model.dart';
+import 'package:health_assistant/model/data.dart';
+import 'package:health_assistant/pages/appointment_page.dart';
+//import 'package:health_assistant/pages/AppointmentPage.dart';
+import 'package:health_assistant/theme/extention.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'sign_in.dart';
 import 'package:google_fonts/google_fonts.dart'; //google fonts
@@ -102,11 +107,13 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
     return InkWell(
       onTap: () {
         print("tapped");
-        if (subtitle == "chatbot") {
+
+        if (subtitle == 'chatbot') {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => ChatHome(uid)),
           );
+
         } else if (subtitle == "book_appt") {
           Navigator.push(
             context,
@@ -195,7 +202,6 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
     );
   }
 }
-
 class DataSearch extends SearchDelegate<String> {
   List departments = [
     "pulmonologist",
