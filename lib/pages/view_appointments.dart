@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:health_assistant/pages/confirm_cancellation.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'package:intl/intl.dart';
 
@@ -100,6 +101,42 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
                               color: Colors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.bold)),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          DateTime.now().isBefore(DateTime.parse(
+                                  apptDetails[index]['year'] +
+                                      apptDetails[index]['month'] +
+                                      apptDetails[index]['date']))
+                              ? ButtonTheme(
+                                  height: 45,
+                                  child: RaisedButton(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    color: Colors.red,
+                                    onPressed: () {
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ConfirmCancel(apptDetails[index], apptDetails[index].id)));
+                                    },
+                                    child: Text(
+                                      "Cancel Appointment",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16),
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  child: Text("Appointment already done"),
+                                )
+                        ],
+                      )
                     ],
                   ),
                 ),
