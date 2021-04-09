@@ -198,7 +198,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
                                             Icon(
-                                              Icons.calendar_today_outlined,
+                                              Icons.calendar_today,
                                               color: LightColor.purple,
                                               size: 35,
                                             ),

@@ -143,8 +143,8 @@ class _AppointmentPageState extends State<AppointmentPage> {
                           TableCalendar(
                             initialCalendarFormat: CalendarFormat.month,
                             calendarStyle: CalendarStyle(
-                                todayColor: Colors.blue,
-                                selectedColor: Theme.of(context).primaryColor,
+                                todayColor: Colors.amber,
+                                selectedColor: LightColor.purple,
                                 todayStyle: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 22.0,
@@ -152,7 +152,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                             headerStyle: HeaderStyle(
                               centerHeaderTitle: true,
                               formatButtonDecoration: BoxDecoration(
-                                color: Colors.brown,
+                                color:Colors.amber,
                                 borderRadius: BorderRadius.circular(22.0),
                               ),
                               formatButtonTextStyle:
@@ -189,7 +189,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                       margin: const EdgeInsets.all(5.0),
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
-                                          color: Colors.blue,
+                                          color: Colors.amber,
                                           borderRadius:
                                               BorderRadius.circular(8.0)),
                                       child: Text(
