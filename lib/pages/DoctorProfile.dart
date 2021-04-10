@@ -6,40 +6,35 @@ import 'package:health_assistant/theme/light_color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:health_assistant/pages/department_list.dart';
 
-class PatientProfile extends StatefulWidget {
+class DoctorProfile extends StatefulWidget {
   final String pID;
-  PatientProfile(this.pID);
+  DoctorProfile(this.pID);
   @override
-  _PatientProfileState createState() => _PatientProfileState();
+  _DoctorProfileState createState() => _DoctorProfileState();
 }
 
-class _PatientProfileState extends State<PatientProfile> {
-  Future<DocumentSnapshot> getPatient(pID) async {
+class _DoctorProfileState extends State<DoctorProfile> {
+   Future <DocumentSnapshot> getPatient(pID) async {
     var data =
-        await FirebaseFirestore.instance.collection('patients').doc(pID).get();
+    await FirebaseFirestore.instance.collection('doctors').doc(pID).get();
     return data;
   }
 
   void initState() {
     super.initState();
-    // _controller = CalendarController();
-    //getDocName(docId);
-    //getPatientName(pId);
-    // print("Doctor name is " + dName);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: FutureBuilder(
         future: getPatient(widget.pID),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return CircularProgressIndicator();
           }
-          var patientData = snapshot.data;
-          print(patientData);
+          var doctorData = snapshot.data;
+          print(doctorData);
           return Stack(
             children: [
               Column(
@@ -57,7 +52,7 @@ class _PatientProfileState extends State<PatientProfile> {
                         SizedBox(height: 40),
                         Align(
                           alignment: Alignment.topRight,
-                          child: IconButton(
+                          /*child: IconButton(
                             icon: Icon(Icons.edit),
                             onPressed: () {
                               Navigator.push(
@@ -65,20 +60,20 @@ class _PatientProfileState extends State<PatientProfile> {
                                 MaterialPageRoute(builder: (context) => UpdateUserProfile(widget.pID)),
                               );
                             },
-                          ),
+                          ),*/
                         ),
                         SizedBox(
                           height: 60.0,
                         ),
                         CircleAvatar(
                           radius: 65.0,
-                          backgroundImage: AssetImage(''),
+                          backgroundImage: NetworkImage(doctorData['profile_image']),
                           backgroundColor: Colors.white,
                         ),
                         SizedBox(
                           height: 10.0,
                         ),
-                        Text(patientData['fname'] + ' ' + patientData['lname'],
+                        Text(doctorData['name'],
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20.0,
@@ -87,7 +82,7 @@ class _PatientProfileState extends State<PatientProfile> {
                           height: 10.0,
                         ),
                         Text(
-                          'Patient',
+                          'Doctor',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 15.0,
@@ -110,7 +105,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                     padding: EdgeInsets.all(10.0),
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Information",
@@ -124,7 +119,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                         ),
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                           children: [
                                             Icon(
                                               Icons.people,
@@ -136,16 +131,16 @@ class _PatientProfileState extends State<PatientProfile> {
                                             ),
                                             Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "Gender",
+                                                  "Experience",
                                                   style: TextStyle(
                                                     fontSize: 15.0,
                                                   ),
                                                 ),
                                                 Text(
-                                                  patientData['gender'],
+                                                  doctorData['experience'].toString(),
                                                   style: TextStyle(
                                                     fontSize: 12.0,
                                                     color: Colors.grey[400],
@@ -160,7 +155,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                         ),
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                           children: [
                                             Icon(
                                               Icons.phone,
@@ -172,16 +167,16 @@ class _PatientProfileState extends State<PatientProfile> {
                                             ),
                                             Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "Contact Number",
+                                                  "Degree",
                                                   style: TextStyle(
                                                     fontSize: 15.0,
                                                   ),
                                                 ),
                                                 Text(
-                                                  patientData['phoneNo'],
+                                                  doctorData['degree'],
                                                   style: TextStyle(
                                                     fontSize: 12.0,
                                                     color: Colors.grey[400],
@@ -193,75 +188,6 @@ class _PatientProfileState extends State<PatientProfile> {
                                         ),
                                         SizedBox(
                                           height: 20.0,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Icon(
-                                              Icons.home,
-                                              color: LightColor.purple,
-                                              size: 35,
-                                            ),
-                                            SizedBox(
-                                              width: 20.0,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Address",
-                                                  style: TextStyle(
-                                                    fontSize: 15.0,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  patientData['address'],
-                                                  style: TextStyle(
-                                                    fontSize: 12.0,
-                                                    color: Colors.grey[400],
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 20.0,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Icon(
-                                              Icons.calendar_today_outlined,
-                                              color: LightColor.purple,
-                                              size: 35,
-                                            ),
-                                            SizedBox(
-                                              width: 20.0,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Date Of Birth",
-                                                  style: TextStyle(
-                                                    fontSize: 15.0,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  patientData['dob'],
-                                                  style: TextStyle(
-                                                    fontSize: 12.0,
-                                                    color: Colors.grey[400],
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          ],
                                         ),
                                       ],
                                     ),
@@ -276,69 +202,34 @@ class _PatientProfileState extends State<PatientProfile> {
                   right: 20.0,
                   child: Card(
                       child: Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                            child: Column(
+                        padding: EdgeInsets.all(16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text(
-                              'Height',
-                              style: TextStyle(
-                                  color: Colors.grey[400], fontSize: 14.0),
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            Text(
-                              patientData['height'],
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              ),
-                            )
+                            Container(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'Type',
+                                      style: TextStyle(
+                                          color: Colors.grey[400], fontSize: 14.0),
+                                    ),
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),
+                                    Text(
+                                     doctorData['type'],
+                                      style: TextStyle(
+                                        fontSize: 15.0,
+                                      ),
+                                    )
+                                  ],
+                                )),
+
+
                           ],
-                        )),
-                        Container(
-                          child: Column(children: [
-                            Text(
-                              'Weight',
-                              style: TextStyle(
-                                  color: Colors.grey[400], fontSize: 14.0),
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            Text(
-                              patientData['weight'],
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              ),
-                            )
-                          ]),
                         ),
-                        Container(
-                            child: Column(
-                          children: [
-                            Text(
-                              'Age',
-                              style: TextStyle(
-                                  color: Colors.grey[400], fontSize: 14.0),
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            Text(
-                              patientData['age'],
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              ),
-                            )
-                          ],
-                        )),
-                      ],
-                    ),
-                  )))
+                      )))
             ],
           );
         },
