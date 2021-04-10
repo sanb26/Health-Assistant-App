@@ -63,6 +63,30 @@ class DatabaseManager {
     }
   }
 
+  Future getSelectedDateAppointment(String docId, String date, String month, String year) async{
+
+    List  selectedDateAppt = [];
+
+    try{
+      await firestore.collection('bookings')
+      .where("docID", isEqualTo: docId)
+      .where("year", isEqualTo: year)
+      .where("month", isEqualTo: month)
+      .where("date", isEqualTo: date)
+      .get().then((querySnapshot){
+        querySnapshot.docs.forEach((element) {
+          selectedDateAppt.add(element.data());
+        });
+      });
+      print("Selected date appointments foundddd");
+      return selectedDateAppt;
+    }
+    catch(e){
+      print("Select date appointments not foundddd");
+      print(e.toString());
+      return null;
+    }
+  }
 
 
 
