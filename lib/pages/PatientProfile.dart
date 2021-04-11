@@ -31,7 +31,6 @@ class _PatientProfileState extends State<PatientProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: FutureBuilder(
         future: getPatient(widget.pID),
         builder: (context, snapshot) {
@@ -59,8 +58,8 @@ class _PatientProfileState extends State<PatientProfile> {
                           alignment: Alignment.topRight,
                           child: IconButton(
                             icon: Icon(Icons.edit),
-                            onPressed: () {
-                              Navigator.push(
+                            onPressed: () async {
+                              await Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => UpdateUserProfile(widget.pID)),
                               );
