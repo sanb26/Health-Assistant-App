@@ -148,6 +148,7 @@ class _ChatHomeState extends State<ChatHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: LightColor.purple,
         title: Text("Self Diagnosis"),
       ),
@@ -158,8 +159,9 @@ class _ChatHomeState extends State<ChatHome> {
             color: Colors.white,
             child: Column(
               children: <Widget>[
-                Flexible(
-                  fit: FlexFit.loose,
+                SingleChildScrollView(
+                  // fit: FlexFit.loose,
+                  reverse: true,
                   child: ListView.builder(
                     reverse: true,
                     itemCount: 1,
@@ -212,46 +214,58 @@ class _ChatHomeState extends State<ChatHome> {
               ? Padding(
                   padding: EdgeInsets.fromLTRB(160, 700, 0, 0),
                   child: Container(
+                      height: 50,
+                      width: 100,
                       child: RaisedButton(
-                    color: LightColor.purple,
-                    onPressed: () async {
-                      setState(() {
-                        pressed = true;
-                      });
-                      String s1 = symptom1.replaceAll(" ", "_").toLowerCase();
-                      String s2 = symptom2.replaceAll(" ", "_").toLowerCase();
-                      String s3 = symptom3.replaceAll(" ", "_").toLowerCase();
-                      String s4 = symptom4.replaceAll(" ", "_").toLowerCase();
-                      String s5 = symptom5.replaceAll(" ", "_").toLowerCase();
-                      String url =
-                          "https://disease-detector.herokuapp.com/predict/" +
-                              "$s1/$s2/$s3/$s4/$s5";
-                      print(url);
-                      var response = await http.get(url);
-                      setState(() {
-                        output = response.body;
-                        print(output);
-                      });
-                      selfDiagnosisData();
-                      print("Added data to database");
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        color: LightColor.purple,
+                        onPressed: () async {
+                          setState(() {
+                            pressed = true;
+                          });
+                          String s1 =
+                              symptom1.replaceAll(" ", "_").toLowerCase();
+                          String s2 =
+                              symptom2.replaceAll(" ", "_").toLowerCase();
+                          String s3 =
+                              symptom3.replaceAll(" ", "_").toLowerCase();
+                          String s4 =
+                              symptom4.replaceAll(" ", "_").toLowerCase();
+                          String s5 =
+                              symptom5.replaceAll(" ", "_").toLowerCase();
+                          String url =
+                              "https://disease-detector.herokuapp.com/predict/" +
+                                  "$s1/$s2/$s3/$s4/$s5";
+                          print(url);
+                          var response = await http.get(url);
+                          setState(() {
+                            output = response.body;
+                            print(output);
+                          });
+                          selfDiagnosisData();
+                          print("Added data to database");
 
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => departmentDoctors(
-                                    departmentName: output.toLowerCase(),
-                                    pID: uid,
-                                  )));
-                    },
-                    child: pressed
-                        ? CircularProgressIndicator()
-                        : Text(
-                            "Predict",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                  )),
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => departmentDoctors(
+                                        departmentName: output.toLowerCase(),
+                                        pID: uid,
+                                      )));
+                        },
+                        child: pressed
+                            ? CircularProgressIndicator(
+                                backgroundColor: Colors.yellow,
+                              )
+                            : Text(
+                                "Predict",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
+                              ),
+                      )),
                 )
               : Positioned(
                   bottom: 0,
@@ -276,7 +290,7 @@ class _ChatHomeState extends State<ChatHome> {
                             controller: symptomController,
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
-                              hintText: 'Enter Message',
+                              hintText: 'Enter Symptom',
                               border: InputBorder.none,
                             ),
                           ),
@@ -288,6 +302,7 @@ class _ChatHomeState extends State<ChatHome> {
                               symptoms.add(symptomController.text);
                             });
                             symptomController.clear();
+                            FocusScope.of(context).requestFocus(FocusNode());
                             print(symptoms.length);
                             if (symptoms.length == 5) {
                               setState(() {

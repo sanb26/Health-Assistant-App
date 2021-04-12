@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:health_assistant/pages/sign_in.dart';
+import 'package:health_assistant/globals.dart' as globals;
 
 // a simple dialog to be visible everytime some error occurs
 showErrDialog(BuildContext context, String err) {
@@ -41,6 +42,7 @@ Future<bool> googleSignIn() async {
     await auth.signInWithCredential(credential);
 
     User user = auth.currentUser;
+    globals.userProfileImage = user.photoURL;
     //print("Hey Google user");
     //print(user.uid);
 
@@ -57,6 +59,7 @@ Future<User> signin(String email, String password, BuildContext context) async {
     final result =
         await auth.signInWithEmailAndPassword(email: email, password: password);
     User user = result.user;
+
     // return Future.value(true);
     //print("User signed in with email and password");
     return Future.value(user);

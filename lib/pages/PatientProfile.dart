@@ -5,6 +5,7 @@ import 'package:health_assistant/pages/UpdateProfile.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:health_assistant/pages/department_list.dart';
+import 'package:health_assistant/globals.dart' as globals;
 
 class PatientProfile extends StatefulWidget {
   final String pID;
@@ -26,6 +27,8 @@ class _PatientProfileState extends State<PatientProfile> {
     //getDocName(docId);
     //getPatientName(pId);
     // print("Doctor name is " + dName);
+    // var data = await getPatient(widget.pID);
+    // var patientData = data.data;
   }
 
   @override
@@ -35,10 +38,11 @@ class _PatientProfileState extends State<PatientProfile> {
         future: getPatient(widget.pID),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           }
           var patientData = snapshot.data;
           print(patientData);
+
           return Stack(
             children: [
               Column(
@@ -57,11 +61,14 @@ class _PatientProfileState extends State<PatientProfile> {
                         Align(
                           alignment: Alignment.topRight,
                           child: IconButton(
-                            icon: Icon(Icons.edit),
+                            icon: Icon(Icons.edit, color: Colors.white),
                             onPressed: () async {
+                              Navigator.pop(context);
                               await Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => UpdateUserProfile(widget.pID)),
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        UpdateUserProfile(widget.pID)),
                               );
                             },
                           ),
@@ -70,8 +77,14 @@ class _PatientProfileState extends State<PatientProfile> {
                           height: 60.0,
                         ),
                         CircleAvatar(
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: NetworkImage(globals.userProfileImage),
+                          ))),
                           radius: 65.0,
-                          backgroundImage: AssetImage(''),
+                          // backgroundImage: NetworkImage(),
                           backgroundColor: Colors.white,
                         ),
                         SizedBox(

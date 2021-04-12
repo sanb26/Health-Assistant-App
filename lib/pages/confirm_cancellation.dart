@@ -47,7 +47,7 @@ class ConfirmCancel extends StatelessWidget {
           children: [
             Text(
               "Are you sure you want to cancel the appointment?",
-              style: TextStyle(fontSize: 24),
+              style: TextStyle(fontSize: 22),
               textAlign: TextAlign.center,
             ),
             Padding(
@@ -72,10 +72,10 @@ class ConfirmCancel extends StatelessWidget {
                             ),
                             Text(
                               "Doctor",
-                              style: TextStyle(fontSize: 22),
+                              style: TextStyle(fontSize: 20),
                             ),
-                            Text("Time", style: TextStyle(fontSize: 22)),
-                            Text("Date", style: TextStyle(fontSize: 22))
+                            Text("Time", style: TextStyle(fontSize: 20)),
+                            Text("Date", style: TextStyle(fontSize: 20))
                           ],
                         ),
                         SizedBox(
@@ -87,12 +87,12 @@ class ConfirmCancel extends StatelessWidget {
                               height: 85,
                             ),
                             Text(appointmentDetails['doctor_name'],
-                                style: TextStyle(fontSize: 22)),
+                                style: TextStyle(fontSize: 20)),
                             Text(
                                 appointmentDetails['start_time'] +
                                     " to " +
                                     appointmentDetails['end_time'],
-                                style: TextStyle(fontSize: 22)),
+                                style: TextStyle(fontSize: 20)),
                             Text(
                                 appointmentDetails['date'] +
                                     "/" +
@@ -101,7 +101,7 @@ class ConfirmCancel extends StatelessWidget {
                                     appointmentDetails['year'] +
                                     ", " +
                                     appointmentDetails['day'],
-                                style: TextStyle(fontSize: 22)),
+                                style: TextStyle(fontSize: 20)),
                           ],
                         ),
                       ],
@@ -118,6 +118,7 @@ class ConfirmCancel extends StatelessWidget {
                     appointmentDetails['day'],
                     appointmentDetails['start_time'],
                     appointmentDetails['end_time']);
+                Navigator.pop(context);
               },
               child: Text("Cancel Appointment"),
             )
