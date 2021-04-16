@@ -30,8 +30,8 @@ class _AppointmentPageState extends State<AppointmentPage> {
     var qs =
         await FirebaseFirestore.instance.collection('patients').doc(pId).get();
     print("hey patient name found");
-    print("Patient name foundddd "+ qs.data()['fname']);
-    pName = qs.data()['fname']+" "+qs.data()['lname'];
+    print("Patient name foundddd " + qs.data()['fname']);
+    pName = qs.data()['fname'] + " " + qs.data()['lname'];
   }
 
   void setBookedstatus(startTime, endTime, documentId) async {
@@ -45,8 +45,8 @@ class _AppointmentPageState extends State<AppointmentPage> {
         .update({'booked': true}).then((value) => print("Status updated"));
   }
 
-  void bookAppointment(
-      startTime, endTime, docId, day, date, month, year, patientID, dName, pName) {
+  void bookAppointment(startTime, endTime, docId, day, date, month, year,
+      patientID, dName, pName, dateTime) {
     FirebaseFirestore.instance.collection('bookings').add({
       'doctor_name': dName,
       'patient_name': pName,
@@ -57,7 +57,8 @@ class _AppointmentPageState extends State<AppointmentPage> {
       'year': year,
       'day': day,
       'start_time': startTime,
-      'end_time': endTime
+      'end_time': endTime,
+      'datetime': dateTime
     });
   }
 
@@ -82,7 +83,6 @@ class _AppointmentPageState extends State<AppointmentPage> {
         .get();
     return data.docs;
   }
-
 
   CalendarController _controller;
   var formatter = new DateFormat('EEEE');
@@ -152,7 +152,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                             headerStyle: HeaderStyle(
                               centerHeaderTitle: true,
                               formatButtonDecoration: BoxDecoration(
-                                color:Colors.amber,
+                                color: Colors.amber,
                                 borderRadius: BorderRadius.circular(22.0),
                               ),
                               formatButtonTextStyle:
@@ -169,6 +169,13 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                 selectedDate = dateGetter.format(date);
                                 selectedMonth = monthGetter.format(date);
                                 selectedYear = yearGetter.format(date);
+                                print("validating DATEFORMAT");
+                                print(DateTime.parse(selectedYear +
+                                        "-" +
+                                        selectedMonth +
+                                        "-" +
+                                        selectedDate)
+                                    .toString());
                               });
                             },
                             builders: CalendarBuilders(
@@ -263,6 +270,9 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                             pID,
                                             dName,
                                             pName,
+                                            DateTime.parse(selectedYear +
+                                                selectedMonth +
+                                                selectedDate),
                                           );
                                           Navigator.pushReplacement(
                                               context,

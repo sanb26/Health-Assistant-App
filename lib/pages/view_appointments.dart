@@ -20,6 +20,8 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
     QuerySnapshot qs = await FirebaseFirestore.instance
         .collection('bookings')
         .where('pID', isEqualTo: uid)
+        .orderBy('datetime')
+        // .orderBy('date' + 'month' + 'year')
         .get();
     return qs.docs;
   }
@@ -50,9 +52,10 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 decoration: BoxDecoration(
                     color: DateTime.now().isBefore(DateTime.parse(
-                            apptDetails[index]['year'] +
-                                apptDetails[index]['month'] +
-                                apptDetails[index]['date']))
+                                apptDetails[index]['year'] +
+                                    apptDetails[index]['month'] +
+                                    apptDetails[index]['date'])
+                            .subtract(const Duration(days: 1)))
                         ? Colors.greenAccent[200]
                         : Colors.grey,
                     borderRadius: BorderRadius.circular(10)),
@@ -106,9 +109,10 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           DateTime.now().isBefore(DateTime.parse(
-                                  apptDetails[index]['year'] +
-                                      apptDetails[index]['month'] +
-                                      apptDetails[index]['date']))
+                                      apptDetails[index]['year'] +
+                                          apptDetails[index]['month'] +
+                                          apptDetails[index]['date'])
+                                  .subtract(const Duration(days: 1)))
                               ? ButtonTheme(
                                   height: 45,
                                   child: RaisedButton(
@@ -121,7 +125,9 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  ConfirmCancel(apptDetails[index], apptDetails[index].id)));
+                                                  ConfirmCancel(
+                                                      apptDetails[index],
+                                                      apptDetails[index].id)));
                                     },
                                     child: Text(
                                       "Cancel Appointment",
@@ -133,7 +139,7 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
                                   ),
                                 )
                               : Container(
-                                  child: Text("Appointment already done"),
+                                  child: Text("No Actions Available"),
                                 )
                         ],
                       )

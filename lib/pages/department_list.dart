@@ -29,7 +29,7 @@ class DepartmentList extends StatelessWidget {
           return ListTile(
             title: Text(departmentNames[index]),
             onTap: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => departmentDoctors(

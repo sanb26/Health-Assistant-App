@@ -210,6 +210,7 @@ class UserInfo extends StatelessWidget {
                     //             fname: names[0],
                     //           )),
                     Navigator.pop(context);
+                    Navigator.pop(context);
                     // );
                   },
                 ),

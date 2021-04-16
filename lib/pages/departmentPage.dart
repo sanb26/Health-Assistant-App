@@ -127,7 +127,7 @@ class _departmentDoctorsState extends State<departmentDoctors> {
                             padding: const EdgeInsets.fromLTRB(5, 15, 0, 0),
                             child: IconButton(
                               icon: Icon(Icons.arrow_forward_ios),
-                              onPressed: () => Navigator.pushReplacement(
+                              onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => doctorDetail(

@@ -98,7 +98,8 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
     );
   }
 
-  Widget _servicesButton(String title, String subtitle,{Color color, Color lightColor}){
+  Widget _servicesButton(String title, String subtitle,
+      {Color color, Color lightColor}) {
     return InkWell(
       onTap: () {
         print("tapped");
@@ -117,8 +118,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
             context,
             MaterialPageRoute(builder: (context) => ViewAppointments(uid)),
           );
-        }
-        else if (subtitle == "profile") {
+        } else if (subtitle == "profile") {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => PatientProfile(uid)),
@@ -126,8 +126,8 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
         }
       },
       child: Container(
-        width:MediaQuery.of(context).size.width*0.89,
-        height: (MediaQuery.of(context).size.width*0.89)/4.5,
+        width: MediaQuery.of(context).size.width * 0.89,
+        height: (MediaQuery.of(context).size.width * 0.89) / 4.5,
         margin: EdgeInsets.fromLTRB(20, 10, 20, 25),
         decoration: BoxDecoration(
           color: color,
@@ -148,13 +148,16 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                 Positioned(
                   top: -20,
                   left: -20,
-                  child: CircleAvatar(backgroundColor: lightColor,radius: 60,),
+                  child: CircleAvatar(
+                    backgroundColor: lightColor,
+                    radius: 60,
+                  ),
                 ),
                 Center(
-                  child: Text(
-                    title,
-                    style: GoogleFonts.lato(fontSize:MediaQuery.of(context).size.height / 40, color: Colors.white)
-                  ),
+                  child: Text(title,
+                      style: GoogleFonts.lato(
+                          fontSize: MediaQuery.of(context).size.height / 40,
+                          color: Colors.white)),
                 ),
               ],
             ),
@@ -180,13 +183,15 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
               [
                 SizedBox(height: 30),
                 _servicesButton("Get Help From Our Chatbot", "chatbot",
-                                color: LightColor.green, lightColor: LightColor.lightGreen),
+                    color: LightColor.green, lightColor: LightColor.lightGreen),
                 _servicesButton("View Appointments", "view_appt",
-                                color: LightColor.skyBlue, lightColor: LightColor.lightBlue),
+                    color: LightColor.skyBlue,
+                    lightColor: LightColor.lightBlue),
                 _servicesButton("Schedule a New Appointment", "book_appt",
-                                color: LightColor.orange, lightColor: LightColor.lightOrange),
+                    color: LightColor.orange,
+                    lightColor: LightColor.lightOrange),
                 _servicesButton("Profile & Settings", "profile",
-                                color: LightColor.green, lightColor: LightColor.lightGreen),
+                    color: LightColor.green, lightColor: LightColor.lightGreen),
               ],
             ),
           ),
