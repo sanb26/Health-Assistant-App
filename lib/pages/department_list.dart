@@ -6,12 +6,12 @@ class DepartmentList extends StatelessWidget {
   final String uid;
   DepartmentList(this.uid);
   static List departmentNames = [
-    "pulmonologist",
-    "physician",
-    "dermatologist",
-    "neurologist",
-    "orthopedist",
-    "general surgery"
+    "Pulmonologist",
+    "Physician",
+    "Dermatologist",
+    "Neurologist",
+    "Orthopedist",
+    "Surgeon"
   ];
 
   @override

@@ -174,12 +174,10 @@ class _ViewAppDocState extends State<ViewAppDoc> {
                           child: ListTile(
                             title: Text(selectedDateAppoint[index]['patient_name']),
                             subtitle: Text(selectedDateAppoint[index]['start_time']+" "+selectedDateAppoint[index]['end_time']),
-                            trailing: IconButton(
-                              icon: Icon(
-                                Icons.close,
-                                color: Colors.redAccent,
-                              ), 
-                              onPressed: null
+                            trailing: FlatButton.icon(
+                              onPressed:  () => {}, 
+                              icon: Icon(Icons.cancel, color: Colors.redAccent,), 
+                              label: Text("Cancel \nAppointment"),
                             ),
                             onTap: (){
                               Navigator.push(

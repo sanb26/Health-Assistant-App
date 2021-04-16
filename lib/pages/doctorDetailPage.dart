@@ -173,28 +173,30 @@ class _doctorDetailState extends State<doctorDetail> {
                                   height: 20,
                                 ),
                                 Center(
-                                  child: RaisedButton(
-                                      color: LightColor.purple,
-                                      child: Text("Book Appointment",
-                                          style: GoogleFonts.lato(
-                                              fontSize: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  35,
-                                              color: Colors.white)),
-                                      onPressed: () {
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AppointmentPage(
-                                                        doctorId, pID)));
-                                        // Navigator.push(
-                                        //     context,
-                                        //     MaterialPageRoute(
-                                        //         builder: (context) =>
-                                        //             DoctorSchedule(doctorId)));
-                                      }),
+                                  child: ButtonTheme(
+                                    height: 45,
+                                    child: RaisedButton(
+                                      shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10)),
+                                        color: LightColor.purple,
+                                        child: Text("Book Appointment",
+                                            style: GoogleFonts.lato(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white)),
+                                        onPressed: () {
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AppointmentPage(
+                                                          doctorId, pID)));
+                                          // Navigator.push(
+                                          //     context,
+                                          //     MaterialPageRoute(
+                                          //         builder: (context) =>
+                                          //             DoctorSchedule(doctorId)));
+                                        }),
+                                  ),
                                 ),
                               ],
                             ),

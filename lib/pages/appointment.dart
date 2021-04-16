@@ -254,6 +254,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                             });
                                           }),
                                     ),
+                                    SizedBox(height:20),
                                     Center(
                                       child: RaisedButton(
                                         onPressed: () {
@@ -288,10 +289,13 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                                           startTime,
                                                           endTime)));
                                         },
-                                        child: Text("Book Appointment",
-                                            style:
-                                                TextStyle(color: Colors.white)),
                                         color: LightColor.purple,
+                                        shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10)),
+                                        child: Text("Book Appointment",
+                                            style:TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16,)),
+                                  
                                       ),
                                     )
                                   ],

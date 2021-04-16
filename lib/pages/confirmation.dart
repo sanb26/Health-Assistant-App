@@ -192,27 +192,23 @@ class UserInfo extends StatelessWidget {
                 SizedBox(
                   height: 50,
                 ),
-                NiceButton(
-                  width: 255,
-                  elevation: 8.0,
-                  radius: 52.0,
-                  text: "Back to Home",
-                  background: LightColor.purple,
-                  onPressed: () {
-                    print(names[0]);
-                    print(names[1]);
-                    // Navigator.pushReplacement(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => PatientHomeScreen(
-                    //             uid: pID,
-                    //             lname: names[1],
-                    //             fname: names[0],
-                    //           )),
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    // );
-                  },
+                ButtonTheme(
+                  height: 45,
+                    child: RaisedButton(
+                    onPressed: (){
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    color:  LightColor.purple,
+                    shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10)),                                           
+                    child: Text(
+                      "Back to Home",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),

@@ -51,14 +51,27 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
                 margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                offset: Offset(4, 4),
+                                blurRadius: 10,
+                                color: LightColor.grey.withOpacity(.2),
+                              ),
+                              BoxShadow(
+                                offset: Offset(-3, 0),
+                                blurRadius: 15,
+                                color: LightColor.grey.withOpacity(.1),
+                              )
+                            ],
                     color: DateTime.now().isBefore(DateTime.parse(
                                 apptDetails[index]['year'] +
                                     apptDetails[index]['month'] +
                                     apptDetails[index]['date'])
-                            .subtract(const Duration(days: 1)))
-                        ? LightColor.lightGreen
-                        : Colors.blueGrey[200],
-                    borderRadius: BorderRadius.circular(10)),
+                            .subtract(const Duration(days: 0)))
+                        ? Colors.white
+                        : Colors.grey[350],
+                   ),
                 child: ListTile(
                   // tileColor: DateTime.now().isBefore(DateTime.parse(
                   //         apptDetails[index]['year'] +
@@ -70,8 +83,9 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
                     apptDetails[index]['doctor_name'],
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        ),
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,8 +100,9 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
                               apptDetails[index]['end_time'],
                           style: TextStyle(
                               color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold)),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              )),
                       SizedBox(
                         height: 5,
                       ),
@@ -102,8 +117,9 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
                               apptDetails[index]['day'],
                           style: TextStyle(
                               color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold)),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
+                              )),
                       SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -119,7 +135,7 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(10)),
-                                    color: Colors.red,
+                                    color: Colors.red[400],
                                     onPressed: () {
                                       Navigator.pushReplacement(
                                           context,
@@ -133,8 +149,8 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
                                       "Cancel Appointment",
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14),
                                     ),
                                   ),
                                 )
