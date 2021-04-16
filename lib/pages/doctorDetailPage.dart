@@ -149,7 +149,8 @@ class _doctorDetailState extends State<doctorDetail> {
                                           scheduleDetails[index].data()['day'],
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 24),
+                                              fontSize:MediaQuery.of(context).size.height/42,
+                                              ),
                                         ),
                                         subtitle: Text(
                                             scheduleDetails[index]

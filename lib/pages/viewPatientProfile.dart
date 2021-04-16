@@ -4,29 +4,20 @@ import 'package:health_assistant/theme/light_color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:health_assistant/globals.dart' as globals;
 
-class PatientProfile extends StatefulWidget {
+class ViewPatientProfile extends StatefulWidget {
   final String pID;
-  PatientProfile(this.pID);
+  ViewPatientProfile(this.pID);
   @override
-  _PatientProfileState createState() => _PatientProfileState();
+  _ViewPatientProfileState createState() => _ViewPatientProfileState();
 }
 
-class _PatientProfileState extends State<PatientProfile> {
+class _ViewPatientProfileState extends State<ViewPatientProfile> {
   Future<DocumentSnapshot> getPatient(pID) async {
     var data =
         await FirebaseFirestore.instance.collection('patients').doc(pID).get();
     return data;
   }
 
-  void initState() {
-    super.initState();
-    // _controller = CalendarController();
-    //getDocName(docId);
-    //getPatientName(pId);
-    // print("Doctor name is " + dName);
-    // var data = await getPatient(widget.pID);
-    // var patientData = data.data;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,25 +45,7 @@ class _PatientProfileState extends State<PatientProfile> {
                         ),
                       ),
                       child: Column(children: [
-                        SizedBox(height: 30),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: IconButton(
-                            icon: Icon(Icons.edit, color: Colors.white),
-                            onPressed: () async {
-                              Navigator.pop(context);
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        UpdateUserProfile(widget.pID)),
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 60.0,
-                        ),
+                        SizedBox(height: 100),
                         CircleAvatar(
                           child: Container(
                               decoration: BoxDecoration(
@@ -114,7 +87,7 @@ class _PatientProfileState extends State<PatientProfile> {
                               margin: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
                               child: Container(
                                   width: 310.0,
-                                  height: 290.0,
+                                  height: 230.0,
                                   child: Padding(
                                     padding: EdgeInsets.all(10.0),
                                     child: Column(
@@ -191,42 +164,6 @@ class _PatientProfileState extends State<PatientProfile> {
                                                 ),
                                                 Text(
                                                   patientData['phoneNo'],
-                                                  style: TextStyle(
-                                                    fontSize: 12.0,
-                                                    color: Colors.grey[400],
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 20.0,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Icon(
-                                              Icons.home,
-                                              color: LightColor.purple,
-                                              size: 35,
-                                            ),
-                                            SizedBox(
-                                              width: 20.0,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Address",
-                                                  style: TextStyle(
-                                                    fontSize: 15.0,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  patientData['address'],
                                                   style: TextStyle(
                                                     fontSize: 12.0,
                                                     color: Colors.grey[400],

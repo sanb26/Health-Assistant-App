@@ -56,8 +56,8 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
                                     apptDetails[index]['month'] +
                                     apptDetails[index]['date'])
                             .subtract(const Duration(days: 1)))
-                        ? Colors.greenAccent[200]
-                        : Colors.grey,
+                        ? LightColor.lightGreen
+                        : Colors.blueGrey[200],
                     borderRadius: BorderRadius.circular(10)),
                 child: ListTile(
                   // tileColor: DateTime.now().isBefore(DateTime.parse(

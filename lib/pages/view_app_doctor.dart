@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_assistant/DatabaseManager/DatabaseManager.dart';
+import 'package:health_assistant/pages/viewPatientProfile.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -180,6 +181,12 @@ class _ViewAppDocState extends State<ViewAppDoc> {
                               ), 
                               onPressed: null
                             ),
+                            onTap: (){
+                              Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ViewPatientProfile(selectedDateAppoint[index]['pID'])),
+                            );
+                            },
                           ),
                         );
                       },

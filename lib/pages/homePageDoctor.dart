@@ -4,6 +4,7 @@ import 'package:health_assistant/DatabaseManager/DatabaseManager.dart';
 import 'package:health_assistant/controllers/authentication.dart';
 import 'package:health_assistant/pages/DoctorProfile.dart';
 import 'package:health_assistant/pages/sign_in.dart';
+import 'package:health_assistant/pages/viewPatientProfile.dart';
 import 'package:health_assistant/pages/view_app_doctor.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'package:intl/intl.dart';
@@ -190,6 +191,12 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
                         child: ListTile(
                           title: Text(todaysAppoint[index]['patient_name']),
                           subtitle: Text(todaysAppoint[index]['start_time']+" "+todaysAppoint[index]['end_time']),
+                          onTap: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ViewPatientProfile(todaysAppoint[index]['pID'])),
+                            );
+                          },
                         ),
                       );
                     },

@@ -203,21 +203,21 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
 
 class DataSearch extends SearchDelegate<String> {
   List departments = [
-    "pulmonologist",
-    "physician",
-    "dermatologist",
-    "neurologist",
-    "orthopedist",
-    "general surgery"
+    "Pulmonologist",
+    "Physician",
+    "Dermatologist",
+    "Neurologist",
+    "Orthopedist",
+    "Surgeon"
   ];
 
   final recentDepartmentSearch = [
-    "pulmonologist",
-    "physician",
-    "dermatologist",
-    "neurologist",
-    "orthopedist",
-    "general surgery"
+    "Pulmonologist",
+    "Physician",
+    "Dermatologist",
+    "Neurologist",
+    "Orthopedist",
+    "Surgeon"
   ];
 
   final searchFieldLabel = "Search by department";
@@ -253,7 +253,7 @@ class DataSearch extends SearchDelegate<String> {
   Widget buildResults(BuildContext context) {
     //show some result based on suggestion
     final searchedList =
-        departments.where((x) => x.startsWith(query.toLowerCase())).toList();
+        departments.where((x) => x.startsWith(query[0].toUpperCase()+query.substring(1).toLowerCase())).toList();
     return searchedList.isEmpty
         ? Padding(
             padding: const EdgeInsets.all(8.0),
@@ -299,7 +299,7 @@ class DataSearch extends SearchDelegate<String> {
     //show when someone searches for something
     final userInputList = query.isEmpty
         ? recentDepartmentSearch
-        : departments.where((x) => x.startsWith(query.toLowerCase())).toList();
+        : departments.where((x) => x.startsWith(query[0].toUpperCase()+query.substring(1).toLowerCase())).toList();
 
     return userInputList.isEmpty
         ? Padding(
