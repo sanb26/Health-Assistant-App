@@ -123,7 +123,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                               MainAxisAlignment.start,
                                           children: [
                                             Icon(
-                                              Icons.explore_rounded,
+                                              Icons.explore,
                                               color: LightColor.purple,
                                               size: 35,
                                             ),

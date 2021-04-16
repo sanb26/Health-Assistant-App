@@ -4,6 +4,7 @@ import 'package:health_assistant/DatabaseManager/DatabaseManager.dart';
 import 'package:health_assistant/controllers/authentication.dart';
 import 'package:health_assistant/pages/DoctorProfile.dart';
 import 'package:health_assistant/pages/sign_in.dart';
+import 'package:health_assistant/pages/view_app_doctor.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'package:intl/intl.dart';
 
@@ -40,12 +41,18 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
     return InkWell(
       onTap: () {
         print("helloooooooo");
-        if (subtitle == "profile") {
-        Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => DoctorProfile(docId)),
-        );
+        if (subtitle == "view_appt") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ViewAppDoc(docId: docId,)),
+          );
+        } else if (subtitle == "profile") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DoctorProfile(docId)),
+          );
         }
+
       },
       child: Container(
         width:MediaQuery.of(context).size.width*0.89,
@@ -142,7 +149,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
             child: Column(
               children: [
                 SizedBox(height:20),
-                _servicesButton("View Appointments","", color: LightColor.green, lightColor: LightColor.lightGreen),
+                _servicesButton("View Appointments","view_appt", color: LightColor.green, lightColor: LightColor.lightGreen),
                 _servicesButton("View Profile","profile",color: LightColor.skyBlue, lightColor: LightColor.lightBlue),
                 SizedBox(height:40),
                 Row(

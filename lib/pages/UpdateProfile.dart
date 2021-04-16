@@ -150,7 +150,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                           //print(phoneNo);
                         },
                         decoration: const InputDecoration(
-                          icon: const Icon(Icons.bar_chart),
+                          icon: const Icon(Icons.line_weight),
                           hintText: 'Enter your weight',
                           labelText: 'Weight',
                         ),
@@ -163,7 +163,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                           //print(phoneNo);
                         },
                         decoration: const InputDecoration(
-                          icon: const Icon(Icons.web_asset_sharp),
+                          icon: const Icon(Icons.web_asset),
                           hintText: 'Enter your age',
                           labelText: 'Age',
                         ),
@@ -175,7 +175,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                           print(phoneNo);
                         },
                         decoration: const InputDecoration(
-                          icon: const Icon(Icons.add_location_sharp),
+                          icon: const Icon(Icons.add_location),
                           hintText: 'Enter your address',
                           labelText: 'Address',
                         ),
