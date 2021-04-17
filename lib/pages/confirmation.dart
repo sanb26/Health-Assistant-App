@@ -194,13 +194,14 @@ class UserInfo extends StatelessWidget {
                 ),
                 ButtonTheme(
                   height: 45,
-                    child: RaisedButton(
-                    onPressed: (){
+                  child: RaisedButton(
+                    onPressed: () {
                       Navigator.pop(context);
                       Navigator.pop(context);
                     },
-                    color:  LightColor.purple,
-                    shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10)),                                           
+                    color: LightColor.purple,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
                     child: Text(
                       "Back to Home",
                       style: TextStyle(

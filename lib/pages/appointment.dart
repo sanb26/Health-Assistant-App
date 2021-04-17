@@ -136,6 +136,9 @@ class _AppointmentPageState extends State<AppointmentPage> {
                     }
                     // print(dName);
                     var slotData = snapshot.data;
+                    print(
+                        "---------------------SlotData Length-------------------");
+                    print(slotData.length);
                     return SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,7 +164,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                             ),
                             startingDayOfWeek: StartingDayOfWeek.monday,
                             startDay: DateTime.now(),
-                            endDay: DateTime.now().add(Duration(days: 7)),
+                            endDay: DateTime.now().add(Duration(days: 6)),
                             weekendDays: [DateTime.sunday],
                             onDaySelected: (date, events, _) async {
                               setState(() {
@@ -209,7 +212,8 @@ class _AppointmentPageState extends State<AppointmentPage> {
                           SizedBox(
                             height: 50.0,
                           ),
-                          availableDays.contains(selectedDay)
+                          availableDays.contains(selectedDay) &&
+                                  slotData.length > 0
                               ? Column(
                                   children: [
                                     Center(
@@ -254,7 +258,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                             });
                                           }),
                                     ),
-                                    SizedBox(height:20),
+                                    SizedBox(height: 20),
                                     Center(
                                       child: RaisedButton(
                                         onPressed: () {
@@ -290,12 +294,14 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                                           endTime)));
                                         },
                                         color: LightColor.purple,
-                                        shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10)),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
                                         child: Text("Book Appointment",
-                                            style:TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,)),
-                                  
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                            )),
                                       ),
                                     )
                                   ],
@@ -304,12 +310,12 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                   children: [
                                     Center(
                                       child: Container(
-                                        child: Text(
-                                            "Doctor is not available on this day!"),
+                                        child:
+                                            Text("No appointments available!"),
                                       ),
                                     )
                                   ],
-                                ),
+                                )
                         ],
                       ),
                     );

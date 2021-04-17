@@ -20,7 +20,7 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
     QuerySnapshot qs = await FirebaseFirestore.instance
         .collection('bookings')
         .where('pID', isEqualTo: uid)
-        .orderBy('datetime')
+        .orderBy('datetime', descending: true)
         // .orderBy('date' + 'month' + 'year')
         .get();
     return qs.docs;
@@ -52,26 +52,26 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                offset: Offset(4, 4),
-                                blurRadius: 10,
-                                color: LightColor.grey.withOpacity(.2),
-                              ),
-                              BoxShadow(
-                                offset: Offset(-3, 0),
-                                blurRadius: 15,
-                                color: LightColor.grey.withOpacity(.1),
-                              )
-                            ],
-                    color: DateTime.now().isBefore(DateTime.parse(
-                                apptDetails[index]['year'] +
-                                    apptDetails[index]['month'] +
-                                    apptDetails[index]['date'])
-                            .subtract(const Duration(days: 0)))
-                        ? Colors.white
-                        : Colors.grey[350],
-                   ),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      offset: Offset(4, 4),
+                      blurRadius: 10,
+                      color: LightColor.grey.withOpacity(.2),
+                    ),
+                    BoxShadow(
+                      offset: Offset(-3, 0),
+                      blurRadius: 15,
+                      color: LightColor.grey.withOpacity(.1),
+                    )
+                  ],
+                  color: DateTime.now().isBefore(DateTime.parse(
+                              apptDetails[index]['year'] +
+                                  apptDetails[index]['month'] +
+                                  apptDetails[index]['date'])
+                          .subtract(const Duration(days: 0)))
+                      ? Colors.white
+                      : Colors.grey[350],
+                ),
                 child: ListTile(
                   // tileColor: DateTime.now().isBefore(DateTime.parse(
                   //         apptDetails[index]['year'] +
@@ -82,10 +82,10 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
                   title: Text(
                     apptDetails[index]['doctor_name'],
                     style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                        ),
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,10 +99,10 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
                               " to " +
                               apptDetails[index]['end_time'],
                           style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              )),
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          )),
                       SizedBox(
                         height: 5,
                       ),
@@ -116,10 +116,10 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
                               ", " +
                               apptDetails[index]['day'],
                           style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w400,
-                              )),
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                          )),
                       SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

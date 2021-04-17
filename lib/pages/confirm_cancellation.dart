@@ -16,8 +16,6 @@ class ConfirmCancel extends StatelessWidget {
         .limit(1)
         .get();
     var slotID = data.docs[0].id;
-    print("SLOT ID:");
-    print(slotID);
     await FirebaseFirestore.instance
         .collection('doctors')
         .doc(doctorID)
@@ -29,6 +27,8 @@ class ConfirmCancel extends StatelessWidget {
   }
 
   void cancelAppointment(bookingId) {
+    print("This is the booking ID");
+    print(bookingId);
     FirebaseFirestore.instance.collection('bookings').doc(bookingId).delete();
   }
 

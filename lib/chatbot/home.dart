@@ -212,7 +212,7 @@ class _ChatHomeState extends State<ChatHome> {
           ),
           symptoms.length == 5
               ? Padding(
-                  padding: EdgeInsets.fromLTRB(160, 700, 0, 0),
+                  padding: EdgeInsets.fromLTRB(150, 600, 0, 0),
                   child: Container(
                       height: 50,
                       width: 100,
@@ -250,7 +250,7 @@ class _ChatHomeState extends State<ChatHome> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => departmentDoctors(
-                                        departmentName: output.toLowerCase(),
+                                        departmentName: output,
                                         pID: uid,
                                       )));
                         },
