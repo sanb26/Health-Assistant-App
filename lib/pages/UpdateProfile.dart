@@ -89,6 +89,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                         height: 20,
                       ),
                       TextFormField(
+                        readOnly: true,
                         initialValue:
                             patientData['fname'] + " " + patientData['lname'],
                         onChanged: (value) {
@@ -117,6 +118,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                         ),
                       ),
                       TextFormField(
+                        readOnly: true,
                         keyboardType: TextInputType.numberWithOptions(),
                         initialValue: patientData['dob'],
                         onChanged: (value) {
