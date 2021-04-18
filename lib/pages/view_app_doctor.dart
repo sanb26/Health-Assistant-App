@@ -33,6 +33,17 @@ class _ViewAppDocState extends State<ViewAppDoc> {
     return resultant;
   }
 
+  Future<String> getBookingID(docId, day, startTime, endTime) async {
+    var data = await FirebaseFirestore.instance
+        .collection('bookings')
+        .where('docID', isEqualTo: docId)
+        .where('day', isEqualTo: day)
+        .where('start_time', isEqualTo: startTime)
+        .where('end_time', isEqualTo: endTime)
+        .get();
+    return data.docs.first.id;
+  }
+
   CalendarController _controller;
   var formatter = new DateFormat('EEEE');
   var dateGetter = new DateFormat('dd');
@@ -173,7 +184,7 @@ class _ViewAppDocState extends State<ViewAppDoc> {
                     ],
                   ),
                   SizedBox(height: 10.0),
-                  selectedDateAppoint.isEmpty
+                  selectedDateAppoint.length == 0
                       ? Center(
                           child: Text(
                               "No appointments for " +
@@ -217,11 +228,16 @@ class _ViewAppDocState extends State<ViewAppDoc> {
                                       " " +
                                       selectedDateAppoint[index]['end_time']),
                                   trailing: FlatButton.icon(
-                                    onPressed: () {
-                                      // print("------Booking ID is-----");
-                                      // print(globals.bookingIDs[index]);
-                                      // cancelAppointment(
-                                      //     selectedDateAppoint[index]);
+                                    onPressed: () async {
+                                      print("------Booking ID is-----");
+                                      String bookingId = await getBookingID(
+                                          selectedDateAppoint[index]['docID'],
+                                          selectedDateAppoint[index]['day'],
+                                          selectedDateAppoint[index]
+                                              ['start_time'],
+                                          selectedDateAppoint[index]
+                                              ['end_time']);
+                                      print(bookingId);
                                       changeBookingStatus(
                                           selectedDateAppoint[index]['docID'],
                                           selectedDateAppoint[index]['day'],
@@ -229,6 +245,7 @@ class _ViewAppDocState extends State<ViewAppDoc> {
                                               ['start_time'],
                                           selectedDateAppoint[index]
                                               ['end_time']);
+                                      cancelAppointment(bookingId);
                                     },
                                     icon: Icon(
                                       Icons.cancel,

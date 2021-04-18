@@ -67,7 +67,7 @@ class DatabaseManager {
   Future getSelectedDateAppointment(
       String docId, String date, String month, String year) async {
     List selectedDateAppt = [];
-    Map<Map<String, dynamic>, String> apptData;
+    // Map<Map<String, dynamic>, String> apptData;
     try {
       await firestore
           .collection('bookings')
@@ -79,8 +79,6 @@ class DatabaseManager {
           .then((querySnapshot) {
         querySnapshot.docs.forEach((element) {
           selectedDateAppt.add(element.data());
-          apptData[element.data()] = element.id;
-          // globals.bookingIDs.add(element.id);
         });
       });
       print("Selected date appointments foundddd");
