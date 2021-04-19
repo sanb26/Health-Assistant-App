@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:health_assistant/globals.dart' as globals;
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class ViewAppDoc extends StatefulWidget {
   final String docId;
@@ -44,6 +46,63 @@ class _ViewAppDocState extends State<ViewAppDoc> {
     return data.docs.first.id;
   }
 
+  Future<List<String>> sendCancelNotificationToDoctor(String pID) async {
+    List<String> fetchedTokens = [];
+    var data = await FirebaseFirestore.instance
+        .collection('patients')
+        .doc(pID)
+        .collection('tokens')
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((element) {
+        fetchedTokens.add(element.data()['FCM_token']);
+      });
+    });
+    return fetchedTokens;
+  }
+
+  Future<bool> callOnFcmApiSendPushNotifications(
+      List<String> userToken,
+      String doctorName,
+      String day,
+      String date,
+      String month,
+      String year,
+      String startTime,
+      String endTime) async {
+    final postUrl = 'https://fcm.googleapis.com/fcm/send';
+    final data = {
+      "registration_ids": tokens,
+      "collapse_key": "type_a",
+      "notification": {
+        "title": 'Appointment is Cancelled',
+        "body":
+            "$doctorName has cancelled the appointment scheduled for $date/$month/$year, $day from $startTime to $endTime",
+      }
+    };
+
+    final headers = {
+      'content-type': 'application/json',
+      'Authorization': globals.serverKey // 'key=YOUR_SERVER_KEY'
+    };
+
+    final response = await http.post(postUrl,
+        body: json.encode(data),
+        encoding: Encoding.getByName('utf-8'),
+        headers: headers);
+
+    if (response.statusCode == 200) {
+      // on success do sth
+      print('test ok push CFM');
+      return true;
+    } else {
+      print(' CFM error');
+      // on failure do sth
+      return false;
+    }
+  }
+
+  List<String> tokens = [];
   CalendarController _controller;
   var formatter = new DateFormat('EEEE');
   var dateGetter = new DateFormat('dd');
@@ -241,6 +300,25 @@ class _ViewAppDocState extends State<ViewAppDoc> {
                                       changeBookingStatus(
                                           selectedDateAppoint[index]['docID'],
                                           selectedDateAppoint[index]['day'],
+                                          selectedDateAppoint[index]
+                                              ['start_time'],
+                                          selectedDateAppoint[index]
+                                              ['end_time']);
+                                      print(selectedDateAppoint.toString());
+                                      tokens =
+                                          await sendCancelNotificationToDoctor(
+                                              selectedDateAppoint[index]
+                                                  ['pID']);
+                                      print("Fetched Patient FCM tokens");
+                                      print(tokens);
+                                      callOnFcmApiSendPushNotifications(
+                                          tokens,
+                                          selectedDateAppoint[index]
+                                              ['doctor_name'],
+                                          selectedDateAppoint[index]['day'],
+                                          selectedDateAppoint[index]['date'],
+                                          selectedDateAppoint[index]['month'],
+                                          selectedDateAppoint[index]['year'],
                                           selectedDateAppoint[index]
                                               ['start_time'],
                                           selectedDateAppoint[index]

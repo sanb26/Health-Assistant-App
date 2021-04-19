@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_assistant/DatabaseManager/DatabaseManager.dart';
@@ -7,12 +8,13 @@ import 'package:health_assistant/pages/sign_in.dart';
 import 'package:health_assistant/pages/viewPatientProfile.dart';
 import 'package:health_assistant/pages/view_app_doctor.dart';
 import 'package:health_assistant/theme/light_color.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 
 class DoctorHomeScreen extends StatefulWidget {
   final String docId;
   final String name;
-  DoctorHomeScreen({Key key, @required this.docId, @required this.name}): super(key: key);
+  DoctorHomeScreen({Key key, @required this.docId, @required this.name})
+      : super(key: key);
 
   @override
   _DoctorHomeScreenState createState() => _DoctorHomeScreenState(docId, name);
@@ -24,7 +26,71 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
   //List todaysAppoint = [];
 
   _DoctorHomeScreenState(this.docId, this.name);
-
+  FirebaseMessaging _fcm = FirebaseMessaging();
+  @override
+  void initState() {
+    super.initState();
+    print("Configuring FCM");
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("$message");
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  content: ListTile(
+                    title: Text(message['notification']['title']),
+                    subtitle: Text(message['notification']['body']),
+                  ),
+                  actions: [
+                    FlatButton(
+                      child: Text("Okay"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                ));
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("$message");
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  content: ListTile(
+                    title: Text(message['notification']['title']),
+                    subtitle: Text(message['notification']['body']),
+                  ),
+                  actions: [
+                    FlatButton(
+                      child: Text("Okay"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                ));
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("$message");
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  content: ListTile(
+                    title: Text(message['notification']['title']),
+                    subtitle: Text(message['notification']['body']),
+                  ),
+                  actions: [
+                    FlatButton(
+                      child: Text("Okay"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                ));
+      },
+    );
+  }
 
   fetchTodaysAppointments() async {
     var resultant = await DatabaseManager().getTodaysAppointment(docId);
@@ -37,15 +103,19 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
       return resultant;
     }
   }
-  
-  Widget _servicesButton(String title,String subtitle, {Color color, Color lightColor}){
+
+  Widget _servicesButton(String title, String subtitle,
+      {Color color, Color lightColor}) {
     return InkWell(
       onTap: () {
         print("helloooooooo");
         if (subtitle == "view_appt") {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ViewAppDoc(docId: docId,)),
+            MaterialPageRoute(
+                builder: (context) => ViewAppDoc(
+                      docId: docId,
+                    )),
           );
         } else if (subtitle == "profile") {
           Navigator.push(
@@ -53,11 +123,10 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
             MaterialPageRoute(builder: (context) => DoctorProfile(docId)),
           );
         }
-
       },
       child: Container(
-        width:MediaQuery.of(context).size.width*0.89,
-        height: (MediaQuery.of(context).size.width*0.89)/4.5,
+        width: MediaQuery.of(context).size.width * 0.89,
+        height: (MediaQuery.of(context).size.width * 0.89) / 4.5,
         margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
         decoration: BoxDecoration(
           color: color,
@@ -78,13 +147,16 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
                 Positioned(
                   top: -20,
                   left: -20,
-                  child: CircleAvatar(backgroundColor: lightColor,radius: 60,),
+                  child: CircleAvatar(
+                    backgroundColor: lightColor,
+                    radius: 60,
+                  ),
                 ),
                 Center(
-                  child: Text(
-                    title,
-                    style: GoogleFonts.lato(fontSize:MediaQuery.of(context).size.height / 40, color: Colors.white)
-                  ),
+                  child: Text(title,
+                      style: GoogleFonts.lato(
+                          fontSize: MediaQuery.of(context).size.height / 40,
+                          color: Colors.white)),
                 ),
               ],
             ),
@@ -136,77 +208,94 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<dynamic>(
-      future: fetchTodaysAppointments(),
-      builder:(context, snapshot){
-        if(!snapshot.hasData){
-          return Scaffold(body: Center(child: CircularProgressIndicator()));
-        }
-        var todaysAppoint = snapshot.data;
-        return Scaffold(
-          appBar: _appBar(),
-          backgroundColor: Color(0xFFFFFFFF),
-          body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                SizedBox(height:20),
-                _servicesButton("View Appointments","view_appt", color: LightColor.green, lightColor: LightColor.lightGreen),
-                _servicesButton("View Profile","profile",color: LightColor.skyBlue, lightColor: LightColor.lightBlue),
-                SizedBox(height:40),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Today's Appointments",
-                      style: GoogleFonts.lato(fontSize: MediaQuery.of(context).size.height/30,fontWeight: FontWeight.bold),
-                    ),
-                    Icon(Icons.sort),
-                  ],
-                ),
-                SizedBox(height: 20),
-                todaysAppoint.isEmpty?
-                Center(child: Text("No appointments today.",  style: GoogleFonts.lato(fontSize: MediaQuery.of(context).size.height/40))):
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: todaysAppoint.length,
-                    itemBuilder: (context, index){
-                      return Container(
-                        margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                              offset: Offset(4, 4),
-                              blurRadius: 10,
-                              color: LightColor.grey.withOpacity(.2),
-                            ),
-                            BoxShadow(
-                              offset: Offset(-3, 0),
-                              blurRadius: 15,
-                              color: LightColor.grey.withOpacity(.1),
-                            )
-                          ],
-                        ),
-                        child: ListTile(
-                          title: Text(todaysAppoint[index]['patient_name']),
-                          subtitle: Text(todaysAppoint[index]['start_time']+" "+todaysAppoint[index]['end_time']),
-                          onTap: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => ViewPatientProfile(todaysAppoint[index]['pID'])),
-                            );
-                          },
-                        ),
-                      );
-                    },
+        future: fetchTodaysAppointments(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Scaffold(body: Center(child: CircularProgressIndicator()));
+          }
+          var todaysAppoint = snapshot.data;
+          return Scaffold(
+            appBar: _appBar(),
+            backgroundColor: Color(0xFFFFFFFF),
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  SizedBox(height: 20),
+                  _servicesButton("View Appointments", "view_appt",
+                      color: LightColor.green,
+                      lightColor: LightColor.lightGreen),
+                  _servicesButton("View Profile", "profile",
+                      color: LightColor.skyBlue,
+                      lightColor: LightColor.lightBlue),
+                  SizedBox(height: 40),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Today's Appointments",
+                        style: GoogleFonts.lato(
+                            fontSize: MediaQuery.of(context).size.height / 30,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Icon(Icons.sort),
+                    ],
                   ),
-                ),
-              ],
+                  SizedBox(height: 20),
+                  todaysAppoint.isEmpty
+                      ? Center(
+                          child: Text("No appointments today.",
+                              style: GoogleFonts.lato(
+                                  fontSize:
+                                      MediaQuery.of(context).size.height / 40)))
+                      : Expanded(
+                          child: ListView.builder(
+                            itemCount: todaysAppoint.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
+                                  boxShadow: <BoxShadow>[
+                                    BoxShadow(
+                                      offset: Offset(4, 4),
+                                      blurRadius: 10,
+                                      color: LightColor.grey.withOpacity(.2),
+                                    ),
+                                    BoxShadow(
+                                      offset: Offset(-3, 0),
+                                      blurRadius: 15,
+                                      color: LightColor.grey.withOpacity(.1),
+                                    )
+                                  ],
+                                ),
+                                child: ListTile(
+                                  title: Text(
+                                      todaysAppoint[index]['patient_name']),
+                                  subtitle: Text(todaysAppoint[index]
+                                          ['start_time'] +
+                                      " " +
+                                      todaysAppoint[index]['end_time']),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ViewPatientProfile(
+                                                  todaysAppoint[index]['pID'])),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                ],
+              ),
             ),
-          ),
-        );
-      } 
-    ); //FutureBuilder
+          );
+        }); //FutureBuilder
   }
 }

@@ -3,6 +3,9 @@ import 'package:health_assistant/theme/light_color.dart';
 import 'package:nice_button/nice_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:health_assistant/globals.dart' as globals;
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ConfirmCancel extends StatelessWidget {
   changeBookingStatus(doctorID, day, startTime, endTime) async {
@@ -32,6 +35,63 @@ class ConfirmCancel extends StatelessWidget {
     FirebaseFirestore.instance.collection('bookings').doc(bookingId).delete();
   }
 
+  Future<List<String>> sendCancelNotificationToDoctor(docID) async {
+    List<String> fetchedTokens = [];
+    var data = await FirebaseFirestore.instance
+        .collection('doctors')
+        .doc(docID)
+        .collection('tokens')
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((element) {
+        fetchedTokens.add(element.data()['FCM_token']);
+      });
+    });
+    return fetchedTokens;
+  }
+
+  Future<bool> callOnFcmApiSendPushNotifications(
+      List<String> userToken,
+      String patientName,
+      String day,
+      String date,
+      String month,
+      String year,
+      String startTime,
+      String endTime) async {
+    final postUrl = 'https://fcm.googleapis.com/fcm/send';
+    final data = {
+      "registration_ids": tokens,
+      "collapse_key": "type_a",
+      "notification": {
+        "title": 'Appointment is Cancelled',
+        "body":
+            "$patientName has cancelled the appointment scheduled for $date/$month/$year, $day from $startTime to $endTime",
+      }
+    };
+
+    final headers = {
+      'content-type': 'application/json',
+      'Authorization': globals.serverKey // 'key=YOUR_SERVER_KEY'
+    };
+
+    final response = await http.post(postUrl,
+        body: json.encode(data),
+        encoding: Encoding.getByName('utf-8'),
+        headers: headers);
+
+    if (response.statusCode == 200) {
+      // on success do sth
+      print('test ok push CFM');
+      return true;
+    } else {
+      print(' CFM error');
+      // on failure do sth
+      return false;
+    }
+  }
+
+  List<String> tokens = [];
   final String docID;
   final appointmentDetails;
   ConfirmCancel(this.appointmentDetails, this.docID);
@@ -124,13 +184,29 @@ class ConfirmCancel extends StatelessWidget {
               radius: 52.0,
               text: "Confirm Cancellation",
               background: Colors.red,
-              onPressed: () {
+              onPressed: () async {
                 cancelAppointment(docID);
                 changeBookingStatus(
                     appointmentDetails['docID'],
                     appointmentDetails['day'],
                     appointmentDetails['start_time'],
                     appointmentDetails['end_time']);
+                print(appointmentDetails['docID']);
+                tokens = await sendCancelNotificationToDoctor(
+                    appointmentDetails['docID']);
+                print("Fetched Doctor FCM tokens");
+                print(tokens);
+                callOnFcmApiSendPushNotifications(
+                  tokens,
+                  appointmentDetails['patient_name'],
+                  appointmentDetails['day'],
+                  appointmentDetails['date'],
+                  appointmentDetails['month'],
+                  appointmentDetails['year'],
+                  appointmentDetails['start_time'],
+                  appointmentDetails['end_time'],
+                );
+                print("Made http request to send notification");
                 Navigator.pop(context);
               },
             ),

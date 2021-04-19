@@ -10,6 +10,7 @@ import 'package:health_assistant/pages/view_appointments.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'sign_in.dart';
 import 'package:google_fonts/google_fonts.dart'; //google fonts
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class PatientHomeScreen extends StatefulWidget {
   final String uid;
@@ -30,12 +31,74 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
 
   _PatientHomeScreenState(this.uid, this.fname, this.lname);
   DocumentSnapshot userData;
-
+  FirebaseMessaging _fcm = FirebaseMessaging();
   @override
   void initState() {
     print(fname);
     print(lname);
     super.initState();
+
+    super.initState();
+    print("Configuring FCM");
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("$message");
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  content: ListTile(
+                    title: Text(message['notification']['title']),
+                    subtitle: Text(message['notification']['body']),
+                  ),
+                  actions: [
+                    FlatButton(
+                      child: Text("Okay"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                ));
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("$message");
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  content: ListTile(
+                    title: Text(message['notification']['title']),
+                    subtitle: Text(message['notification']['body']),
+                  ),
+                  actions: [
+                    FlatButton(
+                      child: Text("Okay"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                ));
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("$message");
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  content: ListTile(
+                    title: Text(message['notification']['title']),
+                    subtitle: Text(message['notification']['body']),
+                  ),
+                  actions: [
+                    FlatButton(
+                      child: Text("Okay"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                ));
+      },
+    );
   }
 
   Widget _appBar() {
@@ -252,8 +315,10 @@ class DataSearch extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     //show some result based on suggestion
-    final searchedList =
-        departments.where((x) => x.startsWith(query[0].toUpperCase()+query.substring(1).toLowerCase())).toList();
+    final searchedList = departments
+        .where((x) => x.startsWith(
+            query[0].toUpperCase() + query.substring(1).toLowerCase()))
+        .toList();
     return searchedList.isEmpty
         ? Padding(
             padding: const EdgeInsets.all(8.0),
@@ -299,7 +364,10 @@ class DataSearch extends SearchDelegate<String> {
     //show when someone searches for something
     final userInputList = query.isEmpty
         ? recentDepartmentSearch
-        : departments.where((x) => x.startsWith(query[0].toUpperCase()+query.substring(1).toLowerCase())).toList();
+        : departments
+            .where((x) => x.startsWith(
+                query[0].toUpperCase() + query.substring(1).toLowerCase()))
+            .toList();
 
     return userInputList.isEmpty
         ? Padding(
