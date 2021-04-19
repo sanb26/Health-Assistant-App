@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -24,14 +24,13 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
-  firebase_core: ^0.7.0              #A Flutter plugin to use the Firebase Core API, which enables connecting to multiple Firebase apps.
-  firebase_auth: ^0.20.1             #A Flutter plugin to use the Firebase Authentication API.
-  google_sign_in: ^4.5.9             #A Flutter plugin for Google Sign In.
-  cloud_firestore: ^0.16.0+1         #A Flutter plugin to use the Cloud Firestore API.
+  firebase_core: ^0.7.0 #A Flutter plugin to use the Firebase Core API, which enables connecting to multiple Firebase apps.
+  firebase_auth: ^0.20.1 #A Flutter plugin to use the Firebase Authentication API.
+  google_sign_in: ^4.5.9 #A Flutter plugin for Google Sign In.
+  cloud_firestore: ^0.16.0+1 #A Flutter plugin to use the Cloud Firestore API.
   shared_preferences: ^0.5.12+4
   google_fonts: ^1.1.2
   flutter_signin_button: ^1.1.0
@@ -43,8 +42,7 @@ dependencies:
   url_launcher: ^5.0.3
   http: ^0.12.0+2
   nice_button: ^0.1.7
-
-  
+  firebase_messaging: ^6.0.12
 
 dev_dependencies:
   flutter_test:
@@ -55,7 +53,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

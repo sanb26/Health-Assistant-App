@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:health_assistant/pages/sign_in.dart';
 import 'package:health_assistant/globals.dart' as globals;
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 // a simple dialog to be visible everytime some error occurs
 showErrDialog(BuildContext context, String err) {
@@ -26,6 +28,32 @@ showErrDialog(BuildContext context, String err) {
   );
 }
 
+void _savePatientFCMtoken(String uid) async {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  String token = await _firebaseMessaging.getToken();
+  if (token != null) {
+    await FirebaseFirestore.instance
+        .collection('patients')
+        .doc(uid)
+        .collection('tokens')
+        .doc(token)
+        .set({'FCM_token': token});
+  }
+}
+
+void _saveDoctorFCMtoken(String uid) async {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  String token = await _firebaseMessaging.getToken();
+  if (token != null) {
+    await FirebaseFirestore.instance
+        .collection('doctors')
+        .doc(uid)
+        .collection('tokens')
+        .doc(token)
+        .set({'FCM_token': token});
+  }
+}
+
 FirebaseAuth auth = FirebaseAuth.instance;
 final gooleSignIn = GoogleSignIn();
 
@@ -43,6 +71,8 @@ Future<bool> googleSignIn() async {
 
     User user = auth.currentUser;
     globals.userProfileImage = user.photoURL;
+    _savePatientFCMtoken(user.uid);
+    print("patient's FCM token saved!!!!!!!");
     //print("Hey Google user");
     //print(user.uid);
 
@@ -59,7 +89,8 @@ Future<User> signin(String email, String password, BuildContext context) async {
     final result =
         await auth.signInWithEmailAndPassword(email: email, password: password);
     User user = result.user;
-
+    _saveDoctorFCMtoken(user.uid);
+    print("Doctor's FCM token saved!!!!!!!!!!!!!!");
     // return Future.value(true);
     //print("User signed in with email and password");
     return Future.value(user);
