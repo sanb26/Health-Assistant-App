@@ -120,7 +120,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
         } else if (subtitle == "profile") {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => DoctorProfile(docId)),
+            MaterialPageRoute(builder: (context) => DoctorProfile(doctorId: docId)),
           );
         }
       },
@@ -284,7 +284,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               ViewPatientProfile(
-                                                  todaysAppoint[index]['pID'])),
+                                                  todaysAppoint[index]['pID'], docId)),
                                     );
                                   },
                                 ),

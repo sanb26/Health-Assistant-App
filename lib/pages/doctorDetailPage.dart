@@ -133,6 +133,19 @@ class _doctorDetailState extends State<doctorDetail> {
                                                 42,
                                         color: LightColor.lightblack)),
                                 SizedBox(height: 20),
+                                Text("Consultation Fee",
+                                    style: GoogleFonts.lato(
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                30,
+                                        fontWeight: FontWeight.bold)),
+                                Text("₹ "+docDetails['consultationFee'].toString(),
+                                    style: GoogleFonts.lato(
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                42,
+                                        color: LightColor.lightblack)),
+                                SizedBox(height: 20),
                                 Text("Schedule",
                                     style: GoogleFonts.lato(
                                         fontSize:

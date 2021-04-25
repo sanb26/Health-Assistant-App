@@ -336,9 +336,7 @@ class _ViewAppDocState extends State<ViewAppDoc> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              ViewPatientProfile(
-                                                  selectedDateAppoint[index]
-                                                      ['pID'])),
+                                          ViewPatientProfile(selectedDateAppoint[index]['pID'], docId),),
                                     );
                                   },
                                 ),
