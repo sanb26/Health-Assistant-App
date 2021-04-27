@@ -259,7 +259,6 @@ class _ViewAppDocState extends State<ViewAppDoc> {
                           child: ListView.builder(
                             itemCount: selectedDateAppoint.length,
                             itemBuilder: (context, index) {
-                              // print(selectedDateAppoint[index].id);
                               return Container(
                                 margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
                                 decoration: BoxDecoration(
@@ -325,20 +324,42 @@ class _ViewAppDocState extends State<ViewAppDoc> {
                                               ['end_time']);
                                       cancelAppointment(bookingId);
                                     },
-                                    icon: Icon(
-                                      Icons.cancel,
-                                      color: Colors.redAccent,
-                                    ),
-                                    label: Text("Cancel \nAppointment"),
+                                    icon: DateTime.now().isBefore(
+                                            DateTime.parse(selectedDateAppoint[
+                                                        index]['year'] +
+                                                    selectedDateAppoint[index]
+                                                        ['month'] +
+                                                    selectedDateAppoint[index]
+                                                        ['date'])
+                                                .subtract(
+                                                    const Duration(hours: 24)))
+                                        ? Icon(
+                                            Icons.cancel,
+                                            color: Colors.redAccent,
+                                          )
+                                        : Icon(Icons.hourglass_disabled),
+                                    label: DateTime.now().isBefore(
+                                            DateTime.parse(selectedDateAppoint[
+                                                        index]['year'] +
+                                                    selectedDateAppoint[index]
+                                                        ['month'] +
+                                                    selectedDateAppoint[index]
+                                                        ['date'])
+                                                .subtract(
+                                                    const Duration(hours: 24)))
+                                        ? Text("Cancel \nAppointment")
+                                        : Text("No\nOptions"),
                                   ),
                                   onTap: () {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              ViewPatientProfile(
-                                                  selectedDateAppoint[index]
-                                                      ['pID'])),
+                                        builder: (context) =>
+                                            ViewPatientProfile(
+                                                selectedDateAppoint[index]
+                                                    ['pID'],
+                                                docId),
+                                      ),
                                     );
                                   },
                                 ),

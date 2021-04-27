@@ -3,6 +3,7 @@ import 'package:health_assistant/pages/UpdateProfile.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:health_assistant/globals.dart' as globals;
+import 'package:firebase_auth/firebase_auth.dart';
 
 class PatientProfile extends StatefulWidget {
   final String pID;
@@ -18,14 +19,12 @@ class _PatientProfileState extends State<PatientProfile> {
     return data;
   }
 
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User user;
+
   void initState() {
     super.initState();
-    // _controller = CalendarController();
-    //getDocName(docId);
-    //getPatientName(pId);
-    // print("Doctor name is " + dName);
-    // var data = await getPatient(widget.pID);
-    // var patientData = data.data;
+    user = auth.currentUser;
   }
 
   @override
@@ -78,7 +77,7 @@ class _PatientProfileState extends State<PatientProfile> {
                               decoration: BoxDecoration(
                                   image: DecorationImage(
                             fit: BoxFit.fill,
-                            image: NetworkImage(globals.userProfileImage),
+                            image: NetworkImage(user.photoURL),
                           ))),
                           radius: 65.0,
                           // backgroundImage: NetworkImage(),

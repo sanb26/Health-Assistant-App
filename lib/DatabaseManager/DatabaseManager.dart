@@ -35,6 +35,8 @@ class DatabaseManager {
     }
   }
 
+    
+
   Future getTodaysAppointment(String docId) async {
     List todaysappointments = [];
     String tdate = DateTime.now().toString();
@@ -89,4 +91,35 @@ class DatabaseManager {
       return null;
     }
   }
+
+    Future getChatBotResult(String docId, String pId) async {
+    List chatResult = [];
+    var docData = await getDoctorDetails(docId);
+    String docType = docData['type'];
+    // Map<Map<String, dynamic>, String> apptData;
+    try {
+      await firestore
+      .collection('patients')
+      .doc(pId)
+      .collection('self_diagnois')
+      .where("result", isEqualTo: docType)
+      .get()
+      .then((querySnapshot) {
+        querySnapshot.docs.forEach((element) {
+          chatResult.add(element.data());
+        });
+      }); 
+      print("ChatBot Results hereee");
+      //print(chatResult);
+      return chatResult;     
+    } catch (e) {
+      print("ChatBot Results NOT found");
+      print(e.toString());
+      return null;
+    }
+  }
+
+
+
+
 }

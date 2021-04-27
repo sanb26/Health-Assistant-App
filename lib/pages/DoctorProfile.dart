@@ -1,239 +1,198 @@
-import 'dart:io';
-
-import 'package:flutter/material.dart';
-import 'package:health_assistant/pages/UpdateProfile.dart';
-import 'package:health_assistant/theme/light_color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:health_assistant/pages/department_list.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart'; //google fonts
+import 'package:health_assistant/DatabaseManager/DatabaseManager.dart';
+import 'package:health_assistant/theme/light_color.dart';
 
+
+// ignore: camel_case_types
 class DoctorProfile extends StatefulWidget {
-  final String pID;
-  DoctorProfile(this.pID);
+  final String doctorId;
+  DoctorProfile({Key key, @required this.doctorId})
+      : super(key: key);
   @override
-  _DoctorProfileState createState() => _DoctorProfileState();
+  _DoctorProfileState createState() => _DoctorProfileState(doctorId);
 }
 
+// ignore: camel_case_types
 class _DoctorProfileState extends State<DoctorProfile> {
-  Future<DocumentSnapshot> getPatient(pID) async {
-    var data =
-        await FirebaseFirestore.instance.collection('doctors').doc(pID).get();
-    return data;
+  String doctorId;
+  Map<String, dynamic> docDetails;
+
+  _DoctorProfileState(this.doctorId,);
+
+  fetchDocDetails() async {
+    var resultant = await DatabaseManager().getDoctorDetails(doctorId);
+    if (resultant == null) {
+      print('Unable to retrieve the doctors list');
+    } else {
+      // setState(() {
+      //   docDetails = resultant;
+      // });
+      return resultant;
+    }
   }
 
-  void initState() {
-    super.initState();
+  Future<List<QueryDocumentSnapshot>> getScheduleInfo(docId) async {
+    var data = await FirebaseFirestore.instance
+        .collection('doctors')
+        .doc(docId)
+        .collection('Schedule')
+        .get();
+
+    return data.docs;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder(
-        future: getPatient(widget.pID),
-        builder: (context, snapshot) {
-          if (snapshot.data == null) {
-            return Center(child: CircularProgressIndicator());
-          }
-          var doctorData = snapshot.data;
-          print(doctorData);
-          return Stack(
-            children: [
-              Column(
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [LightColor.purple, LightColor.purpleLight],
-                        ),
-                      ),
-                      child: Column(children: [
-                        SizedBox(height: 40),
-                        Align(
-                          alignment: Alignment.topRight,
-                          /*child: IconButton(
-                            icon: Icon(Icons.edit),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => UpdateUserProfile(widget.pID)),
-                              );
-                            },
-                          ),*/
-                        ),
-                        SizedBox(
-                          height: 60.0,
-                        ),
-                        CircleAvatar(
-                          radius: 65.0,
-                          backgroundImage:
-                              NetworkImage(doctorData['profile_image']),
-                          backgroundColor: Colors.white,
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        Text(doctorData['name'],
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                            )),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        Text(
-                          'Doctor',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15.0,
-                          ),
-                        )
-                      ]),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 5,
-                    child: Container(
-                      color: Colors.grey[200],
-                      child: Center(
-                          child: Card(
-                              margin: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
-                              child: Container(
-                                  width: 310.0,
-                                  height: 290.0,
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Information",
-                                          style: TextStyle(
-                                            fontSize: 17.0,
-                                            fontWeight: FontWeight.w800,
-                                          ),
-                                        ),
-                                        Divider(
-                                          color: Colors.grey[300],
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Icon(
-                                              Icons.explore,
-                                              color: LightColor.purple,
-                                              size: 35,
-                                            ),
-                                            SizedBox(
-                                              width: 20.0,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Experience",
-                                                  style: TextStyle(
-                                                    fontSize: 15.0,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  doctorData['experience']
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                    fontSize: 12.0,
-                                                    color: Colors.grey[400],
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 20.0,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Icon(
-                                              Icons.book,
-                                              color: LightColor.purple,
-                                              size: 35,
-                                            ),
-                                            SizedBox(
-                                              width: 20.0,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Degree",
-                                                  style: TextStyle(
-                                                    fontSize: 15.0,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  doctorData['degree'],
-                                                  style: TextStyle(
-                                                    fontSize: 12.0,
-                                                    color: Colors.grey[400],
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 20.0,
-                                        ),
-                                      ],
-                                    ),
-                                  )))),
-                    ),
-                  ),
-                ],
-              ),
-              Positioned(
-                  top: MediaQuery.of(context).size.height * 0.45,
-                  left: 20.0,
-                  right: 20.0,
-                  child: Card(
-                      child: Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                            child: Column(
-                          children: [
-                            Text(
-                              'Type',
-                              style: TextStyle(
-                                  color: Colors.grey[400], fontSize: 14.0),
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            Text(
-                              doctorData['type'],
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              ),
-                            )
-                          ],
-                        )),
-                      ],
-                    ),
-                  )))
-            ],
+    return FutureBuilder<dynamic>(
+      future: fetchDocDetails(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
-        },
-      ),
+        }
+        var docDetails = snapshot.data;
+        return FutureBuilder<List<QueryDocumentSnapshot>>(
+          future: getScheduleInfo(doctorId),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Scaffold(body: Center(child: CircularProgressIndicator()));
+            }
+            var scheduleDetails = snapshot.data;
+            return Scaffold(
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                backgroundColor: LightColor.purple,
+                title: Text(docDetails['type'][0].toUpperCase() +
+                    docDetails['type'].substring(1)),
+              ),
+              body: SafeArea(
+                  child: Stack(
+                children: [
+                  Image.network(docDetails['profile_image'],
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.contain),
+                  DraggableScrollableSheet(
+                      maxChildSize: .8,
+                      initialChildSize: .5,
+                      minChildSize: .5,
+                      builder: (context, scrollController) {
+                        return Container(
+                          height: MediaQuery.of(context).size.height * .5,
+                          padding:
+                              EdgeInsets.only(left: 19, right: 19, top: 16),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(30)),
+                            color: Colors.white,
+                          ),
+                          child: SingleChildScrollView(
+                            physics: BouncingScrollPhysics(),
+                            controller: scrollController,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(docDetails['name'],
+                                    style: GoogleFonts.lato(
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                30,
+                                        fontWeight: FontWeight.bold)),
+                                Text(docDetails['degree'],
+                                    style: GoogleFonts.lato(
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                42,
+                                        color: LightColor.subTitleTextColor)),
+                                Text(
+                                    docDetails['experience'].toString() +
+                                        " years of experience\n",
+                                    style: GoogleFonts.lato(
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                42,
+                                        color: LightColor.subTitleTextColor)),
+                                Text("About",
+                                    style: GoogleFonts.lato(
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                30,
+                                        fontWeight: FontWeight.bold)),
+                                Text(docDetails['description'],
+                                    style: GoogleFonts.lato(
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                42,
+                                        color: LightColor.lightblack)),
+                                SizedBox(height: 20),
+                                Text("Consultation Fee",
+                                    style: GoogleFonts.lato(
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                30,
+                                        fontWeight: FontWeight.bold)),
+                                Text("₹ "+docDetails['consultationFee'].toString(),
+                                    style: GoogleFonts.lato(
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                42,
+                                        color: LightColor.lightblack)),
+                                SizedBox(height: 20),
+                                Text("Schedule",
+                                    style: GoogleFonts.lato(
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                30,
+                                        fontWeight: FontWeight.bold)),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: scheduleDetails.length,
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      child: ListTile(
+                                        title: Text(
+                                          scheduleDetails[index].data()['day'],
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize:MediaQuery.of(context).size.height/42,
+                                              ),
+                                        ),
+                                        subtitle: Text(
+                                            scheduleDetails[index]
+                                                    .data()['in_time'] +
+                                                " to " +
+                                                scheduleDetails[index]
+                                                    .data()['out_time'],
+                                            style: GoogleFonts.lato(
+                                                fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    42,
+                                                color: LightColor
+                                                    .subTitleTextColor)),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                ],
+              )),
+            );
+          },
+        );
+      },
     );
   }
 }

@@ -43,10 +43,17 @@ dependencies:
   http: ^0.12.0+2
   nice_button: ^0.1.7
   firebase_messaging: ^6.0.12
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.8.1
+
+flutter_icons:
+  image_path: "assets/cardiogram.png"
+  android: "launcher_icon"
+  ios: true
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
