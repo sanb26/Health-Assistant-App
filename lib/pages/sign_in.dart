@@ -32,13 +32,15 @@ class _SignInState extends State<SignIn> {
       formkey.currentState.save();
       //calling signin with email and password function which returns user if sign in successful else null
       signin(email, password, context).then((value) async {
-         var doctorData = await DatabaseManager().getDoctorDetails(value.uid);  //passing doc id
+        var doctorData = await DatabaseManager()
+            .getDoctorDetails(value.uid); //passing doc id
         if (value != null) {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    DoctorHomeScreen(docId: value.uid, name:doctorData['name']), // TODO: Route to Homepage
+                builder: (context) => DoctorHomeScreen(
+                    docId: value.uid,
+                    name: doctorData['name']), // TODO: Route to Homepage
               ));
         }
       });
@@ -275,5 +277,4 @@ class _SignInState extends State<SignIn> {
       return null;
     }
   }
-
 }
