@@ -70,7 +70,7 @@ Future<bool> googleSignIn() async {
     await auth.signInWithCredential(credential);
 
     User user = auth.currentUser;
-    globals.userProfileImage = user.photoURL;
+    // globals.userProfileImage = user.photoURL;
     _savePatientFCMtoken(user.uid);
     print("patient's FCM token saved!!!!!!!");
     //print("Hey Google user");

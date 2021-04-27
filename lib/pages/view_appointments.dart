@@ -128,7 +128,7 @@ class _ViewAppointmentsState extends State<ViewAppointments> {
                                       apptDetails[index]['year'] +
                                           apptDetails[index]['month'] +
                                           apptDetails[index]['date'])
-                                  .subtract(const Duration(days: 1)))
+                                  .subtract(const Duration(hours: 1)))
                               ? ButtonTheme(
                                   height: 45,
                                   child: RaisedButton(
