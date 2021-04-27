@@ -26,6 +26,47 @@ class _InfoFormState extends State<InfoForm> {
   TextEditingController intialdateval = TextEditingController();
   GlobalKey<FormState> pformkey = GlobalKey<FormState>();
 
+  String validateMobile(String value) {
+    String patttern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+    RegExp regExp = new RegExp(patttern);
+    if (value.length == 0) {
+      return 'This field is required';
+    }
+    else if (!regExp.hasMatch(value)) {
+      return 'Please enter a valid mobile number';
+    }
+    return null;
+  }
+  String validateAge(String value){
+    String pattern = r'(^[0-9]*$)';
+    RegExp regExp = new RegExp(pattern);
+    if (value.length == 0){
+      return "This field is required";
+    } else if (!regExp.hasMatch(value)){
+      return "Age cannot contain characters other than numbers.";
+    }
+    return null;
+  }
+  String validateHeight(String value){
+    //String pattern = r'(^[0-9]*$)';
+    //RegExp regExp = new RegExp(pattern);
+    if (value.length == 0){
+      return "This field is required";
+    }
+    else if(int.parse(value)>300||int.parse(value)<0)
+      return "Height must be between 0 and 300 cms";
+    return null;
+  }
+  String validateWeight(String value){
+    //String pattern = r'(^[0-9]*$)';
+    //RegExp regExp = new RegExp(pattern);
+    if (value.length == 0){
+      return "This field is required";
+    }
+    else if(int.parse(value)>200||int.parse(value)<0)
+      return "Weight must be between 0 and 200 kgs";
+    return null;
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -99,11 +140,11 @@ class _InfoFormState extends State<InfoForm> {
                 _buildFnameRow(),
                 _buildLnameRow(),
                 _buildAddressRow(),
-                _buildPhoneNoRow(),
+                _buildPhoneNoRow(validateMobile),
                 _buildDOBRow(),
-                _buildHeight(),
-                _buildWeight(),
-                _buildAge(),
+                _buildHeight(validateHeight),
+                _buildWeight(validateWeight),
+                _buildAge(validateAge),
                 _buildGender(),
                 _buildSubmitButton(),
               ],
@@ -183,16 +224,12 @@ class _InfoFormState extends State<InfoForm> {
     );
   }
 
-  Widget _buildPhoneNoRow() {
+  Widget _buildPhoneNoRow( String Function(String) validator) {
     return Padding(
       padding: EdgeInsets.all(10),
       child: TextFormField(
         keyboardType: TextInputType.text,
-        validator: MultiValidator([
-          RequiredValidator(errorText: "This field is required"),
-          MinLengthValidator(10, errorText: "Invalid number"),
-          MaxLengthValidator(10, errorText: "Invalid number"),
-        ]),
+        validator: validator,
         onChanged: (value) {
           setState(() {
             phoneNo = value;
@@ -242,15 +279,12 @@ class _InfoFormState extends State<InfoForm> {
     );
   }
 
-  Widget _buildHeight() {
+  Widget _buildHeight(String Function(String) validator) {
     return Padding(
       padding: EdgeInsets.all(10),
       child: TextFormField(
         keyboardType: TextInputType.text,
-        validator: MultiValidator([
-          RequiredValidator(errorText: "This field is required"),
-          MaxLengthValidator(25, errorText: "Max length 25"),
-        ]),
+        validator: validator,
         onChanged: (value) {
           setState(() {
             height = value;
@@ -267,15 +301,12 @@ class _InfoFormState extends State<InfoForm> {
     );
   }
 
-  Widget _buildWeight() {
+  Widget _buildWeight(String Function(String) validator) {
     return Padding(
       padding: EdgeInsets.all(10),
       child: TextFormField(
         keyboardType: TextInputType.text,
-        validator: MultiValidator([
-          RequiredValidator(errorText: "This field is required"),
-          MaxLengthValidator(25, errorText: "Max length 25"),
-        ]),
+        validator: validator,
         onChanged: (value) {
           setState(() {
             weight = value;
@@ -292,15 +323,12 @@ class _InfoFormState extends State<InfoForm> {
     );
   }
 
-  Widget _buildAge() {
+  Widget _buildAge(String Function(String) validator) {
     return Padding(
       padding: EdgeInsets.all(10),
       child: TextFormField(
         keyboardType: TextInputType.number,
-        validator: MultiValidator([
-          RequiredValidator(errorText: "This field is required"),
-          MaxLengthValidator(25, errorText: "Max length 25"),
-        ]),
+        validator: validator,
         onChanged: (value) {
           setState(() {
             age = value;

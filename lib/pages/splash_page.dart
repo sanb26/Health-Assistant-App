@@ -13,6 +13,7 @@ import 'package:health_assistant/pages/homepagePatient.dart';
 import 'package:health_assistant/pages/sign_in.dart';
 import 'package:health_assistant/DatabaseManager/DatabaseManager.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:health_assistant/pages/patientInfo.dart';
 
 class SplashPage extends StatefulWidget {
   SplashPage({Key key}) : super(key: key);
@@ -67,12 +68,18 @@ class _SplashPageState extends State<SplashPage> {
       bool val = await checkIfDocExists(user.uid);
       DocumentSnapshot userData = await getUserInfo(user.uid);
       if (val && userData.exists) {
+        print(userData);
         Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (context) => PatientHomeScreen(
                 uid: user.uid,
                 lname: userData.data()['lname'],
                 fname: userData.data()['fname'])));
       }
+      else
+        {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => InfoForm(uid: user.uid)));
+        }
     } else {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignIn()));
     }
