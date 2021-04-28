@@ -337,7 +337,7 @@ class _ViewAppDocState extends State<ViewAppDoc> {
                                             Icons.cancel,
                                             color: Colors.redAccent,
                                           )
-                                        : Icon(Icons.hourglass_disabled),
+                                        : Icon(Icons.timer_off),
                                     label: DateTime.now().isBefore(
                                             DateTime.parse(selectedDateAppoint[
                                                         index]['year'] +

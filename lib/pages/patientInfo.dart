@@ -122,7 +122,7 @@ class _InfoFormState extends State<InfoForm> {
 
   Widget _patientInfoFormContainer() {
     return Container(
-      height: MediaQuery.of(context).size.height * 1.1,
+      //height: MediaQuery.of(context).size.height * 1.1,
       width: MediaQuery.of(context).size.width * 0.9,
       margin: EdgeInsets.only(top: 25.0),
       decoration: BoxDecoration(
@@ -137,6 +137,7 @@ class _InfoFormState extends State<InfoForm> {
             key: pformkey,
             child: Column(
               children: [
+                SizedBox(height:20),
                 _buildFnameRow(),
                 _buildLnameRow(),
                 _buildAddressRow(),
@@ -147,6 +148,7 @@ class _InfoFormState extends State<InfoForm> {
                 _buildAge(validateAge),
                 _buildGender(),
                 _buildSubmitButton(),
+                SizedBox(height:10),
               ],
             ),
           ),
@@ -206,7 +208,7 @@ class _InfoFormState extends State<InfoForm> {
         keyboardType: TextInputType.text,
         validator: MultiValidator([
           RequiredValidator(errorText: "This field is required"),
-          MaxLengthValidator(25, errorText: "Max length 25"),
+          MaxLengthValidator(50, errorText: "Max length 50"),
         ]),
         onChanged: (value) {
           setState(() {
