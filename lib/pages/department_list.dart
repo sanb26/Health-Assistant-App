@@ -24,7 +24,7 @@ class DepartmentList extends StatelessWidget {
       ),
       body: Container(
           child: ListView.builder(
-        itemCount: 5,
+        itemCount: 6,
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(departmentNames[index]),

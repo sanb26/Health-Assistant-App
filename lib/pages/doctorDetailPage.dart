@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart'; //google fonts
 import 'package:health_assistant/DatabaseManager/DatabaseManager.dart';
 import 'package:health_assistant/pages/appointment.dart';
 import 'package:health_assistant/theme/light_color.dart';
-import 'package:http/http.dart';
+// import 'package:http/http.dart';
 
 // ignore: camel_case_types
 class doctorDetail extends StatefulWidget {
@@ -59,6 +59,12 @@ class _doctorDetailState extends State<doctorDetail> {
           );
         }
         var docDetails = snapshot.data;
+        print(docDetails['name']);
+        print(docDetails['degree']);
+        print(docDetails['experience']);
+        print(docDetails['consultationFee']);
+        print(docDetails['description']);
+
         return FutureBuilder<List<QueryDocumentSnapshot>>(
           future: getScheduleInfo(doctorId),
           builder: (context, snapshot) {
@@ -66,12 +72,12 @@ class _doctorDetailState extends State<doctorDetail> {
               return Scaffold(body: Center(child: CircularProgressIndicator()));
             }
             var scheduleDetails = snapshot.data;
+            print(scheduleDetails[0].data());
             return Scaffold(
               appBar: AppBar(
                 automaticallyImplyLeading: false,
                 backgroundColor: LightColor.purple,
-                title: Text(docDetails['type'][0].toUpperCase() +
-                    docDetails['type'].substring(1)),
+                title: Text(docDetails['type']),
               ),
               body: SafeArea(
                   child: Stack(
@@ -139,7 +145,10 @@ class _doctorDetailState extends State<doctorDetail> {
                                             MediaQuery.of(context).size.height /
                                                 30,
                                         fontWeight: FontWeight.bold)),
-                                Text("₹ "+docDetails['consultationFee'].toString(),
+                                Text(
+                                    "₹ " +
+                                        docDetails['consultationFee']
+                                            .toString(),
                                     style: GoogleFonts.lato(
                                         fontSize:
                                             MediaQuery.of(context).size.height /
@@ -161,9 +170,12 @@ class _doctorDetailState extends State<doctorDetail> {
                                         title: Text(
                                           scheduleDetails[index].data()['day'],
                                           style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize:MediaQuery.of(context).size.height/42,
-                                              ),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                42,
+                                          ),
                                         ),
                                         subtitle: Text(
                                             scheduleDetails[index]
@@ -189,7 +201,9 @@ class _doctorDetailState extends State<doctorDetail> {
                                   child: ButtonTheme(
                                     height: 45,
                                     child: RaisedButton(
-                                      shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10)),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
                                         color: LightColor.purple,
                                         child: Text("Book Appointment",
                                             style: GoogleFonts.lato(
