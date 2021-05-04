@@ -6,8 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:health_assistant/DatabaseManager/DatabaseManager.dart';
 import 'package:health_assistant/theme/light_color.dart';
-import 'package:health_assistant/theme/text_styles.dart';
-import 'package:health_assistant/theme/extention.dart';
+// import 'package:health_assistant/theme/text_styles.dart';
+// import 'package:health_assistant/theme/extention.dart';
 
 import 'package:health_assistant/pages/homePagePatient.dart';
 import 'package:health_assistant/pages/homePageDoctor.dart';

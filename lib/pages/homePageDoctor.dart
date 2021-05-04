@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:health_assistant/DatabaseManager/DatabaseManager.dart';
 import 'package:health_assistant/controllers/authentication.dart';
 import 'package:health_assistant/pages/DoctorProfile.dart';
+import 'package:health_assistant/pages/doc_past_appointments.dart';
 import 'package:health_assistant/pages/sign_in.dart';
 import 'package:health_assistant/pages/viewPatientProfile.dart';
 import 'package:health_assistant/pages/view_app_doctor.dart';
@@ -120,7 +121,14 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
         } else if (subtitle == "profile") {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => DoctorProfile(doctorId: docId)),
+            MaterialPageRoute(
+                builder: (context) => DoctorProfile(doctorId: docId)),
+          );
+        } else if (subtitle == "view_past_appts") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => PastAppointments(doctorId: docId)),
           );
         }
       },
@@ -228,6 +236,9 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
                   _servicesButton("View Profile", "profile",
                       color: LightColor.skyBlue,
                       lightColor: LightColor.lightBlue),
+                  _servicesButton("View All Appointements", 'view_past_appts',
+                      color: LightColor.orange,
+                      lightColor: LightColor.lightOrange),
                   SizedBox(height: 40),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -284,7 +295,8 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               ViewPatientProfile(
-                                                  todaysAppoint[index]['pID'], docId)),
+                                                  todaysAppoint[index]['pID'],
+                                                  docId)),
                                     );
                                   },
                                 ),

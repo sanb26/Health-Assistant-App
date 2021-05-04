@@ -1,11 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; //google fonts
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:health_assistant/theme/light_color.dart';
-import 'package:health_assistant/theme/text_styles.dart';
-import 'package:health_assistant/theme/theme.dart';
+// import 'package:health_assistant/theme/text_styles.dart';
+// import 'package:health_assistant/theme/theme.dart';
 
 import 'package:health_assistant/pages/homePagePatient.dart';
 
@@ -20,7 +22,6 @@ class InfoForm extends StatefulWidget {
 class _InfoFormState extends State<InfoForm> {
   final String uid;
   _InfoFormState(this.uid);
-
   String fname, lname, phoneNo, address, dob, height, weight, age, gender;
   String dropdownValue = "";
   TextEditingController intialdateval = TextEditingController();
@@ -31,42 +32,43 @@ class _InfoFormState extends State<InfoForm> {
     RegExp regExp = new RegExp(patttern);
     if (value.length == 0) {
       return 'This field is required';
-    }
-    else if (!regExp.hasMatch(value)) {
+    } else if (!regExp.hasMatch(value)) {
       return 'Please enter a valid mobile number';
     }
     return null;
   }
-  String validateAge(String value){
+
+  String validateAge(String value) {
     String pattern = r'(^[0-9]*$)';
     RegExp regExp = new RegExp(pattern);
-    if (value.length == 0){
+    if (value.length == 0) {
       return "This field is required";
-    } else if (!regExp.hasMatch(value)){
+    } else if (!regExp.hasMatch(value)) {
       return "Age cannot contain characters other than numbers.";
     }
     return null;
   }
-  String validateHeight(String value){
+
+  String validateHeight(String value) {
     //String pattern = r'(^[0-9]*$)';
     //RegExp regExp = new RegExp(pattern);
-    if (value.length == 0){
+    if (value.length == 0) {
       return "This field is required";
-    }
-    else if(int.parse(value)>300||int.parse(value)<0)
+    } else if (int.parse(value) > 300 || int.parse(value) < 0)
       return "Height must be between 0 and 300 cms";
     return null;
   }
-  String validateWeight(String value){
+
+  String validateWeight(String value) {
     //String pattern = r'(^[0-9]*$)';
     //RegExp regExp = new RegExp(pattern);
-    if (value.length == 0){
+    if (value.length == 0) {
       return "This field is required";
-    }
-    else if(int.parse(value)>200||int.parse(value)<0)
+    } else if (int.parse(value) > 200 || int.parse(value) < 0)
       return "Weight must be between 0 and 200 kgs";
     return null;
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -137,7 +139,7 @@ class _InfoFormState extends State<InfoForm> {
             key: pformkey,
             child: Column(
               children: [
-                SizedBox(height:20),
+                SizedBox(height: 20),
                 _buildFnameRow(),
                 _buildLnameRow(),
                 _buildAddressRow(),
@@ -148,7 +150,7 @@ class _InfoFormState extends State<InfoForm> {
                 _buildAge(validateAge),
                 _buildGender(),
                 _buildSubmitButton(),
-                SizedBox(height:10),
+                SizedBox(height: 10),
               ],
             ),
           ),
@@ -226,7 +228,7 @@ class _InfoFormState extends State<InfoForm> {
     );
   }
 
-  Widget _buildPhoneNoRow( String Function(String) validator) {
+  Widget _buildPhoneNoRow(String Function(String) validator) {
     return Padding(
       padding: EdgeInsets.all(10),
       child: TextFormField(
@@ -434,6 +436,8 @@ class _InfoFormState extends State<InfoForm> {
       FirebaseFirestore.instance.collection('patients');
 
   Future<bool> addPatient() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User user = auth.currentUser;
     try {
       patients.doc(uid).set({
         'fname': fname,
@@ -444,7 +448,8 @@ class _InfoFormState extends State<InfoForm> {
         'weight': weight,
         'height': height,
         'age': age,
-        'gender': gender
+        'gender': gender,
+        'photo_url': user.photoURL,
       });
       print("Patient Added");
       return true;

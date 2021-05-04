@@ -27,6 +27,7 @@ class _ViewPatientProfileState extends State<ViewPatientProfile> {
 
   FirebaseAuth auth = FirebaseAuth.instance;
   User user;
+
   fetchChatBotResults() async {
     var resultant = await DatabaseManager().getChatBotResult(docId, pID);
     if (resultant == null) {
@@ -80,12 +81,15 @@ class _ViewPatientProfileState extends State<ViewPatientProfile> {
                           child: Column(children: [
                             SizedBox(height: 40),
                             CircleAvatar(
-                              // child: Container(
-                              //     decoration: BoxDecoration(
-                              //         image: DecorationImage(
-                              //   fit: BoxFit.fill,
-                              //   image: NetworkImage(user.photoURL),
-                              // ))),
+                              child: patientData['photo_url'] != null
+                                  ? Container(
+                                      decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: NetworkImage(
+                                          patientData['photo_url']),
+                                    )))
+                                  : Container(),
                               radius: 65.0,
                               // backgroundImage: NetworkImage(),
                               backgroundColor: Colors.white,

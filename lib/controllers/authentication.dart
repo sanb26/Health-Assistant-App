@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:health_assistant/pages/sign_in.dart';
-import 'package:health_assistant/globals.dart' as globals;
+// import 'package:health_assistant/globals.dart' as globals;
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 // a simple dialog to be visible everytime some error occurs

@@ -5,13 +5,13 @@ import 'package:health_assistant/pages/sign_in.dart';
 // import 'package:health_assistant/pages/homePagePatient.dart';
 // import 'package:health_assistant/pages/homePageDoctor.dart';
 import 'package:health_assistant/theme/light_color.dart';
-import 'package:health_assistant/theme/text_styles.dart';
+// import 'package:health_assistant/theme/text_styles.dart';
 import 'package:health_assistant/theme/extention.dart';
 import 'package:google_fonts/google_fonts.dart'; //google fonts
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:health_assistant/pages/homepagePatient.dart';
-import 'package:health_assistant/pages/sign_in.dart';
-import 'package:health_assistant/DatabaseManager/DatabaseManager.dart';
+// import 'package:health_assistant/pages/sign_in.dart';
+// import 'package:health_assistant/DatabaseManager/DatabaseManager.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:health_assistant/pages/patientInfo.dart';
 

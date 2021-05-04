@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:health_assistant/pages/homepagePatient.dart';
+// import 'package:health_assistant/pages/homepagePatient.dart';
 import 'package:health_assistant/theme/light_color.dart';
-import 'package:nice_button/nice_button.dart';
+// import 'package:nice_button/nice_button.dart';
 
 class ConfirmationPage extends StatefulWidget {
   final String pID;

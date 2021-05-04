@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:health_assistant/pages/UpdateProfile.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:health_assistant/globals.dart' as globals;
+// import 'package:health_assistant/globals.dart' as globals;
 import 'package:firebase_auth/firebase_auth.dart';
 
 class PatientProfile extends StatefulWidget {

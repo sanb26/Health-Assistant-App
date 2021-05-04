@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:health_assistant/globals.dart' as globals;
+// import 'package:health_assistant/globals.dart' as globals;
 
 class DatabaseManager {
   FirebaseFirestore firestore = FirebaseFirestore.instance;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:health_assistant/theme/light_color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../pages/departmentPage.dart';
@@ -269,7 +269,7 @@ class _ChatHomeState extends State<ChatHome> {
                         )),
                   )
                 : Positioned(
-                    bottom: 110,
+                    bottom: 90,
                     left: 0,
                     width: MediaQuery.of(context).size.width,
                     child: Container(
@@ -300,10 +300,12 @@ class _ChatHomeState extends State<ChatHome> {
                           IconButton(
                             onPressed: () {
                               print("Tapped");
-                              setState(() {
-                                symptoms.add(symptomController.text);
-                              });
-                              symptomController.clear();
+                              if (symptomController.text != "") {
+                                setState(() {
+                                  symptoms.add(symptomController.text);
+                                });
+                                symptomController.clear();
+                              }
                               FocusScope.of(context).requestFocus(FocusNode());
                               print(symptoms.length);
                               if (symptoms.length == 5) {
