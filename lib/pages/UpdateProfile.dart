@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:health_assistant/pages/PatientProfile.dart';
 import 'package:health_assistant/theme/light_color.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 
 class UpdateUserProfile extends StatefulWidget {
   final String pID;
@@ -35,6 +36,69 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
     } catch (error) {
       print("Failed to add user: $error");
       return false;
+    }
+  }
+
+  String validateMobile(String value) {
+    String patttern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+    RegExp regExp = new RegExp(patttern);
+    if (value.length == 0) {
+      return 'This field is required';
+    } else if (!regExp.hasMatch(value)) {
+      return 'Please enter a valid mobile number';
+    }
+    return null;
+  }
+
+  String validateAge(String value) {
+    String pattern = r'(^[0-9]*$)';
+    RegExp regExp = new RegExp(pattern);
+    if (value.length == 0) {
+      return "This field is required";
+    } else if (!regExp.hasMatch(value)) {
+      return "Age cannot contain characters other than numbers.";
+    }
+    return null;
+  }
+
+  String validateHeight(String value) {
+    //String pattern = r'(^[0-9]*$)';
+    //RegExp regExp = new RegExp(pattern);
+    if (value.length == 0) {
+      return "This field is required";
+    } else if (int.parse(value) > 300 || int.parse(value) < 0)
+      return "Height must be between 0 and 300 cms";
+    return null;
+  }
+
+  String validateWeight(String value) {
+    //String pattern = r'(^[0-9]*$)';
+    //RegExp regExp = new RegExp(pattern);
+    if (value.length == 0) {
+      return "This field is required";
+    } else if (int.parse(value) > 200 || int.parse(value) < 0)
+      return "Weight must be between 0 and 200 kgs";
+    return null;
+  }
+
+  void submit() {
+    //validating
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      print(fname);
+      print(lname);
+      print(address);
+      print(phoneNo);
+      print(dob);
+      updatePatient(widget.pID).then((value) {
+        if (value == true) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PatientProfile(widget.pID),
+              ));
+        }
+      });
     }
   }
 
@@ -105,6 +169,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                         ),
                       ),
                       TextFormField(
+                        validator: validateMobile,
                         keyboardType: TextInputType.number,
                         initialValue: patientData['phoneNo'],
                         onChanged: (value) {
@@ -132,6 +197,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                         ),
                       ),
                       TextFormField(
+                        validator: validateHeight,
                         keyboardType: TextInputType.number,
                         initialValue: patientData['height'],
                         onChanged: (value) {
@@ -145,6 +211,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                         ),
                       ),
                       TextFormField(
+                        validator: validateWeight,
                         keyboardType: TextInputType.number,
                         initialValue: patientData['weight'],
                         onChanged: (value) {
@@ -158,6 +225,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                         ),
                       ),
                       TextFormField(
+                        validator: validateAge,
                         keyboardType: TextInputType.number,
                         initialValue: patientData['age'],
                         onChanged: (value) {
@@ -171,6 +239,11 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                         ),
                       ),
                       TextFormField(
+                        validator: MultiValidator([
+                          RequiredValidator(
+                              errorText: "This field is required"),
+                          MaxLengthValidator(25, errorText: "Max length 25"),
+                        ]),
                         initialValue: patientData['address'],
                         onChanged: (value) {
                           address = value;
@@ -194,13 +267,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                               style: TextStyle(color: Colors.white),
                             ),
                             onPressed: () {
-                              updatePatient(widget.pID);
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        PatientProfile(widget.pID),
-                                  ));
+                              submit();
                               // Navigator.pop(context);
                               // );
                               setState(() {});
