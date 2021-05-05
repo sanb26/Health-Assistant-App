@@ -100,6 +100,8 @@ class _InfoFormState extends State<InfoForm> {
     }
   }
 
+  int calculatedage;
+  TextEditingController ageController;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -178,7 +180,7 @@ class _InfoFormState extends State<InfoForm> {
                 _buildDOBRow(),
                 _buildHeight(validateHeight),
                 _buildWeight(validateWeight),
-                _buildAge(validateAge),
+                // _buildAge(validateAge),
                 _buildGender(),
                 _buildSubmitButton(),
                 SizedBox(height: 10),
@@ -300,7 +302,7 @@ class _InfoFormState extends State<InfoForm> {
             dob = f.format(date).toString();
             print("hey the date is");
             print(dob);
-            int age = ageCalculate(dob);
+            calculatedage = ageCalculate(dob);
             print("Calculated age is" + age.toString());
           });
         },
@@ -364,11 +366,14 @@ class _InfoFormState extends State<InfoForm> {
     return Padding(
       padding: EdgeInsets.all(10),
       child: TextFormField(
+        // initialValue: calculatedage.toString(),
+        controller: ageController,
         keyboardType: TextInputType.number,
         validator: validator,
         onChanged: (value) {
           setState(() {
-            age = value;
+            ageController.text = calculatedage.toString();
+            age = calculatedage.toString();
           });
         },
         decoration: InputDecoration(
@@ -480,7 +485,7 @@ class _InfoFormState extends State<InfoForm> {
         'dob': dob,
         'weight': weight,
         'height': height,
-        'age': age,
+        'age': calculatedage.toString(),
         'gender': gender,
         'photo_url': user.photoURL,
       });
