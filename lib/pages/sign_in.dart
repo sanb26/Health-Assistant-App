@@ -32,9 +32,27 @@ class _SignInState extends State<SignIn> {
       formkey.currentState.save();
       //calling signin with email and password function which returns user if sign in successful else null
       signin(email, password, context).then((value) async {
-        var doctorData = await DatabaseManager()
-            .getDoctorDetails(value.uid); //passing doc id
+        if (value == null) {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text("Invalid Credentials"),
+                  backgroundColor: Colors.red[300],
+                  actions: <Widget>[
+                    RaisedButton(
+                      color: Colors.red,
+                      child: Text("Close"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                );
+              });
+        } //passing doc id
         if (value != null) {
+          var doctorData = await DatabaseManager().getDoctorDetails(value.uid);
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(

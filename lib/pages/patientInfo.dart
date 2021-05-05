@@ -43,30 +43,61 @@ class _InfoFormState extends State<InfoForm> {
     RegExp regExp = new RegExp(pattern);
     if (value.length == 0) {
       return "This field is required";
-    } else if (!regExp.hasMatch(value)) {
+    } else if (int.parse(value) <= 18)
+      return "Age should be greater than 18";
+    else if (!regExp.hasMatch(value)) {
       return "Age cannot contain characters other than numbers.";
     }
     return null;
   }
 
   String validateHeight(String value) {
-    //String pattern = r'(^[0-9]*$)';
-    //RegExp regExp = new RegExp(pattern);
+    String pattern = r'(^[0-9]*$)';
+    RegExp regExp = new RegExp(pattern);
     if (value.length == 0) {
       return "This field is required";
-    } else if (int.parse(value) > 300 || int.parse(value) < 0)
+    } else if (int.parse(value) > 300 || int.parse(value) <= 0)
       return "Height must be between 0 and 300 cms";
+    else if (!regExp.hasMatch(value)) {
+      return "Height should be a whole number.";
+    }
     return null;
   }
 
   String validateWeight(String value) {
-    //String pattern = r'(^[0-9]*$)';
-    //RegExp regExp = new RegExp(pattern);
+    String pattern = r'(^[0-9]*$)';
+    RegExp regExp = new RegExp(pattern);
     if (value.length == 0) {
       return "This field is required";
-    } else if (int.parse(value) > 200 || int.parse(value) < 0)
-      return "Weight must be between 0 and 200 kgs";
+    } else if (int.parse(value) > 200 || int.parse(value) <= 0)
+      return "Weight must be between 1 and 200 kgs";
+    else if (!regExp.hasMatch(value)) {
+      return "Weight should be a whole number.";
+    }
     return null;
+  }
+
+  RegExp regExp = new RegExp(
+    r"^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$",
+    caseSensitive: true,
+    multiLine: false,
+  );
+
+//method to calculate age on Today (in years)
+  int ageCalculate(String input) {
+    if (regExp.hasMatch(input)) {
+      DateTime _dateTime = DateTime(
+        int.parse(input.substring(6)),
+        int.parse(input.substring(3, 5)),
+        int.parse(input.substring(0, 2)),
+      );
+      return DateTime.fromMillisecondsSinceEpoch(
+                  DateTime.now().difference(_dateTime).inMilliseconds)
+              .year -
+          1970;
+    } else {
+      return -1;
+    }
   }
 
   @override
@@ -232,7 +263,7 @@ class _InfoFormState extends State<InfoForm> {
     return Padding(
       padding: EdgeInsets.all(10),
       child: TextFormField(
-        keyboardType: TextInputType.text,
+        keyboardType: TextInputType.number,
         validator: validator,
         onChanged: (value) {
           setState(() {
@@ -263,12 +294,14 @@ class _InfoFormState extends State<InfoForm> {
               context: context,
               initialDate: DateTime.now(),
               firstDate: DateTime(1900),
-              lastDate: DateTime(2022));
+              lastDate: DateTime.now());
           intialdateval.text = f.format(date).toString();
           setState(() {
             dob = f.format(date).toString();
             print("hey the date is");
             print(dob);
+            int age = ageCalculate(dob);
+            print("Calculated age is" + age.toString());
           });
         },
         //validator:RequiredValidator(errorText: "This field is required"),
@@ -287,7 +320,7 @@ class _InfoFormState extends State<InfoForm> {
     return Padding(
       padding: EdgeInsets.all(10),
       child: TextFormField(
-        keyboardType: TextInputType.text,
+        keyboardType: TextInputType.number,
         validator: validator,
         onChanged: (value) {
           setState(() {
@@ -309,7 +342,7 @@ class _InfoFormState extends State<InfoForm> {
     return Padding(
       padding: EdgeInsets.all(10),
       child: TextFormField(
-        keyboardType: TextInputType.text,
+        keyboardType: TextInputType.number,
         validator: validator,
         onChanged: (value) {
           setState(() {
